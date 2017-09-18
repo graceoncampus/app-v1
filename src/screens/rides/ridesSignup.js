@@ -232,7 +232,7 @@ class RidesSignup extends Component {
               onClick={() => (this.setState({ focus: '', morning: !morning }))}
               isChecked={morning}
               leftText={'Morning (8:30 AM - 12:00 PM)'}
-              checkBoxColor={'#617cce'}
+              checkBoxColor={'#ae956b'}
               leftTextStyle={{
                 fontFamily: 'Akkurat-Regular',
                 fontStyle: 'normal',
@@ -246,7 +246,7 @@ class RidesSignup extends Component {
               style={{ flex: 1, paddingHorizontal: 15, paddingVertical: 10 }}
               onClick={() => (this.setState({ focus: '', evening: !evening }))}
               isChecked={evening}
-              checkBoxColor={'#617cce'}
+              checkBoxColor={'#ae956b'}
               leftText={'Evening (6:00 PM - 7:30 PM)'}
               leftTextStyle={{
                 fontFamily: 'Akkurat-Regular',
@@ -261,7 +261,7 @@ class RidesSignup extends Component {
               style={{ flex: 1, paddingHorizontal: 15, paddingVertical: 10 }}
               onClick={() => (this.setState({ focus: '', staying: !staying }))}
               isChecked={staying}
-              checkBoxColor={'#617cce'}
+              checkBoxColor={'#ae956b'}
               leftText={'Staying (8:30 AM - 7:30 PM)'}
               leftTextStyle={{
                 fontFamily: 'Akkurat-Regular',

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
 import about from '../screens/about';
@@ -12,11 +11,11 @@ import roster from '../screens/roster';
 import gocConnect from '../screens/connect';
 import events from '../screens/events/events';
 import event from '../screens/events/event';
-import EventsCreate from '../screens/events/eventsCreate';
+// import EventsCreate from '../screens/events/eventsCreate';
 import rides from '../screens/rides/ridesTab';
 import classes from '../screens/classes/classes';
 import Class from '../screens/classes/class';
-import addClass from '../screens/classes/addClass';
+// import addClass from '../screens/classes/addClass';
 import leader from '../screens/leadership/leader';
 import UserInvite from '../screens/settings/userinvite';
 import Settings from '../screens/settings/settings';
@@ -29,20 +28,20 @@ const aboutStack = StackNavigator({
 
 const eventsStack = StackNavigator({
   Events: { screen: events },
-  Event: { screen: event }
+  Event: { screen: event },
 });
 
-const eventsCreateStack = StackNavigator({
-  EventsCreate: { screen: EventsCreate }
-});
+// const eventsCreateStack = StackNavigator({
+//   EventsCreate: { screen: EventsCreate },
+// });
 
-const classCreateStack = StackNavigator({
-  ClassCreate: { screen: addClass }
-});
+// const classCreateStack = StackNavigator({
+//   ClassCreate: { screen: addClass },
+// });
 
 const classesStack = StackNavigator({
   Classes: { screen: classes },
-  Class: { screen: Class }
+  Class: { screen: Class },
 });
 
 const ridesStack = StackNavigator({
@@ -50,12 +49,14 @@ const ridesStack = StackNavigator({
 });
 
 const leadershipStack = StackNavigator({
-  Leaders: { screen: leaders, navigationOptions: {
-    gesturesEnabled: false
-  } },
-  Leader: { screen: leader, navigationOptions: {
-    gesturesEnabled: false
-  } }
+  Leaders: { screen: leaders,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Leader: { screen: leader,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
 });
 
 const connectStack = StackNavigator({
@@ -73,85 +74,88 @@ const settingsStack = StackNavigator({
 });
 
 const DrawerNav = DrawerNavigator({
-  'About Us': { screen: aboutStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
-  Leadership: { screen: leadershipStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
-  Connect: { screen: connectStack,navigationOptions: {
-    gesturesEnabled: false
-  } },
-  Events: { screen: eventsStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
+  'About Us': { screen: aboutStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Leadership: { screen: leadershipStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Connect: { screen: connectStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Events: { screen: eventsStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
   // 'Create Event': { screen: eventsCreateStack },
-  Classes: { screen: classesStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
+  Classes: { screen: classesStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
   // 'Create Class': { screen: classCreateStack },
-  Rides: { screen: ridesStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
-  Roster: { screen: rosterStack, navigationOptions: {
-    gesturesEnabled: false
-  } },
-  'Settings': { screen: settingsStack, navigationOptions: {
-    gesturesEnabled: false
-  }},
+  Rides: { screen: ridesStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Roster: { screen: rosterStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Settings: { screen: settingsStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
 }, {
   drawerWidth: 150,
   contentOptions: {
     activeTintColor: '#fff',
-    activeBackgroundColor: '#617cce',
+    activeBackgroundColor: '#ae956b',
     labelStyle: {
-      fontFamily: 'Akkurat-Regular'
-    }
-  }
+      fontFamily: 'Akkurat-Regular',
+    },
+  },
 });
 
 const loginStack = StackNavigator({
-    Login: { screen: Login },
-    ForgotPassword: { screen: ForgotPassword }
+  Login: { screen: Login },
+  ForgotPassword: { screen: ForgotPassword },
 });
 
 const signupStack = StackNavigator({
-  Signup: { screen: Signup }
+  Signup: { screen: Signup },
 });
 export const AppNavigator = StackNavigator(
   {
     Auth: {
       screen: FirstLoad,
       navigationOptions: {
-        gesturesEnabled: false
-      }
+        gesturesEnabled: false,
+      },
     },
     Login: {
-      screen: loginStack
+      screen: loginStack,
     },
     Signup: {
-      screen: signupStack
+      screen: signupStack,
     },
     Main: {
       screen: DrawerNav,
       navigationOptions: {
-        gesturesEnabled: false
-      }
-    }
+        gesturesEnabled: false,
+      },
+    },
   },
   {
-    headerMode: 'none'
-  }
+    headerMode: 'none',
+  },
 );
 
 const AppWithNavigationState = ({ dispatch, nav }) => (
   <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
 );
-
-AppWithNavigationState.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired,
-};
 
 const mapStateToProps = state => ({
   nav: state.nav,

@@ -232,7 +232,7 @@ class Settings extends Component {
                     backgroundColor: '#fff',
                     borderWidth: 1,
                     borderRadius: 1,
-                    borderColor: '#617cce',
+                    borderColor: '#ae956b',
                     marginTop: 3,
                     height: 50,
                   },

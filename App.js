@@ -130,7 +130,7 @@ const theme = {
         marginBottom: 7,
         borderRadius: 1,
         '.focused': {
-          borderColor: '#617cce',
+          borderColor: '#ae956b',
         },
       },
     },

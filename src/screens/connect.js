@@ -27,7 +27,7 @@ class Connect extends Component {
       <ScrollableTabView
         tabBarBackgroundColor='#fff'
         tabBarTextStyle={{ paddingTop: 10, fontFamily: 'Akkurat-Regular', fontSize: 13, color: '#222222', lineHeight: 15 }}
-        tabBarUnderlineStyle={{ height: 2, backgroundColor: '#617cce' }}
+        tabBarUnderlineStyle={{ height: 2, backgroundColor: '#ae956b' }}
       >
         <ScrollView tabLabel="Large Groups"
           automaticallyAdjustContentInsets={false}

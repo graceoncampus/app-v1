@@ -28,7 +28,7 @@ class RidesTab extends Component {
     <ScrollableTabView
       tabBarBackgroundColor='#fff'
       tabBarTextStyle={{ paddingTop: 10, fontFamily: 'Akkurat-Regular', fontSize: 13, color: '#222222', lineHeight: 15 }}
-      tabBarUnderlineStyle={{ height: 2, backgroundColor: '#617cce' }}
+      tabBarUnderlineStyle={{ height: 2, backgroundColor: '#ae956b' }}
     >
       <AllRides tabLabel="All Rides" />
       <MyRide tabLabel="My Ride" />
