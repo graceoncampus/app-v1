@@ -31,7 +31,7 @@ const theme = {
     fontSize: 15,
     lineHeight: 18,
     '.link': {
-      color: '#082ea1',
+      color: '#ae956b',
     },
   },
   'shoutem.ui.Caption': {
@@ -86,7 +86,7 @@ const theme = {
       letterSpacing: 1,
       textAlign: 'center',
     },
-    backgroundColor: '#082ea1',
+    backgroundColor: '#ae956b',
     borderRadius: 6,
     paddingHorizontal: 15,
     paddingVertical: 15,
@@ -97,10 +97,10 @@ const theme = {
     },
     '.outline': {
       backgroundColor: 'transparent',
-      borderColor: '#082ea1',
+      borderColor: '#ae956b',
       borderWidth: 1,
       'shoutem.ui.Text': {
-        color: '#082ea1',
+        color: '#ae956b',
       },
     },
   },

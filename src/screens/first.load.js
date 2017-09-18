@@ -27,7 +27,7 @@ class FirstLoad extends Component {
             <Text>LOG IN</Text>
           </Button>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('Main')}>
-            <View styleName='horizontal h-center v-center'><Subtitle styleName='link'>I don't want awesome features</Subtitle><Icon style={{ color: '#082ea1', fontSize: 17, lineHeight: 24 }} name="right-arrow" /></View>
+            <View styleName='horizontal h-center v-center'><Subtitle styleName='link'>I don't want awesome features</Subtitle><Icon style={{ color: '#ae956b', fontSize: 17, lineHeight: 24 }} name="right-arrow" /></View>
           </TouchableOpacity>
         </View>
       </Screen>
