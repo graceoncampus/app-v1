@@ -23,3 +23,4 @@ export const CLASS_ADD = 'classAdd';
 export const GET_ALL_USERS = 'get_all_users';
 export const RIDES_FETCH = 'ridesFetch';
 export const SINGLE_RIDE_FETCH = 'singleRideFetch';
+export const NEW_POST = 'newPost';

@@ -6,6 +6,7 @@ import EventsFormReducer from './EventsFormReducer';
 import roster from './roster';
 import ClassReducer from './ClassReducer';
 import RidesReducer from './RidesReducer';
+import HomeReducer from './HomeReducer';
 
 const firstAction = AppNavigator.router.getActionForPathAndParams('Auth');
 const tempNavState = AppNavigator.router.getStateForAction(firstAction);
@@ -26,7 +27,8 @@ const appReducer = combineReducers({
   RidesReducer,
   roster,
   events: EventsReducer,
-  EventsFormReducer
+  EventsFormReducer,
+  HomeReducer,
 });
 
 // Setup root reducer
