@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {
-  TouchableOpacity,
-} from 'react-native';
-import { Image, Tile, GridRow, Screen, ListView, View, Caption, Icon, Subtitle } from '@shoutem/ui';
+import { TouchableOpacity, Image, Tile, GridRow, Screen, ListView, View, Caption, Icon, Subtitle } from '@shoutem/ui';
 
 const defaultData = [
   {

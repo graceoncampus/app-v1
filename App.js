@@ -7,7 +7,7 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import * as firebase from 'firebase';
 import { Font, Permissions, Notifications } from 'expo';
 import { StyleProvider } from '@shoutem/theme';
-import { getTheme, Title } from '@shoutem/ui';
+import { getTheme } from '@shoutem/ui';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
@@ -47,6 +47,9 @@ const theme = {
     letterSpacing: 0.5,
     '.bold': {
       fontFamily: 'Akkurat-Bold',
+    },
+    '.link': {
+      color: '#ae956b',
     },
   },
   'shoutem.ui.Title': {
