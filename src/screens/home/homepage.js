@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { Divider, Screen, Caption, Spinner, View, Subtitle, Icon, Text } from '@shoutem/ui';
+import { Divider, Screen, Caption, Spinner, View, Subtitle, Icon, Text, Button } from '@shoutem/ui';
 import { connect } from 'react-redux';
 
 import { postFetch } from '../../actions';
@@ -34,8 +34,6 @@ class Home extends Component {
       postData: posts,
       isRefreshing: false,
     });
-    console.log("HELLO POSTS BELOW");
-    console.log(posts);
   }
 
   renderPosts() {
@@ -62,6 +60,11 @@ class Home extends Component {
   render() {
     return (
       <Screen>
+      <View styleName='vertical h-center v-end'>
+      <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
+        <Text>ADD POST</Text>
+      </Button>
+      </View>
         <Divider styleName="section-header">
           <Caption>Time</Caption>
           <Caption>Post</Caption>

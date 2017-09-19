@@ -155,6 +155,7 @@ const registerForPushNotificationsAsync = async () => {
 
 export default class App extends React.Component {
   async componentWillMount() {
+    AsyncStorage.clear()
     this.setState({ loading: true });
     await Font.loadAsync({
       Arnhem: require('./fonts/ArnhemFine-Normal.otf'),

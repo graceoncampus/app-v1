@@ -11,13 +11,10 @@ import { newPost } from '../../actions';
 
 class addPost extends Component {
   static navigationOptions = ({ navigation }) => ({
-    drawer: () => ({
-      label: 'Add Post',
-    }),
-    title: 'ADD POST',
+    title: "Change Password",
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
-        <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
