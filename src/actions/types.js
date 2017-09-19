@@ -8,6 +8,7 @@ export const CREATE_USER_SUCCESS = 'createUserSuccess';
 export const GET_USER_INFO = 'getUserInfo';
 export const UPDATE_USER_INFO = 'updateUserInfo';
 export const CHANGE_USER_PASSWORD = 'changeUserPassword';
+export const CHANGE_USER_PASSWORD_LOAD = 'changeUserPasswordLoad';
 export const PASSWORD_CHECK = 'passwordCheck';
 export const RESET_USER_PASSWORD = 'resetUserPassword';
 export const USER_LOGIN = 'userLogin';

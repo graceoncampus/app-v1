@@ -8,6 +8,7 @@ import { CREATE_ACCOUNT,
   GOT_USER,
   UPDATE_USER_INFO,
   CHANGE_USER_PASSWORD,
+  CHANGE_USER_PASSWORD_LOAD,
   RESET_USER_PASSWORD,
   USER_LOGOUT,
 } from '../actions/types';
@@ -43,7 +44,9 @@ export default (state = INITIAL_STATE, action) => {
     case UPDATE_USER_INFO:
       return { ...state };
     case CHANGE_USER_PASSWORD:
-      return { ...state };
+      return { ...state, loading: true };
+    case CHANGE_USER_PASSWORD_LOAD:
+      return { ...state, loading: false };
     case RESET_USER_PASSWORD:
       return { ...state };
     default:

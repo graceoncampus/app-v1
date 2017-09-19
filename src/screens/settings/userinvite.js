@@ -1,168 +1,139 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
-import FormValidation from 'tcomb-form-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-import AppStyles from '../../styles';
-import Button from '../../components/button';
-import Alerts from '../../components/alerts';
+import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class UserInvite extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Invite New User",
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name='ios-arrow-back-outline' style={{ marginLeft: 10 }} size={30} color={'#000'} />
+        <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
+    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
-  // static navigationOptions = ({ navigation }) => ({
-  //   drawer: () => ({
-  //     label: 'Invite User'
-  //   }),
-  //   title: 'Invite User',
-  //   headerLeft: (
-  //     <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
-  //       <Icon name='ios-menu-outline' style={{ marginLeft: 10 }} size={30} color={'#000'} />
-  //     </TouchableOpacity>
-  //   ),
-  // })
 
   constructor(props) {
     super(props);
-    const valid_email = FormValidation.refinement(
-      FormValidation.String, (email) => {
-        const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-        return re.test(email);
-      }
-    );
 
     this.state = {
-      resultMsg: {
-        status: '',
-        success: '',
-        error: '',
-      },
-      form_fields: FormValidation.struct({
-        New_User_Email: valid_email,
-      }),
-      empty_form_values: {
-        New_User_Email: '',
-      },
-      form_values: {},
-      options: {
-        fields: {
-          New_User_Email: { error: 'Please enter a valid email' },
-        }
-      },
+      Email: '',
+      focus: null,
+      loading: false,
     };
+      this.onChangeEmail = this.onChangeEmail.bind(this);
+    };
+
+  onChangeEmail(Email) {
+    this.setState({ submitted: false, Email });
   }
 
-    onChange = (form_values) => (this.setState({ form_values }))
+  signUp = () => {
+    this.setState({ loading: true });
+    const {
+      Email,
+    } = this.state;
+    const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    if (re.test(Email)) {
+      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+        const emailCheck = snapshot.val();
+        if (emailCheck) {
+          alert('This email has already been invited');
+          this.setState({ loading: false });
+        }
+        else {
+          firebase.database().ref('users').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+            const existingUser = snapshot.val();
+            if (existingUser) {
+              alert('An account with this email address has already been created');
+              this.setState({ loading: false });
+            } else {
+              const postData = {
+                email: Email,
+              };
+              const userInvite = firebase.database().ref('invitedUsers');
+              userInvite.push(postData);
+              this.setState({ loading: false });
+              alert('This email has been successfully invited');
+            }
+          });
+        }
+      });
+    }
+    else {
+      alert('It looks like you did not enter a valid email');
+      this.setState({ loading: false });
+    }
+  }
 
-    signUp = () => {
-      const form_values = this.refs.form.getValue();
-      if (form_values) {
-        firebase.database().ref('invitedUsers').orderByChild('email').equalTo(form_values.New_User_Email).once('value', (snapshot) => {
-          const emailCheck = snapshot.val();
-          if (emailCheck) {
-            alert('This email has already been invited');
-          }
-          else {
-            firebase.database().ref('users').orderByChild('email').equalTo(form_values.New_User_Email).once('value', (snapshot) => {
-              const existingUser = snapshot.val();
-              if (existingUser) {
-                  alert('An account with this email address has already been created');
-              } else {
-                const postData = {
-                  email: form_values.New_User_Email,
-                };
-                const userInvite = firebase.database().ref('invitedUsers');
-                userInvite.push(postData);
-                alert('This email has been successfully invited');
-              }
-            });
-          }
-        });
+    renderButton = () => {
+      if (this.state.loading) {
+        return (
+          <Button style={{ marginBottom: 15, paddingVertical: 15 }}>
+            <Spinner style={{ color: '#fff' }}/>
+          </Button>
+        );
       }
+
+      return (
+        <Button style={{ marginBottom: 15 }} onPress={this.signUp}>
+          <Text>INVITE USER</Text>
+        </Button>
+      );
     }
 
     render = () => {
-      const Form = FormValidation.form.Form;
+      const {
+        Email,
+        focus
+      } = this.state;
       return (
-        <ScrollView
-          automaticallyAdjustContentInsets={false}
-          ref={'scrollView'}
-          style={[AppStyles.container]}
-          contentContainerStyle={[AppStyles.containerCentered, styles.container]}
-        >
-          <View style={[AppStyles.paddingHorizontal]}>
-            <Alerts
-              status={this.state.resultMsg.status}
-              success={this.state.resultMsg.success}
-              error={this.state.resultMsg.error}
-            />
-            <Text style={[AppStyles.baseText, AppStyles.h3, AppStyles.centered]}>
-              Invite a New User
-            </Text>
-            <Text style={[AppStyles.baseText, AppStyles.p, AppStyles.centered]}>
-              Make sure you enter this correctly. This will be their log in email.
-            </Text>
-            <View style={AppStyles.spacer_20} />
-            <Form
-              ref="form"
-              type={this.state.form_fields}
-              value={this.state.form_values}
-              options={this.state.options}
-              onChange={this.onChange}
-            />
-          </View>
-          <View style={AppStyles.hr} />
-          <View style={[AppStyles.paddingHorizontal]}>
-            <Button
-              text={'Invite User'}
-              onPress={this.signUp}
-            />
-          </View>
-        </ScrollView>
+        <Screen>
+          <KeyboardAwareScrollView ref={(c) => { this.scroll = c; }}>
+            <Tile style={{ paddingTop: 20, paddingBottom: 0, flex: 0.8, backgroundColor: 'transparent' }} styleName='text-centric'>
+              <Title>Invite New User</Title>
+              <Subtitle>Invite a new user to create an account. Note that the email you invite will be their log in email</Subtitle>
+              <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{this.props.error}</Subtitle>
+            </Tile>
+            <FormGroup>
+              <Caption>Email</Caption>
+              { focus === 'one' ?
+                <TextInput
+                  styleName='focused'
+                  onFocus={() => this.setState({ focus: 'one' })}
+                  onSubmitEditing={() => this.setState({ focus: '' })}
+                  placeholder="YourBestFriend@gmail.com"
+                  value={Email}
+                  onChangeText={this.onChangeEmail}
+                  returnKeyType='next'
+                />
+                :
+                <TextInput
+                  onFocus={() => this.setState({ focus: 'one' })}
+                  onSubmitEditing={() => this.setState({ focus: '' })}
+                  placeholder="YourBestFriend@gmail.com"
+                  value={Email}
+                  onChangeText={this.onChangeEmail}
+                  returnKeyType='next'
+                />
+              }
+              <Divider />
+              <View style={{ flex: 0.25 }} styleName='vertical h-center v-end'>
+                {this.renderButton()}
+              </View>
+            </FormGroup>
+            <Divider />
+            <Divider />
+            <Divider />
+          </KeyboardAwareScrollView>
+        </Screen>
       );
     }
   }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 15,
-    paddingBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  containerStyle: {
-        flex: 1,
-        flexDirection: 'row',
-        padding: 20,
-        alignItems: 'center'
-    },
-    labelStyle: {
-        flex: 1,
-        fontSize: 18,
-        fontWeight: '800',
-        color: 'black'
-
-    },
-    checkboxStyle: {
-        width: 26,
-        height: 26,
-        borderWidth: 2,
-        borderColor: '#ddd',
-        borderRadius: 5
-    }
-});
 
 export default UserInvite;

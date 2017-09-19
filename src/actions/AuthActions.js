@@ -13,6 +13,7 @@ import {
   GOT_USER,
   UPDATE_USER_INFO,
   CHANGE_USER_PASSWORD,
+  CHANGE_USER_PASSWORD_LOAD,
   RESET_USER_PASSWORD,
   USER_LOGOUT,
 } from './types';
@@ -271,22 +272,32 @@ export const updateUserInfo = (
 };
 
 export const changeUserPassword = (oldPassword, newPassword) => {
-  const { currentUser } = firebase.auth();
-  const email = currentUser.email;
+  const { currentUser } = firebase.auth()
+  const email = currentUser.email
 
   return (dispatch) => {
-    dispatch({ type: CHANGE_USER_PASSWORD });
+    dispatch({ type: CHANGE_USER_PASSWORD })
     firebase.auth().signInWithEmailAndPassword(email, oldPassword)
-      .then(() => {
-        firebase.auth().currentUser.updatePassword(newPassword).then(() => {
-          alert('Password change successful');
-          dispatch(NavigationActions.navigate({ routeName: 'Settings' }));
-        }, (error) => {
-          alert('Password change failed');
-        });
-      }).catch(() => alert('Old password incorrect'));
-  };
-};
+    .then(() => {
+      firebase.auth().currentUser.updatePassword(newPassword).then(function () {
+        alert('Password change successful')
+        dispatch(NavigationActions.navigate({ routeName: 'Settings' }))
+        ChangeUserPasswordLoad(dispatch)
+      }, function (error) {
+        alert('Password change failed');
+        ChangeUserPasswordLoad(dispatch);
+      })
+    }).catch(() => {
+      alert('Old password incorrect');
+      ChangeUserPasswordLoad(dispatch);
+    })
+  }
+}
+
+const ChangeUserPasswordLoad = (dispatch) => {
+  dispatch({ type: CHANGE_USER_PASSWORD_LOAD })
+}
+
 
 export const userLogout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });

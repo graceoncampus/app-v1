@@ -11,7 +11,7 @@ import { newPost } from '../../actions';
 
 class addPost extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Change Password",
+    title: "Add Post",
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
