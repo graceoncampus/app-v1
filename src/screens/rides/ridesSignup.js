@@ -75,7 +75,7 @@ class RidesSignup extends Component {
     }
 
     return (
-      <Button>
+      <Button onPress={() => this.signUp()}>
         <Text>SIGN UP</Text>
       </Button>
     );

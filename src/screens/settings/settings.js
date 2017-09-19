@@ -93,7 +93,7 @@ class Settings extends Component {
       Address,
       this.state.userInfo.permissions,
       this.state.userInfo.image,
-    )
+    );
     this.setState({ loading: false, success: true });
   }
 

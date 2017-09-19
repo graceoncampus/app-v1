@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Icon, Screen, Image, View, Caption, Spinner, Row, ListView, Divider, Subtitle } from '@shoutem/ui';
 import { connect } from 'react-redux';
-
+import moment from 'moment';
 import { classFetch } from '../../actions';
 
 class Classes extends Component {
@@ -40,6 +40,8 @@ class Classes extends Component {
           title: data[key].title,
           summary: data[key].details,
           value: data[key],
+          deadline: data[key].deadline,
+          instructor: data[key].instructor,
           key,
         });
       }
@@ -50,7 +52,7 @@ class Classes extends Component {
   }
 
   renderRow(data) {
-    const { title, image, key } = data;
+    const { title, image, key, deadline, instructor } = data;
     return (
       <TouchableOpacity onPress={() => { this.props.navigation.navigate('Class', { key }); }} >
         <Row>
@@ -62,7 +64,7 @@ class Classes extends Component {
           }
           <View styleName="vertical stretch space-between">
             <Subtitle>{title}</Subtitle>
-            <Caption>June 21  ·  20:00</Caption>
+            <Caption>{moment.unix(deadline).format('MMMM Do')}  ·  { instructor }</Caption>
           </View>
         </Row>
         <Divider styleName='line' />

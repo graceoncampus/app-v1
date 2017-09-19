@@ -1,106 +1,52 @@
 import React from 'react';
 import {
-  StyleSheet,
-  Text,
-  Image,
+  TouchableOpacity,
   ScrollView,
-  TouchableOpacity
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-import AppStyles from '../../styles';
-import AppConfig from '../../config';
-import CardSection from '../../components/CardSection';
+import moment from 'moment';
+import { Icon, Divider, Title, View, Screen, Text, Caption } from '@shoutem/ui';
 
 export default class Event extends React.Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.event.title,
+    drawer: () => ({
+      label: 'Events',
+    }),
+    title: 'EVENTS',
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name='ios-arrow-back-outline' style={{ marginLeft: 10 }} size={30} color={'#000'} />
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
+        <Icon name='back' style={{ paddingLeft: 10 }} />
       </TouchableOpacity>
     ),
+    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
   render() {
-    const { event } = this.props.navigation.state.params;
+    const { event: { image, title, startdate, location, summary } } = this.props.navigation.state.params;
     return (
-      <ScrollView>
-        {event.image ?
-          <Image source={{ uri: event.image }} style={[styles.imageBackground_image]}>
-          <Text style={[AppStyles.baseText, styles.listRow_text, styles.listRowImage_text]}>
-            {event.title}
-          </Text>
-          </Image>
-        : null}
-        <CardSection>
-        {event.startdate ?
-          <Text>
-            When: {event.startdate} to {event.enddate} at {event.starttime} to {event.endtime}
-          </Text>
-          : <Text>When: {event.date} at {event.starttime} to {event.endtime}</Text>
-        }
-        </CardSection>
-        <CardSection>
-        <Text>Where: {event.location}</Text>
-        </CardSection>
-        <Text style={styles.descriptionText}>Description: {event.summary}</Text>
-      </ScrollView>
+      <Screen>
+        <Divider />
+        <View styleName='vertical h-center' style={{ borderBottomWidth: 1, borderBottomColor: '#ecedef' }} >
+          <Title>{title}</Title>
+          <Divider />
+          {location &&
+              <Caption><Caption styleName="bold">Where: </Caption>{location}</Caption>
+          }
+          {startdate &&
+              <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do HH:mm')}</Caption>
+          }
+          <Divider />
+        </View>
+        <ScrollView>
+          { summary &&
+            <View style={{ backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
+              <Text>
+                { summary }
+              </Text>
+            </View>
+          }
+        </ScrollView>
+      </Screen>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  titleStyle: {
-    fontSize: 18,
-    paddingLeft: 15,
-    textAlign: 'center',
-  },
-  descriptionText: {
-    paddingLeft: 5,
-    fontFamily: AppConfig.baseFont,
-    fontSize: AppConfig.baseFontSize,
-    color: AppConfig.textColor,
-    fontWeight: '300',
-  },
-  containerStyle: {
-      borderBottomWidth: 1,
-      padding: 5,
-      backgroundColor: '#fff',
-      justifyContent: 'flex-start',
-      flexDirection: 'row',
-      borderColor: '#ddd',
-      position: 'relative'
-  },
-  listRow: {
-    left: 0,
-    right: 0,
-    backgroundColor: '#FFF',
-  },
-  listRowInner: {
-    paddingVertical: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: AppConfig.borderColor,
-  },
-  listRow_text: {
-    color: AppConfig.textColor,
-    textAlign: 'center',
-    fontWeight: '500',
-    backgroundColor: 'transparent',
-  },
-  listRowImage_text: {
-    color: '#FFF',
-  },
-  imageBackground: {
-    backgroundColor: '#333',
-  },
-  imageBackground_image: {
-    height: AppConfig.windowHeight / 4,
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 1,
-  }
-
-});

@@ -1,162 +1,132 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import { 
-  View,
-  Text,
-  TouchableOpacity
+import {
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
+import { Icon, Divider, Button, Title, View, Screen, Text, Caption } from '@shoutem/ui';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 
 import { classEnroll, classUnenroll } from '../../actions';
-import { CardSection } from '../../components/common';
-import Button from '../../components/button';
-import AppStyles from '../../styles';
 
 class classDetails extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.title,
+    drawer: () => ({
+      label: 'Classes',
+    }),
+    title: 'CLASSES',
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name='ios-arrow-back-outline' style={{ marginLeft: 10 }} size={30} color={'#000'} />
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
+        <Icon name='back' style={{ paddingLeft: 10 }} />
       </TouchableOpacity>
     ),
+    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
+
   constructor(props) {
     super(props);
-    this.onUnenrollPress = this.onUnenrollPress.bind(this);
-    this.checkEnroll = this.checkEnroll.bind(this);
-    this.onEnrollPress = this.onEnrollPress.bind(this);
+    this.unenroll = this.unenroll.bind(this);
+    this.isEnrolled = this.isEnrolled.bind(this);
+    this.enroll = this.enroll.bind(this);
   }
-  onUnenrollPress() {
+
+  unenroll() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
     const numSpots = classData[key].openSpots;
     this.props.classUnenroll(key, numSpots);
   }
 
-  onEnrollPress() {
+  enroll() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
     const numSpots = classData[key].openSpots;
-    if (this.checkEnroll()) {
+    if (!this.isEnrolled()) {
       this.props.classEnroll(key, numSpots);
     }
   }
 
-  checkEnroll() {
+  isEnrolled() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
-    const currentUid = 'HaH2jdlJ7WZxU5tUrIz3cYPTW522'; /* currentUser.uid */
+    const currentUid = firebase.auth().currentUser.uid;
     const allStudents = classData[key].students;
     for (const student in allStudents) {
       if (allStudents.hasOwnProperty(student)) {
         if (currentUid === allStudents[student].uid) {
-          return false;
+          return true;
         }
       }
     }
-    return true;
+    return false;
   }
 
   renderButton() {
-  if (this.checkEnroll()) {
+    if (this.isEnrolled()) {
+      return (
+        <Button styleName="red" onPress={() => this.unenroll()}>
+          <Text>Unenroll</Text>
+        </Button>
+      );
+    }
     return (
-    <View>
-      <View style={AppStyles.spacer_20} />
-      <View style={[AppStyles.paddingHorizontal]}>
-          <Button
-            text={'Enroll Now'}
-            onPress={this.onEnrollPress}
-          />
-      </View>
-    </View>
+      <Button onPress={() => this.enroll()}>
+        <Text>Enroll</Text>
+      </Button>
     );
   }
 
-  return (
-    <View>
-    <CardSection>
-      <Text style={styles.enrolledTextStyle}> You are currently enrolled in this course </Text>
-    </CardSection>
-    <CardSection>
-      <Button onPress={this.onUnenrollPress}>
-        Drop Class
-      </Button>
-    </CardSection>
-    </View>
-  );
-}
-
-  render() {
+  render = () => {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
+    const { title, instructor, location, time, deadline, totalSpots, openSpots, details } = classData[key];
     return (
-      <View>
-        <CardSection>
-          <Text style={styles.titleStyle}>{classData[key].title}</Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>Instructor: {classData[key].instructor}</Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>Location: {classData[key].location}</Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>Time: {classData[key].time}</Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>
-            Registration Deadline: {classData[key].deadline}
-          </Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>
-            Open Spots: {classData[key].openSpots} / {classData[key].totalSpots}
-          </Text>
-        </CardSection>
-        <CardSection>
-          <Text style={styles.descriptionStyle}>{classData[key].details}</Text>
-        </CardSection>
-
-        {this.renderButton()}
-
-        <Text style={styles.errorTextStyle}>
-          {this.props.error}
-        </Text>
-      </View>
+      <Screen>
+        <Divider />
+        <View styleName='vertical h-center' style={{ borderBottomWidth: 1, borderBottomColor: '#ecedef' }} >
+          <Title>{title}</Title>
+          <Divider />
+          {instructor &&
+              <Caption><Caption styleName="bold">Instructor: </Caption>{instructor}</Caption>
+          }
+          {location &&
+              <Caption><Caption styleName="bold">Location: </Caption>{location}</Caption>
+          }
+          {time &&
+              <Caption><Caption styleName="bold">Time: </Caption>{time}</Caption>
+          }
+          {deadline &&
+              <Caption><Caption styleName="bold">Enroll By: </Caption>
+                {moment.unix(deadline).format('MMMM Do')}</Caption>
+          }
+          {openSpots && totalSpots &&
+              <Caption><Caption styleName="bold">Spots Left: </Caption>
+                {openSpots}/{totalSpots}</Caption>
+          }
+          <Divider />
+        </View>
+        <ScrollView>
+          { details &&
+            <View style={{ backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
+              <Text>
+                { details }
+              </Text>
+            </View>
+          }
+        </ScrollView>
+        { firebase.auth().currentUser &&
+          <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
+            {this.renderButton()}
+          </View>
+        }
+      </Screen>
     );
   }
 }
-
-const styles = {
-  titleStyle: {
-    fontSize: 36,
-    flex: 1,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  errorTextStyle: {
-    fontSize: 20,
-    alignSelf: 'center',
-    color: 'red',
-  },
-  enrolledTextStyle: {
-    color: '#007aff',
-    fontSize: 20,
-    alignSelf: 'center',
-  },
-  descriptionStyle: {
-    flex: 1,
-    textAlign: 'center',
-    paddingLeft: 20,
-    paddingRight: 20
-  }
-};
-
 const mapStateToProps = ({ ClassReducer }) => {
   const { classData, loading, error } = ClassReducer;
-
   return { classData, loading, error };
 };
 
