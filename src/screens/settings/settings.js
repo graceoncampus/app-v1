@@ -93,7 +93,8 @@ class Settings extends Component {
       Address,
       this.state.userInfo.permissions,
       this.state.userInfo.image,
-    ).then(() => (this.setState({ loading: false, success: true })));
+    )
+    this.setState({ loading: false, success: true });
   }
 
   onChangeFirstName(First_name) {

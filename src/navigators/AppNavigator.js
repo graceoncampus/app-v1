@@ -20,7 +20,16 @@ import leader from '../screens/leadership/leader';
 import UserInvite from '../screens/settings/userinvite';
 import Settings from '../screens/settings/settings';
 import ChangePassword from '../screens/settings/changePassword';
+import Home from '../screens/home/homepage';
+import addPost from '../screens/home/addPost';
 
+const homeStack = StackNavigator({
+  Home: { screen: Home },
+});
+
+const addPostStack = StackNavigator({
+  AddPost: { screen: addPost },
+});
 
 const aboutStack = StackNavigator({
   About: { screen: about },
@@ -74,6 +83,14 @@ const settingsStack = StackNavigator({
 });
 
 const DrawerNav = DrawerNavigator({
+  Home: { screen: homeStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  'Add Post': { screen: addPostStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
   'About Us': { screen: aboutStack,
     navigationOptions: {
       gesturesEnabled: false,
