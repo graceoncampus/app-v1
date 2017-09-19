@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 import { NavigationActions } from 'react-navigation'
 import store from 'react-native-simple-store'
+import moment from 'moment'
 import {
   CREATE_ACCOUNT,
   CREATE_USER_FAIL,
@@ -113,6 +114,7 @@ const createUserSuccess = (
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((User) => {
       const users = {}
+      birthday = moment(birthday, 'MM/DD/YYYY').unix(),
       users[`/users/${User.uid}`] = {
         email,
         firstName,
@@ -245,6 +247,7 @@ export const updateUserInfo = (
   return dispatch => {
     const { currentUser } = firebase.auth()
     const uid = currentUser.uid
+    birthday = moment(birthday, 'MM/DD/YYYY').unix();
     const users = {}
     users[`/users/${uid}`] = {
       email,
@@ -293,7 +296,7 @@ export const userLogout = () => {
     dispatch({ type: USER_LOGOUT })
     firebase.auth().signOut().then(function () {
       console.log('Logout successful')
-      dispatch(NavigationActions.navigate({ routeName: 'Splash' }))
+      dispatch(NavigationActions.navigate({ routeName: 'Auth' }))
     }, function (error) {
       console.log('Logout failed')
     })

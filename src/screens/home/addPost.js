@@ -125,8 +125,8 @@ class addPost extends Component {
 }
 
 const mapStateToProps = ({ HomeReducer }) => {
-  const { Data } = HomeReducer;
-  return { Data };
+  const { postData } = HomeReducer;
+  return { postData };
 };
 
 export default connect(mapStateToProps, { newPost })(addPost);
