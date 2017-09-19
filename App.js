@@ -16,6 +16,8 @@ import AppWithNavigationState from './src/navigators/AppNavigator';
 import config from './src/config';
 import LoadingSplash from './src/screens/loadingSplash';
 
+import { postFetch } from './src/actions';
+
 firebase.initializeApp(config.firebaseConfig);
 
 const middleware = [
@@ -161,6 +163,7 @@ const registerForPushNotificationsAsync = async () => {
 
 export default class App extends React.Component {
   async componentWillMount() {
+    AsyncStorage.clear()
     this.setState({ loading: true });
     await Font.loadAsync({
       Arnhem: require('./fonts/ArnhemFine-Normal.otf'),
@@ -182,6 +185,12 @@ export default class App extends React.Component {
     if (!value) await registerForPushNotificationsAsync();
     this.setState({ loading: false });
     this._notificationSubscription = Notifications.addListener(this._handleNotification);
+  }
+
+  componentDidMount() {
+    firebase.database().ref('posts').on('child_added', () => {
+      this.store.dispatch(postFetch());
+    });
   }
 
   _handleNotification = (notification) => {
