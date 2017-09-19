@@ -1,10 +1,11 @@
 /* eslint global-require: 0 */
 
 import React from 'react';
+import { AsyncStorage } from 'react-native';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import * as firebase from 'firebase';
-import { Font } from 'expo';
+import { Font, Permissions, Notifications } from 'expo';
 import { StyleProvider } from '@shoutem/theme';
 import { getTheme } from '@shoutem/ui';
 import { createLogger } from 'redux-logger';
@@ -136,6 +137,22 @@ const theme = {
     },
   },
 };
+const registerForPushNotificationsAsync = async () => {
+  const { existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+  let finalStatus = existingStatus;
+  if (existingStatus !== 'granted') {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+  }
+
+  if (finalStatus !== 'granted') {
+    return;
+  }
+  const token = await Notifications.getExpoPushTokenAsync();
+  await firebase.database().ref('tokens').push(token);
+  await AsyncStorage.setItem('token', token);
+};
+
 export default class App extends React.Component {
   async componentWillMount() {
     this.setState({ loading: true });
@@ -155,8 +172,16 @@ export default class App extends React.Component {
       'Rubik-Regular': require('./node_modules/@shoutem/ui/fonts/Rubik-Regular.ttf'),
       'rubicon-icon-font': require('./node_modules/@shoutem/ui/fonts/rubicon-icon-font.ttf'),
     });
+    const value = await AsyncStorage.getItem('token');
+    if (!value) await registerForPushNotificationsAsync();
     this.setState({ loading: false });
+    this._notificationSubscription = Notifications.addListener(this._handleNotification);
   }
+
+  _handleNotification = (notification) => {
+    console.log(notification)
+    this.setState({ notification });
+  };
 
   store = compose(
     applyMiddleware(...middleware),
