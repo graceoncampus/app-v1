@@ -26,6 +26,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@shoutem/animation": "^0.11.0",
     "@shoutem/theme": "^0.10.0",
     "@shoutem/ui": "^0.21.3",
     "expo": "^20.0.0",

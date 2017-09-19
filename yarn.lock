@@ -60,6 +60,13 @@
     component-type "^1.2.1"
     join-component "^1.1.0"
 
+"@shoutem/animation@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@shoutem/animation/-/animation-0.11.0.tgz#b3b0d3b39a3a610c81cd3cd79857dc21c071faa6"
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
+    lodash "^4.15.0"
+
 "@shoutem/animation@~0.11.0":
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/@shoutem/animation/-/animation-0.11.1.tgz#ac9c0032af0fcc10b1bad7bbe4d34b3ac853af0e"

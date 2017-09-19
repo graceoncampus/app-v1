@@ -8,12 +8,7 @@ import ClassReducer from './ClassReducer';
 import RidesReducer from './RidesReducer';
 import HomeReducer from './HomeReducer';
 
-const firstAction = AppNavigator.router.getActionForPathAndParams('Auth');
-const tempNavState = AppNavigator.router.getStateForAction(firstAction);
-const initialNavState = AppNavigator.router.getStateForAction(
-  firstAction,
-  tempNavState
-);
+const initialNavState = AppNavigator.router.getStateForAction({});
 
 const nav = (state = initialNavState, action) => {
   const nextState = AppNavigator.router.getStateForAction(action, state);

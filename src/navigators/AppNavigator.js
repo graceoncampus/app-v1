@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
 import about from '../screens/about';
 import FirstLoad from '../screens/first.load';
-import Login from '../screens/auth/login';
 import Signup from '../screens/auth/signup';
+import loadingSplash from '../screens/loadingSplash';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import leaders from '../screens/leadership/leaders';
 import roster from '../screens/roster';
@@ -128,25 +128,28 @@ const DrawerNav = DrawerNavigator({
     },
   },
 });
-
-const loginStack = StackNavigator({
-  Login: { screen: Login },
+const forgotPasswordStack = StackNavigator({
   ForgotPassword: { screen: ForgotPassword },
 });
-
 const signupStack = StackNavigator({
   Signup: { screen: Signup },
 });
 export const AppNavigator = StackNavigator(
   {
+    Loading: {
+      screen: loadingSplash,
+      navigationOptions: {
+        gesturesEnabled: false,
+      },
+    },
     Auth: {
       screen: FirstLoad,
       navigationOptions: {
         gesturesEnabled: false,
       },
     },
-    Login: {
-      screen: loginStack,
+    ForgotPassword: {
+      screen: forgotPasswordStack,
     },
     Signup: {
       screen: signupStack,

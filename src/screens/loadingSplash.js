@@ -1,6 +1,7 @@
 import React from 'react';
 import { Animated, View } from 'react-native';
 import { Svg } from 'expo';
+import * as firebase from 'firebase';
 
 const { Path } = Svg;
 
@@ -24,6 +25,13 @@ class FadeInView extends React.Component {
         }),
       ]),
     ).start();
+    if (this.props.navigation) {
+      setTimeout(() => {
+        if (firebase.auth().currentUser) {
+          this.props.navigation.navigate('Main');
+        } else { this.props.navigation.navigate('Auth'); }
+      }, 1200);
+    }
   }
 
   render() {

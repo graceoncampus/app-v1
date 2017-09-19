@@ -9,7 +9,7 @@ import { CREATE_ACCOUNT,
   UPDATE_USER_INFO,
   CHANGE_USER_PASSWORD,
   RESET_USER_PASSWORD,
-  USER_LOGOUT
+  USER_LOGOUT,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -37,7 +37,7 @@ export default (state = INITIAL_STATE, action) => {
     case GOT_USER:
       return { ...state, ...INITIAL_STATE, user: action.payload };
     case LOGIN_USER_FAIL:
-      return { ...state, error: 'Authentication Failed', password: '', loading: false};
+      return { ...state, error: action.error.message, loading: false };
     case USER_LOGOUT:
       return { ...INITIAL_STATE };
     case UPDATE_USER_INFO:
