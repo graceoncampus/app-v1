@@ -28,9 +28,8 @@ export const ridesFetch = () => {
 export const singleRideFetch = () => {
   return dispatch => {
     const data = [];
-    // const user = firebase.auth().currentUser;
-    // const myUid = user.uid;
-    const myUid = 'HaH2jdlJ7WZxU5tUrIz3cYPTW522';
+    const user = firebase.auth().currentUser;
+    const myUid = user.uid;
     firebase.database().ref('rides/cars').once('value').then((snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const driver = childSnapshot.key;

@@ -44,7 +44,8 @@ class RidesSignup extends Component {
     time += evening ? 'Evening, ' : '';
     time += staying ? 'Staying' : '';
     if (name === '' || address === '' || number === '' || number === '' || email === '' || time === '') { return this.setState({ error: 'Please fill out all fields' }); }
-    const postData = { name, address, number, comments, email, time };
+    const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+    const postData = { name, address, number, comments, email, time, timestamp };
     const signup = firebase.database().ref('ridesSignup');
     return signup.push(postData).then((this.setState({
       success: true,
