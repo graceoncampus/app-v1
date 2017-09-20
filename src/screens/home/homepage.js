@@ -67,7 +67,7 @@ class Home extends Component {
         <View styleName='vertical h-center v-end'>
           {
             (this.state.userInfo != null) ?
-            ((this.state.userInfo.courses) ? <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
+            ((this.state.userInfo.admin) ? <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
               <Text>ADD POST</Text>
             </Button> : <Text/>) : <Text/>
         }
