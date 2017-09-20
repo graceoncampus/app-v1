@@ -110,7 +110,7 @@ class UserInvite extends Component {
                   onSubmitEditing={() => this.setState({ focus: '' })}
                   autoCapitalize='none'
                   autoCorrect={false}
-                  placeholder="YourBestFriend@gmail.com"
+                  placeholder="yourbestfriend@gmail.com"
                   keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
@@ -122,7 +122,7 @@ class UserInvite extends Component {
                   onSubmitEditing={() => this.setState({ focus: '' })}
                   autoCapitalize='none'
                   autoCorrect={false}
-                  placeholder="YourBestFriend@gmail.com"
+                  placeholder="yourbestfriend@gmail.com"
                   keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
