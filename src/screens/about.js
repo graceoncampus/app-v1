@@ -3,7 +3,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Icon, View, Divider, Heading, Title, Text, Screen } from '@shoutem/ui';
+import { Icon, View, Divider, Heading, Title, Text, Screen, Image, Tile } from '@shoutem/ui';
 
 
 class About extends Component {
@@ -25,6 +25,14 @@ class About extends Component {
   render = () => (
     <Screen>
       <ScrollView>
+      <Image
+        styleName='large-banner'
+        source={require('../images/about.jpg')}
+      >
+        <Tile>
+          <Title style={{ fontSize: 28 }}>ABOUT US</Title>
+        </Tile>
+      </Image>
         <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>
           <Divider />
           <Title styleName='textBelow'>Welcome to Grace on Campus!</Title>

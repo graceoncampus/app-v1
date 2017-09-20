@@ -63,7 +63,7 @@ class IndividualUser extends Component {
           </View>
         </View>
         <Divider />
-        <View style={{ borderTopWidth: 1, borderTopColor: '#ecedef', backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
+        <View style={{ flex: 1, flexDirection: 'column', borderTopWidth: 1, borderTopColor: '#ecedef', backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
           <Caption>Email</Caption>
           <Title style={{ fontSize: 18 }}>{user.email}</Title>
           <Caption style={{ marginTop: 4 }}>Phone</Caption>

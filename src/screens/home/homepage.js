@@ -18,7 +18,7 @@ class Home extends Component {
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +28,7 @@ class Home extends Component {
     };
     this.props.getUserPerm();
     this.props.postFetch();
-     
+
     this.setRead = this.setRead.bind(this);
     this.renderRow = this.renderRow.bind(this);
   }
@@ -111,14 +111,14 @@ class Home extends Component {
       return (
         <Screen>
           {
-            (this.state.userInfo != null && this.state.userInfo.admin) &&
+            (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
              <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
               <Button onPress={() => this.props.navigation.navigate('AddPost')}>
                 <Text>ADD POST</Text>
               </Button>
             </View>
           }
-         
+
           <Divider styleName="section-header">
             <Caption>Announcements</Caption>
           </Divider>
