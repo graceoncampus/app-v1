@@ -66,11 +66,10 @@ class Home extends Component {
       <Screen>
         <View styleName='vertical h-center v-end'>
           {
-            (this.state.userInfo != null) ?
-            ((this.state.userInfo.admin) ? <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
+            (this.state.userInfo != null && this.state.userInfo.courses) ? <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
               <Text>ADD POST</Text>
-            </Button> : <Text/>) : <Text/>
-        }
+            </Button> : <View/>
+          }
         </View>
         <Divider styleName="section-header">
           <Caption>Time</Caption>
