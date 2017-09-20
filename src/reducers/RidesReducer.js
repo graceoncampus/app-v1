@@ -1,6 +1,6 @@
 import {
   RIDES_FETCH,
-  SINGLE_RIDE_FETCH
+  SINGLE_RIDE_FETCH,
 } from '../actions/types';
 
 const INITIAL_STATE = {

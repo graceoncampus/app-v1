@@ -23,10 +23,8 @@ class Settings extends Component {
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
+  componentWillMount() {
+    this.setState({
       userInfo: {},
       focus: null,
       success: false,
@@ -39,7 +37,7 @@ class Settings extends Component {
       Major: '',
       Home_church: '',
       Address: '',
-    };
+    });
     this.onChangeFirstName = this.onChangeFirstName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
     this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);

@@ -1,6 +1,4 @@
 export const FETCH_POSTS = 'FETCH_POSTS';
-// export const UPDATE_POST = 'UPDATE_POST';
-// export const DELETE_POST = 'DELETE_POST';
 export const CREATE_POST = 'CREATE_POST';
 export const CREATE_ACCOUNT = 'create_account';
 export const CREATE_USER_FAIL = 'createUserFail';
@@ -26,4 +24,4 @@ export const GET_ALL_USERS = 'get_all_users';
 export const RIDES_FETCH = 'ridesFetch';
 export const SINGLE_RIDE_FETCH = 'singleRideFetch';
 export const NEW_POST = 'newPost';
-export const POST_FETCH = 'postFetch'
+export const POST_FETCH = 'postFetch';

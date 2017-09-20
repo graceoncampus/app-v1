@@ -1,6 +1,6 @@
 import {
   NEW_POST,
-  POST_FETCH
+  POST_FETCH,
 } from '../actions/types';
 
 const INITIAL_STATE = {

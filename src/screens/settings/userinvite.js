@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 class UserInvite extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Invite New User",
+    title: 'Invite New User',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="back" style={{ paddingLeft: 10 }}/>
@@ -26,8 +26,8 @@ class UserInvite extends Component {
       focus: null,
       loading: false,
     };
-      this.onChangeEmail = this.onChangeEmail.bind(this);
-    };
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+  }
 
   onChangeEmail(Email) {
     this.setState({ submitted: false, Email });
@@ -41,33 +41,29 @@ class UserInvite extends Component {
     const lowercaseEmail = Email.toLowerCase();
     const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     if (re.test(lowercaseEmail)) {
-      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
-        const emailCheck = snapshot.val();
-        if (emailCheck) {
-          alert('This email has already been invited');
-          this.setState({ loading: false });
-        }
-        else {
-          firebase.database().ref('users').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
-            const existingUser = snapshot.val();
-            if (existingUser) {
-              alert('An account with this email address has already been created');
-              this.setState({ loading: false });
-            } else {
-              const postData = {
-                email: lowercaseEmail,
-              };
-              const userInvite = firebase.database().ref('invitedUsers');
-              userInvite.push(postData);
-              this.setState({ loading: false });
-              alert('This email has been successfully invited');
-            }
-          });
-        }
-      });
-    }
-    else {
-      alert('It looks like you did not enter a valid email');
+      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(lowercaseEmail)
+        .once('value', (snapshot) => {
+          const emailCheck = snapshot.val();
+          if (emailCheck) {
+            this.setState({ loading: false });
+          } else {
+            firebase.database().ref('users').orderByChild('email').equalTo(lowercaseEmail)
+              .once('value', (snap) => {
+                const existingUser = snap.val();
+                if (existingUser) {
+                  this.setState({ loading: false });
+                } else {
+                  const postData = {
+                    email: lowercaseEmail,
+                  };
+                  const userInvite = firebase.database().ref('invitedUsers');
+                  userInvite.push(postData);
+                  this.setState({ loading: false });
+                }
+              });
+          }
+        });
+    } else {
       this.setState({ loading: false });
     }
   }
@@ -91,7 +87,7 @@ class UserInvite extends Component {
     render = () => {
       const {
         Email,
-        focus
+        focus,
       } = this.state;
       return (
         <Screen>
@@ -141,6 +137,6 @@ class UserInvite extends Component {
         </Screen>
       );
     }
-  }
+}
 
 export default UserInvite;
