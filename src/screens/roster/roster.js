@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { filter, some, includes } from 'lodash/collection';
 import { debounce } from 'lodash/function';
 
-import * as actions from '../actions/';
+import * as actions from '../../actions/';
 
 class Roster extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -41,7 +41,7 @@ class Roster extends Component {
   }
 
   renderRow = user => (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => { this.props.navigation.navigate('IndividualUser', { user }); }}>
       <Row styleName="small">
         <Image
           styleName="small-avatar"

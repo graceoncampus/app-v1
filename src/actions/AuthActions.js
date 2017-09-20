@@ -15,6 +15,7 @@ import {
   CHANGE_USER_PASSWORD,
   CHANGE_USER_PASSWORD_LOAD,
   RESET_USER_PASSWORD,
+  RESET_USER_PASSWORD_LOAD,
   USER_LOGOUT,
 } from './types';
 
@@ -316,8 +317,13 @@ export const resetUserPassword = Email => (dispatch) => {
   const auth = firebase.auth();
   auth.sendPasswordResetEmail(Email).then(() => {
     alert('Password reset email has been sent');
-    dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+    resetUserPasswordLoad(dispatch);
   }).catch((error) => {
     alert('Password reset failed');
+    resetUserPasswordLoad(dispatch);
   });
 };
+
+const resetUserPasswordLoad = (dispatch) => {
+  dispatch({ type: RESET_USER_PASSWORD_LOAD })
+}

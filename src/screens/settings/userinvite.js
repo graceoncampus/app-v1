@@ -11,7 +11,7 @@ class UserInvite extends Component {
     title: "Invite New User",
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
+        <Icon name="back" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
@@ -107,7 +107,10 @@ class UserInvite extends Component {
                   styleName='focused'
                   onFocus={() => this.setState({ focus: 'one' })}
                   onSubmitEditing={() => this.setState({ focus: '' })}
+                  autoCapitalize='none'
+                  autoCorrect={false}
                   placeholder="YourBestFriend@gmail.com"
+                  keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
                   returnKeyType='next'
@@ -116,7 +119,10 @@ class UserInvite extends Component {
                 <TextInput
                   onFocus={() => this.setState({ focus: 'one' })}
                   onSubmitEditing={() => this.setState({ focus: '' })}
+                  autoCapitalize='none'
+                  autoCorrect={false}
                   placeholder="YourBestFriend@gmail.com"
+                  keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
                   returnKeyType='next'

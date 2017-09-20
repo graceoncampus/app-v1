@@ -11,6 +11,7 @@ export const CHANGE_USER_PASSWORD = 'changeUserPassword';
 export const CHANGE_USER_PASSWORD_LOAD = 'changeUserPasswordLoad';
 export const PASSWORD_CHECK = 'passwordCheck';
 export const RESET_USER_PASSWORD = 'resetUserPassword';
+export const RESET_USER_PASSWORD_LOAD = 'resetUserPasswordLoad';
 export const USER_LOGIN = 'userLogin';
 export const GOT_USER = 'gotUser';
 export const USER_LOGOUT = 'userLogout';

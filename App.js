@@ -115,6 +115,13 @@ const theme = {
         color: '#ae956b',
       },
     },
+    '.clear': {
+      backgroundColor: 'transparent',
+
+      'shoutem.ui.Text': {
+        color: '#ae956b',
+      },
+    },
   },
   'shoutem.ui.FormGroup': {
     '.search': {

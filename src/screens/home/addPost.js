@@ -14,7 +14,7 @@ class addPost extends Component {
     title: "Add Post",
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
+        <Icon name="back" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
