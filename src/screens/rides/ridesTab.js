@@ -30,8 +30,8 @@ class RidesTab extends Component {
       tabBarTextStyle={{ paddingTop: 10, fontFamily: 'Akkurat-Regular', fontSize: 13, color: '#222222', lineHeight: 15 }}
       tabBarUnderlineStyle={{ height: 2, backgroundColor: '#ae956b' }}
     >
-      <AllRides tabLabel="All Rides" />
       <MyRide tabLabel="My Ride" />
+      <AllRides tabLabel="All Rides" />
       <RidesSignup tabLabel="Signup" />
     </ScrollableTabView>
   )

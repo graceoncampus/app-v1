@@ -11,7 +11,7 @@ class UserInvite extends Component {
     title: "Invite New User",
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name="left-arrow" style={{ paddingLeft: 10 }}/>
+        <Icon name="back" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
@@ -38,23 +38,24 @@ class UserInvite extends Component {
     const {
       Email,
     } = this.state;
+    const lowercaseEmail = Email.toLowerCase();
     const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if (re.test(Email)) {
-      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+    if (re.test(lowercaseEmail)) {
+      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
         const emailCheck = snapshot.val();
         if (emailCheck) {
           alert('This email has already been invited');
           this.setState({ loading: false });
         }
         else {
-          firebase.database().ref('users').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+          firebase.database().ref('users').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
             const existingUser = snapshot.val();
             if (existingUser) {
               alert('An account with this email address has already been created');
               this.setState({ loading: false });
             } else {
               const postData = {
-                email: Email,
+                email: lowercaseEmail,
               };
               const userInvite = firebase.database().ref('invitedUsers');
               userInvite.push(postData);
@@ -107,7 +108,10 @@ class UserInvite extends Component {
                   styleName='focused'
                   onFocus={() => this.setState({ focus: 'one' })}
                   onSubmitEditing={() => this.setState({ focus: '' })}
-                  placeholder="YourBestFriend@gmail.com"
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  placeholder="yourbestfriend@gmail.com"
+                  keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
                   returnKeyType='next'
@@ -116,7 +120,10 @@ class UserInvite extends Component {
                 <TextInput
                   onFocus={() => this.setState({ focus: 'one' })}
                   onSubmitEditing={() => this.setState({ focus: '' })}
-                  placeholder="YourBestFriend@gmail.com"
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  placeholder="yourbestfriend@gmail.com"
+                  keyboardType="email-address"
                   value={Email}
                   onChangeText={this.onChangeEmail}
                   returnKeyType='next'

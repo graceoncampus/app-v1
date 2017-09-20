@@ -7,7 +7,8 @@ import Signup from '../screens/auth/signup';
 import loadingSplash from '../screens/loadingSplash';
 import ForgotPassword from '../screens/auth/forgotPassword';
 import leaders from '../screens/leadership/leaders';
-import roster from '../screens/roster';
+import roster from '../screens/roster/roster';
+import IndividualUser from '../screens/roster/individualUser';
 import gocConnect from '../screens/connect';
 import events from '../screens/events/events';
 import event from '../screens/events/event';
@@ -71,6 +72,7 @@ const connectStack = StackNavigator({
 
 const rosterStack = StackNavigator({
   Roster: { screen: roster },
+  IndividualUser: { screen: IndividualUser }
 });
 
 const settingsStack = StackNavigator({

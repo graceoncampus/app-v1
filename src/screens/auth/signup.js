@@ -182,7 +182,7 @@ class Signup extends Component {
           <Tile style={{ paddingTop: 20, paddingBottom: 0, flex: 0.8, backgroundColor: 'transparent' }} styleName='text-centric'>
             <Title>Greetings!</Title>
             <Subtitle>
-              Creating an account and providing us with some basic info allows you to sign up for rides, classes, and events.
+              Creating an account and providing us with some basic info allows you to sign up for rides, classes, and events. Please note that you must create an account with the email address you were invited with.
             </Subtitle>
             <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{error}</Subtitle>
           </Tile>

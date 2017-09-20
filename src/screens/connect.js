@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { Icon, Screen, Image, View, Text, Tile, Title, Button, Divider } from '@shoutem/ui';
+import { Icon, Screen, Image, View, Text, Tile, Title, Button, Divider, Heading } from '@shoutem/ui';
 
 class Connect extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -34,10 +34,10 @@ class Connect extends Component {
         >
           <Image
             styleName='large-banner'
-            source={require('../images/largeGroupPhoto.png')}
+            source={require('../images/largeGroupPhoto.jpg')}
           >
             <Tile>
-              <Title> </Title>
+              <Heading></Heading>
             </Tile>
           </Image>
           <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>
@@ -59,6 +59,14 @@ class Connect extends Component {
           </View>
         </ScrollView>
         <ScrollView tabLabel="Small Groups">
+        <Image
+          styleName='large-banner'
+          source={require('../images/smallGroupsPhoto.jpg')}
+        >
+          <Tile>
+            <Title></Title>
+          </Tile>
+        </Image>
           <Divider />
           <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>
             <Title styleName='textBelow'>What are Small Groups?</Title>

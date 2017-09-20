@@ -10,7 +10,7 @@ import {
 export const classAdd = (data) => {
   const mutableData = data;
   return dispatch => {
-    const email = data.instructorUID;
+    const email = data.instructorUID.toLowerCase();
     firebase.database()
     .ref('users')
     .orderByChild('email')

@@ -1,105 +1,113 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import FormValidation from 'tcomb-form-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { resetUserPassword } from '../../actions';
-import Button from '../../components/button';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-import AppStyles from '../../styles';
+import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class ForgotPassword extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Reset Password",
+    title: 'FORGOT PASSWORD',
     headerLeft: (
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon name='ios-arrow-back-outline' style={{ marginLeft: 10 }} size={30} color={'#000'} />
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
+        <Icon name='back' style={{ paddingLeft: 10 }} />
       </TouchableOpacity>
     ),
+    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
+
   })
+
   constructor(props) {
     super(props);
     // Initial state
     this.state = {
-
-      form_fields: FormValidation.struct({
-        Email: FormValidation.String,
-      }),
-      empty_form_values: {
-        Email: '',
-      },
-      form_values: {},
-      options: {
-        fields: {
-          Email: { error: 'Please enter the email address for the account password you wish to reset' },
-        }
-      },
+      Email: '',
+      focus: null,
     };
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+  };
+
+  onChangeEmail(Email) {
+    this.setState({ submitted: false, Email });
   }
 
-  onChange = (form_values) => {
-    this.setState({ form_values });
-  }
-
-  onButtonPress = () => {
-    const form_values = this.refs.form.getValue();
-    if (form_values) {
-      const { Email } = form_values;
+  reset = () => {
+    const { Email } = this.state;
       this.props.resetUserPassword(Email);
-    }
   }
 
   renderButton() {
-  return (
-  <View style={[AppStyles.paddingHorizontal]}>
-        <Button
-          text={'Reset Password'}
-          onPress={this.onButtonPress.bind(this)}
-        />
-  </View>
-  );
+    if (this.props.loading) {
+      return (
+        <Button style={{ marginBottom: 15, paddingVertical: 15 }}>
+          <Spinner style={{ color: '#fff' }}/>
+        </Button>
+      );
+    }
+
+    return (
+      <Button style={{ marginBottom: 15 }} onPress={this.reset}>
+        <Text>RESET PASSWORD</Text>
+      </Button>
+    );
 }
 
 render = () => {
-  const Form = FormValidation.form.Form;
-
+  const {
+    Email,
+    focus
+  } = this.state;
   return (
-    <View style={styles.container}>
-      <View style={[AppStyles.paddingHorizontal]}>
-        <Text style={styles.TextStyle}>
-          Please enter the email address for your GOC account. An email will be sent to your email address indicating instructions on how to reset your password
-        </Text>
-        <View style={AppStyles.spacer_20} />
-        <Form
-          ref="form"
-          type={this.state.form_fields}
-          value={this.state.form_values}
-          options={this.state.options}
-          onChange={this.onChange}
-        />
-      </View>
-
-      <View style={AppStyles.spacer_20} />
-
-      <View style={[AppStyles.paddingHorizontal]}>
-        {this.renderButton()}
-      </View>
-    </View>
+    <Screen>
+      <KeyboardAwareScrollView ref={(c) => { this.scroll = c; }}>
+        <Tile style={{ paddingTop: 20, paddingBottom: 0, flex: 0.8, backgroundColor: 'transparent' }} styleName='text-centric'>
+          <Title>Reset Password</Title>
+          <Subtitle>Please enter the email address for your GOC account. An email will be sent to your email address indicating instructions on how to reset your password</Subtitle>
+          <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{this.props.error}</Subtitle>
+        </Tile>
+        <FormGroup>
+          <Caption>Email</Caption>
+          { focus === 'one' ?
+            <TextInput
+              styleName='focused'
+              onFocus={() => this.setState({ focus: 'one' })}
+              onSubmitEditing={() => this.setState({ focus: '' })}
+              autoCapitalize='none'
+              autoCorrect={false}
+              placeholder="YourEmailAddress@gmail.com"
+              keyboardType="email-address"
+              value={Email}
+              onChangeText={this.onChangeEmail}
+              returnKeyType='next'
+            />
+            :
+            <TextInput
+              onFocus={() => this.setState({ focus: 'one' })}
+              onSubmitEditing={() => this.setState({ focus: '' })}
+              autoCapitalize='none'
+              autoCorrect={false}
+              placeholder="YourEmailAddress@gmail.com"
+              keyboardType="email-address"
+              value={Email}
+              onChangeText={this.onChangeEmail}
+              returnKeyType='next'
+            />
+          }
+          <Divider />
+          <View style={{ flex: 0.25 }} styleName='vertical h-center v-end'>
+            {this.renderButton()}
+          </View>
+        </FormGroup>
+        <Divider />
+        <Divider />
+        <Divider />
+      </KeyboardAwareScrollView>
+    </Screen>
   );
 }
 }
 
-const styles = {
-  TextStyle: {
-    fontSize: 14,
-    alignSelf: 'center',
-  },
-  container: {
-   justifyContent: 'center',
-   padding: 20,
-   backgroundColor: '#ffffff',
- },
-};
 
 const mapStateToProps = ({ AuthReducer }) => {
   const { user, error, loading, userInfo } = AuthReducer;
