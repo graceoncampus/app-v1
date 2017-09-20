@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {
   TouchableOpacity,
 } from 'react-native';
-import { Icon, Screen, Image, View, Caption, Spinner, Row, ListView, Divider, Subtitle } from '@shoutem/ui';
+import { Icon, Screen, Image, View, Caption, Row, ListView, Divider, Title } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { classFetch } from '../../actions';
+import { lookupByUID } from '../../utility';
 
 class Classes extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -26,35 +27,42 @@ class Classes extends Component {
     super(props);
     this.state = {
       classes: [],
+      counter: 0,
+      loading: true,
     };
     this.props.classFetch();
     this.renderRow = this.renderRow.bind(this);
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = async (nextProps) => {
     const data = nextProps.classData;
     const classes = [];
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const instructor = await lookupByUID(data[key].instructorUID);
         classes.push({
           title: data[key].title,
           summary: data[key].details,
-          value: data[key],
+          startDate: data[key].startDate,
+          endDate: data[key].endDate,
+          openSpots: data[key].openSpots,
+          totalSpots: data[key].totalSpots,
           deadline: data[key].deadline,
-          instructor: data[key].instructor,
+          instructor,
           key,
         });
       }
     }
     this.setState({
       classes,
+      loading: false,
     });
   }
 
   renderRow(data) {
-    const { title, image, key, deadline, instructor } = data;
+    const { title, image, openSpots, startDate, endDate, key, deadline, instructor } = data;
     return (
-      <TouchableOpacity onPress={() => { this.props.navigation.navigate('Class', { key }); }} >
+      <TouchableOpacity onPress={() => { this.props.navigation.navigate('Class', { key, instructor }); }} >
         <Row>
           { image &&
             <Image
@@ -63,8 +71,11 @@ class Classes extends Component {
             />
           }
           <View styleName="vertical stretch space-between">
-            <Subtitle>{title}</Subtitle>
-            <Caption>{moment.unix(deadline).format('MMMM Do')}  ·  { instructor }</Caption>
+            <Title>{title}</Title>
+            <Caption><Caption styleName="bold">Instructor: </Caption><Caption>{ instructor }</Caption></Caption>
+            <Caption><Caption styleName="bold">Dates: </Caption><Caption >{moment.unix(startDate).format('MMMM Do')} - {moment.unix(endDate).format('MMMM Do')}</Caption></Caption>
+            <Caption><Caption styleName="bold">Enroll By: </Caption>{moment.unix(deadline).format('MMMM Do')}</Caption>
+            <Caption><Caption styleName="bold">Spots Left: </Caption>{ openSpots }</Caption>
           </View>
         </Row>
         <Divider styleName='line' />
@@ -74,17 +85,11 @@ class Classes extends Component {
 
   render = () => (
     <Screen>
-      {
-        this.state.classes.length ?
-          <ListView
-            data={this.state.classes}
-            renderRow={this.renderRow}
-          />
-          :
-          <View styleName='vertical fill-parent v-center h-center'>
-            <Spinner size='large'/>
-          </View>
-      }
+      <ListView
+        loading={this.state.loading}
+        data={this.state.classes}
+        renderRow={this.renderRow}
+      />
     </Screen>
   )
 }

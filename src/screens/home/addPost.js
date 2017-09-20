@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import moment from 'moment';
-import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
+import { Icon, Text, Tile, View, Divider, Title, Screen, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 
@@ -11,7 +11,7 @@ import { newPost } from '../../actions';
 
 class addPost extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Add Post",
+    title: 'Add Post',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="back" style={{ paddingLeft: 10 }}/>
@@ -28,6 +28,7 @@ class addPost extends Component {
       focus: null,
       success: false,
       loading: false,
+      height: 60,
     };
     this.onChangePost = this.onChangePost.bind(this);
   }
@@ -42,8 +43,6 @@ class addPost extends Component {
       Post,
     } = this.state;
     this.setState({ loading: true });
-    console.log("POST COMING");
-    console.log(Post);
     this.props.newPost(Post);
     this.setState({ loading: false, success: true });
   }
@@ -75,7 +74,7 @@ class addPost extends Component {
   render = () => {
     const {
       Post,
-      focus
+      focus,
     } = this.state;
     return (
       <Screen>
@@ -89,24 +88,61 @@ class addPost extends Component {
             <Caption>Post</Caption>
             { focus === 'one' ?
               <TextInput
-                styleName='focused'
+                multiline={true}
                 onFocus={() => this.setState({ focus: 'one' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="New Post"
+                numberOfLines = {4}
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#ae956b',
+                  marginTop: 3,
+                  fontFamily: 'Akkurat-Regular',
+                  paddingVertical: 9,
+                  paddingHorizontal: 15,
+                  borderRadius: 1,
+                  height: Math.max(60, this.state.height),
+                }}
+                onContentSizeChange={({ nativeEvent: { contentSize: { height } } }) => {
+                  this.setState({
+                    height: height + 16,
+                  });
+                }}
+                onChange={(event) => {
+                  this.setState({
+                    Post: event.nativeEvent.text,
+                  });
+                }}
                 value={Post}
-                onChangeText={this.onChangePost}
-                returnKeyType='next'
               />
               :
               <TextInput
+                multiline={true}
                 onFocus={() => this.setState({ focus: 'one' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="New Post"
+                numberOfLines = {4}
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#dfe0e3',
+                  fontFamily: 'Akkurat-Regular',
+                  paddingVertical: 9,
+                  paddingHorizontal: 15,
+                  borderRadius: 1,
+                  height: Math.max(60, this.state.height),
+                }}
+                onContentSizeChange={({ nativeEvent: { contentSize: { height } } }) => {
+                  this.setState({
+                    height: height + 16,
+                  });
+                }}
+                onChange={(event) => {
+                  this.setState({
+                    Post: event.nativeEvent.text,
+                  });
+                }}
                 value={Post}
-                onChangeText={this.onChangePost}
-                returnKeyType='next'
               />
             }
+
             <Divider />
             <View style={{ flex: 0.25 }} styleName='vertical h-center v-end'>
               {this.renderButton()}

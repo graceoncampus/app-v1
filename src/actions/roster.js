@@ -1,14 +1,14 @@
 import firebase from 'firebase';
 import {
-  GET_ALL_USERS
+  GET_ALL_USERS,
 } from './types';
 
-export const getAllUsers = () => (dispatch => {
+export const getAllUsers = () => ((dispatch) => {
   const users = firebase.database().ref('users');
-  users.on('value', snapshot => {
+  users.on('value', (snapshot) => {
     dispatch({
       type: GET_ALL_USERS,
-      payload: snapshot.val()
+      payload: snapshot.val(),
     });
   });
 });

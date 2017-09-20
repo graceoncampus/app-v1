@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { changeUserPassword } from '../../actions';
-import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
+import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { changeUserPassword } from '../../actions';
 
 class ChangePassword extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Change Password",
+    title: 'Change Password',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="back" style={{ paddingLeft: 10 }}/>
@@ -26,10 +26,10 @@ class ChangePassword extends Component {
       confirmNewPassword: '',
       focus: null,
     };
-      this.onChangeOld = this.onChangeOld.bind(this);
-      this.onChangeNew = this.onChangeNew.bind(this);
-      this.onChangeConfirm = this.onChangeConfirm.bind(this);
-    };
+    this.onChangeOld = this.onChangeOld.bind(this);
+    this.onChangeNew = this.onChangeNew.bind(this);
+    this.onChangeConfirm = this.onChangeConfirm.bind(this);
+  }
 
   onChangeOld(oldPassword) {
     this.setState({ submitted: false, oldPassword });
@@ -47,20 +47,16 @@ class ChangePassword extends Component {
     const {
       oldPassword,
       newPassword,
-      confirmNewPassword
+      confirmNewPassword,
     } = this.state;
-      if (newPassword.length < 6) {
-        this.setState({ newPassword: '', confirmNewPassword: '' });
-        alert('New password must be at least 6 characters');
-      }
-      else if (newPassword !== confirmNewPassword) {
-        this.setState({ newPassword: '', confirmNewPassword: '' });
-        alert('New passwords did not match');
-      }
-      else {
-        this.props.changeUserPassword(oldPassword, newPassword);
-        this.setState({ loading: false });
-      }
+    if (newPassword.length < 6) {
+      this.setState({ newPassword: '', confirmNewPassword: '' });
+    } else if (newPassword !== confirmNewPassword) {
+      this.setState({ newPassword: '', confirmNewPassword: '' });
+    } else {
+      this.props.changeUserPassword(oldPassword, newPassword);
+      this.setState({ loading: false });
+    }
   }
 
   renderButton() {
@@ -77,14 +73,14 @@ class ChangePassword extends Component {
         <Text>CHANGE PASSWORD</Text>
       </Button>
     );
-}
+  }
 
 render = () => {
   const {
     oldPassword,
     newPassword,
     confirmNewPassword,
-    focus
+    focus,
   } = this.state;
   return (
     <Screen>
