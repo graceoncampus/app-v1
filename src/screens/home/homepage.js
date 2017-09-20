@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import { ScrollView, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Screen, Caption, Divider, Spinner, Row, Image, View, Subtitle, Icon, Text, Button } from '@shoutem/ui';
 import { connect } from 'react-redux';
-import { postFetch, setReadList } from '../../actions';
+import { postFetch, getUserPerm, setReadList } from '../../actions';
 
 class Home extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -19,12 +18,17 @@ class Home extends Component {
     headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
+  
   constructor(props) {
     super(props);
     this.state = {
       postData: [],
-      readList: null,
+      userInfo: {},
+       readList: null,
     };
+    this.props.getUserPerm();
+    this.props.postFetch();
+     
     this.setRead = this.setRead.bind(this);
     this.renderRow = this.renderRow.bind(this);
   }
@@ -38,8 +42,10 @@ class Home extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const posts = nextProps.postData;
+    const data = nextProps.userInfo;
     this.setState({
-      postData: _.values(posts),
+      postData: posts,
+      userInfo: data,
     });
   }
 
@@ -104,11 +110,15 @@ class Home extends Component {
     if ((this.state.postData && this.state.postData.length && this.state.readList)) {
       return (
         <Screen>
-          <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
-            <Button onPress={() => this.props.navigation.navigate('AddPost')}>
-              <Text>ADD POST</Text>
-            </Button>
-          </View>
+          {
+            (this.state.userInfo != null && this.state.userInfo.admin) &&
+             <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
+              <Button onPress={() => this.props.navigation.navigate('AddPost')}>
+                <Text>ADD POST</Text>
+              </Button>
+            </View>
+          }
+         
           <Divider styleName="section-header">
             <Caption>Announcements</Caption>
           </Divider>
@@ -129,8 +139,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = ({ HomeReducer }) => {
-  const { postData } = HomeReducer;
-  return { postData };
+  const { postData, userInfo } = HomeReducer;
+  return { postData, userInfo };
 };
 
-export default connect(mapStateToProps, { postFetch, setReadList })(Home);
+export default connect(mapStateToProps, { getUserPerm, postFetch, setReadList })(Home);

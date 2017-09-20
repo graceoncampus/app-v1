@@ -6,23 +6,36 @@ import {
 import {
   NEW_POST,
   POST_FETCH,
-} from './types';
+  GET_USER_PERMISSIONS,
+} from './types'
 
-export const newPost = (Post) => {
-  const data = {
-    Post,
+export const newPost = ( Post ) => {
+  data = {
+    Post: Post,
     Time: moment().unix(),
   };
-  return (dispatch) => {
+  return dispatch => {
     const announcement = firebase.database().ref('posts');
     announcement.push(data);
-    dispatch({
-      type: NEW_POST,
-      payload: Post,
+      dispatch({
+        type: NEW_POST,
+        payload: Post,
+      })
+  };
+}
+
+export const getUserPerm = () => {
+  const { currentUser } = firebase.auth();
+  const uid = currentUser.uid;
+  return dispatch => {
+    const userData = firebase.database().ref(`/users/${uid}/permissions`)
+    userData.on('value', snapshot => {
+      dispatch({
+        type: GET_USER_PERMISSIONS,
+        payload: snapshot.val()
+      });
     });
   };
-};
-
 export const setReadList = (list) => {
   AsyncStorage.setItem('read', JSON.stringify(list));
   return dispatch => ({
