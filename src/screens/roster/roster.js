@@ -3,7 +3,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Icon, Screen, Image, Row, ListView, FormGroup, View, Spinner, TextInput, Divider, Subtitle } from '@shoutem/ui'; import { connect } from 'react-redux';
+import { Icon, Screen, Row, ListView, FormGroup, View, TextInput, Divider, Subtitle } from '@shoutem/ui'; import { connect } from 'react-redux';
 import _ from 'lodash';
 import { filter, some, includes } from 'lodash/collection';
 import { debounce } from 'lodash/function';
@@ -43,10 +43,6 @@ class Roster extends Component {
   renderRow = user => (
     <TouchableOpacity onPress={() => { this.props.navigation.navigate('IndividualUser', { user }); }}>
       <Row styleName="small">
-        <Image
-          styleName="small-avatar"
-          source={{ uri: 'https://shoutem.github.io/img/ui-toolkit/examples/image-9.png' }}
-        />
         <Subtitle>{`${user.firstName} ${user.lastName}`}</Subtitle>
       </Row>
       <Divider styleName='line' />
@@ -78,14 +74,7 @@ class Roster extends Component {
   }
 
   renderResults() {
-    if (this.props.roster.length) {
-      if (this.state.results.length) {
-        return (
-          <ScrollView>
-            <ListView data={this.state.results} renderRow={this.renderRow}/>
-          </ScrollView>
-        );
-      }
+    if (this.state.results.length === 0) {
       return (
         <View styleName='fill-parent vertical h-center v-center'>
           <Subtitle>No results matching that search</Subtitle>
@@ -93,9 +82,9 @@ class Roster extends Component {
       );
     }
     return (
-      <View styleName='fill-parent vertical h-center v-center'>
-        <Spinner size='large'/>
-      </View>
+      <ScrollView>
+        <ListView loading={!((this.props.roster && this.props.roster.length))} data={this.state.results} renderRow={this.renderRow}/>
+      </ScrollView>
     );
   }
 

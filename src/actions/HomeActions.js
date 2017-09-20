@@ -1,6 +1,9 @@
 import firebase from 'firebase';
 import moment from 'moment';
 import {
+  AsyncStorage,
+} from 'react-native';
+import {
   NEW_POST,
   POST_FETCH,
   GET_USER_PERMISSIONS,
@@ -21,26 +24,6 @@ export const newPost = ( Post ) => {
   };
 }
 
-export const postFetch = () => {
-  return dispatch => {
-    const data = [];
-    firebase.database().ref('posts').once('value').then((snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        var post = childSnapshot.val().Post;
-        var time = moment.unix(childSnapshot.val().Time).format('h:mm a');
-        var date = moment.unix(childSnapshot.val().Time).format('MMMM Do YYYY');
-        const toAppend = { post, time, date };
-        console.log(toAppend);
-        data.push(toAppend);
-      });
-      dispatch({
-        type: POST_FETCH,
-        payload: data.reverse()
-      });
-    });
-  };
-};
-
 export const getUserPerm = () => {
   const { currentUser } = firebase.auth();
   const uid = currentUser.uid;
@@ -53,4 +36,27 @@ export const getUserPerm = () => {
       });
     });
   };
+export const setReadList = (list) => {
+  AsyncStorage.setItem('read', JSON.stringify(list));
+  return dispatch => ({
+    type: 'setRead',
+  });
+};
+
+export const postFetch = () => (dispatch) => {
+  const data = [];
+  firebase.database().ref('posts').once('value').then((snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const key = childSnapshot.key;
+      const post = childSnapshot.val().Post;
+      const time = moment.unix(childSnapshot.val().Time).fromNow();
+      const date = moment.unix(childSnapshot.val().Time).format('MMMM Do YYYY');
+      const toAppend = { post, time, date, key };
+      data.push(toAppend);
+    });
+    dispatch({
+      type: POST_FETCH,
+      payload: data.reverse(),
+    });
+  });
 };

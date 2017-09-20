@@ -13,12 +13,19 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './src/reducers/index';
 import AppWithNavigationState from './src/navigators/AppNavigator';
-import config from './src/config';
 import LoadingSplash from './src/screens/loadingSplash';
 
 import { postFetch } from './src/actions';
 
-firebase.initializeApp(config.firebaseConfig);
+const config = {
+  apiKey: 'AIzaSyC5FN_4EfqAcIoPOOVzTXeze-afOVS_YZo',
+  authDomain: 'goc-app-6efe2.firebaseapp.com',
+  databaseURL: 'https://goc-app-6efe2.firebaseio.com',
+  storageBucket: 'goc-app-6efe2.appspot.com',
+  messagingSenderId: '44635103582',
+};
+
+firebase.initializeApp(config);
 
 const middleware = [
   thunk,
@@ -203,7 +210,6 @@ export default class App extends React.Component {
   }
 
   _handleNotification = (notification) => {
-    console.log(notification)
     this.setState({ notification });
   };
 

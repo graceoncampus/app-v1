@@ -31,7 +31,6 @@ class classDetails extends Component {
     this.isEnrolled = this.isEnrolled.bind(this);
     this.enroll = this.enroll.bind(this);
   }
-
   unenroll() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
@@ -80,8 +79,8 @@ class classDetails extends Component {
 
   render = () => {
     const { classData } = this.props;
-    const { key } = this.props.navigation.state.params;
-    const { title, instructor, location, time, deadline, totalSpots, openSpots, details } = classData[key];
+    const { key, instructor } = this.props.navigation.state.params;
+    const { title, location, startDate, endDate, deadline, totalSpots, openSpots, details } = classData[key];
     return (
       <Screen>
         <Divider />
@@ -94,9 +93,7 @@ class classDetails extends Component {
           {location &&
               <Caption><Caption styleName="bold">Location: </Caption>{location}</Caption>
           }
-          {time &&
-              <Caption><Caption styleName="bold">Time: </Caption>{time}</Caption>
-          }
+          <Caption><Caption styleName="bold">Dates: </Caption>{moment.unix(startDate).format('MMMM Do')} - {moment.unix(endDate).format('MMMM Do')}</Caption>
           {deadline &&
               <Caption><Caption styleName="bold">Enroll By: </Caption>
                 {moment.unix(deadline).format('MMMM Do')}</Caption>

@@ -3,9 +3,14 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { Icon, Screen, Image, View, Caption, Spinner, Row, ListView, Divider, Subtitle } from '@shoutem/ui';
+import { Icon, Screen, Image, Tile, Title, ListView, Divider, Subtitle } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import {
+  Parallax,
+  ScrollDriver,
+} from '@shoutem/animation';
+import _ from 'lodash';
 import { eventsFetch } from '../../actions';
 
 class Events extends Component {
@@ -27,24 +32,24 @@ class Events extends Component {
     super(props);
     this.props.eventsFetch();
     this.renderRow = this.renderRow.bind(this);
+    this.driver = new ScrollDriver();
   }
 
   renderRow(event) {
-    const { title, startdate, key, image, location } = event;
+    const { title, startdate, key, bannerURI, location } = event;
     return (
-      <TouchableOpacity key={key} onPress={() => { this.props.navigation.navigate('Event', { event }) }} >
-        <Row>
-          { image &&
-            <Image
-              styleName="small square"
-              source={{ uri: image }}
-            />
-          }
-          <View styleName="vertical stretch space-between">
-            <Subtitle>{title}</Subtitle>
-            <Caption>{moment.unix(startdate).format('MMMM Do HH:mm')}  ·  {location}</Caption>
-          </View>
-        </Row>
+      <TouchableOpacity key={key} onPress={() => { this.props.navigation.navigate('Event', { event }); }} >
+        <Image
+          styleName="large-banner"
+          source={{ uri: bannerURI === '' ? 'https://placeimg.com/640/480/nature' : bannerURI }}
+        >
+          <Tile>
+            <Parallax driver={this.driver} scrollSpeed={1.2}>
+              <Title>{title}</Title>
+              <Subtitle>{moment.unix(startdate).format('MMMM Do HH:mm')}  ·  {location}</Subtitle>
+            </Parallax>
+          </Tile>
+        </Image>
         <Divider styleName='line' />
       </TouchableOpacity>
     );
@@ -54,19 +59,13 @@ class Events extends Component {
     const { events } = this.props;
     return (
       <Screen>
-        {
-          events ?
-            <ScrollView>
-              <ListView
-                data={this.props.events}
-                renderRow={this.renderRow}
-              />
-            </ScrollView>
-            :
-            <View styleName='vertical fill-parent v-center h-center'>
-              <Spinner size='large'/>
-            </View>
-        }
+        <ScrollView {...this.driver.scrollViewProps}>
+          <ListView
+            loading={((events && events.length))}
+            data={_.values(events)}
+            renderRow={this.renderRow}
+          />
+        </ScrollView>
       </Screen>
     );
   }
