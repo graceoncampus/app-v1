@@ -2,7 +2,8 @@ import firebase from 'firebase';
 import moment from 'moment';
 import {
   NEW_POST,
-  POST_FETCH
+  POST_FETCH,
+  GET_USER_PERMISSIONS,
 } from './types'
 
 export const newPost = ( Post ) => {
@@ -35,6 +36,20 @@ export const postFetch = () => {
       dispatch({
         type: POST_FETCH,
         payload: data.reverse()
+      });
+    });
+  };
+};
+
+export const getUserPerm = () => {
+  const { currentUser } = firebase.auth();
+  const uid = currentUser.uid;
+  return dispatch => {
+    const userData = firebase.database().ref(`/users/${uid}/permissions`)
+    userData.on('value', snapshot => {
+      dispatch({
+        type: GET_USER_PERMISSIONS,
+        payload: snapshot.val()
       });
     });
   };

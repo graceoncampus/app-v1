@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { Divider, Screen, Caption, Spinner, View, Subtitle, Icon, Text, Button } from '@shoutem/ui';
 import { connect } from 'react-redux';
+import { getUserPerm, postFetch } from '../../actions';
 
-import { postFetch } from '../../actions';
 
 class Home extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -24,14 +24,18 @@ class Home extends Component {
     super(props);
     this.state = {
       postData: [],
+      userInfo: {},
     };
+    this.props.getUserPerm();
     this.props.postFetch();
   }
 
   componentWillReceiveProps = (nextProps) => {
     const posts = nextProps.postData;
+    const data = nextProps.userInfo;
     this.setState({
       postData: posts,
+      userInfo: data,
       isRefreshing: false,
     });
   }
@@ -60,11 +64,14 @@ class Home extends Component {
   render() {
     return (
       <Screen>
-      <View styleName='vertical h-center v-end'>
-      <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
-        <Text>ADD POST</Text>
-      </Button>
-      </View>
+        <View styleName='vertical h-center v-end'>
+          {
+            (this.state.userInfo != null) ?
+            ((this.state.userInfo.courses) ? <Button style={{ marginBottom: 15 }} onPress={() => this.props.navigation.navigate('AddPost')}>
+              <Text>ADD POST</Text>
+            </Button> : <Text/>) : <Text/>
+        }
+        </View>
         <Divider styleName="section-header">
           <Caption>Time</Caption>
           <Caption>Post</Caption>
@@ -84,9 +91,10 @@ class Home extends Component {
   }
 }
 
+
 const mapStateToProps = ({ HomeReducer }) => {
-  const { postData } = HomeReducer;
-  return { postData };
+  const { postData, userInfo } = HomeReducer;
+  return { postData, userInfo };
 };
 
-export default connect(mapStateToProps, { postFetch })(Home);
+export default connect(mapStateToProps, { getUserPerm, postFetch })(Home);
