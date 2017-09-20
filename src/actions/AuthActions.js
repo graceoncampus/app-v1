@@ -31,7 +31,7 @@ export const createAccount = (
   homeChurch,
   address) => (dispatch) => {
   dispatch({ type: CREATE_ACCOUNT });
-
+  email = email.toLowerCase();
   firebase.database()
     .ref('users')
     .orderByChild('email')

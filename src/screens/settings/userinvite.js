@@ -38,23 +38,24 @@ class UserInvite extends Component {
     const {
       Email,
     } = this.state;
+    const lowercaseEmail = Email.toLowerCase();
     const re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if (re.test(Email)) {
-      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+    if (re.test(lowercaseEmail)) {
+      firebase.database().ref('invitedUsers').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
         const emailCheck = snapshot.val();
         if (emailCheck) {
           alert('This email has already been invited');
           this.setState({ loading: false });
         }
         else {
-          firebase.database().ref('users').orderByChild('email').equalTo(Email).once('value', (snapshot) => {
+          firebase.database().ref('users').orderByChild('email').equalTo(lowercaseEmail).once('value', (snapshot) => {
             const existingUser = snapshot.val();
             if (existingUser) {
               alert('An account with this email address has already been created');
               this.setState({ loading: false });
             } else {
               const postData = {
-                email: Email,
+                email: lowercaseEmail,
               };
               const userInvite = firebase.database().ref('invitedUsers');
               userInvite.push(postData);
