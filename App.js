@@ -6,9 +6,11 @@ import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import * as firebase from 'firebase';
 import { Font, Permissions, Notifications } from 'expo';
-import { StyleProvider } from '@shoutem/theme';
+import {
+  StyleProvider,
+  getSizeRelativeToReference,
+} from '@shoutem/theme';
 import { getTheme } from '@shoutem/ui';
-import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import rootReducer from './src/reducers/index';
@@ -17,6 +19,9 @@ import LoadingSplash from './src/screens/loadingSplash';
 
 import { postFetch } from './src/actions';
 
+function dimensionRelativeToIphone(dimension, actualRefVal = window.width) {
+  return getSizeRelativeToReference(dimension, 375, actualRefVal);
+}
 const config = {
   apiKey: 'AIzaSyC5FN_4EfqAcIoPOOVzTXeze-afOVS_YZo',
   authDomain: 'goc-app-6efe2.firebaseapp.com',
@@ -29,10 +34,33 @@ firebase.initializeApp(config);
 
 const middleware = [
   thunk,
-  __DEV__ && createLogger(),
 ];
 const theme = {
   ...getTheme(),
+  'shoutem.ui.DropDownMenu': {
+    horizontalContainer: {
+      alignItems: 'flex-start',
+      backgroundColor: '#fff',
+      height: 39,
+      paddingHorizontal: 25,
+      paddingVertical: 9,
+    },
+
+    selectedOption: {
+      'shoutem.ui.Icon': {
+        color: '#fff',
+      },
+
+      'shoutem.ui.Text': {
+        margin: 0,
+      },
+
+      flex: 1,
+      alignSelf: 'stretch',
+      justifyContent: 'flex-start',
+      padding: 0,
+    },
+  },
   'shoutem.ui.Subtitle': {
     fontFamily: 'Akkurat-Regular',
     fontStyle: 'normal',
@@ -102,6 +130,29 @@ const theme = {
       letterSpacing: 1,
       textAlign: 'center',
     },
+    '.clear': {
+      backgroundColor: 'transparent',
+      borderWidth: 0,
+      borderRadius: 0,
+    },
+    '.stacked': {
+      'shoutem.ui.Icon': {
+        marginVertical: 6,
+        marginRight: 0,
+      },
+
+      'shoutem.ui.Text': {
+        textAlign: 'center',
+        marginVertical: 0,
+        marginRight: 0,
+        fontFamily: 'Akkurat-Regular',
+        color: '#3a3f4b',
+      },
+
+      width: dimensionRelativeToIphone(120),
+      height: 82,
+      flexDirection: 'column',
+    },
     backgroundColor: '#ae956b',
     borderRadius: 6,
     paddingHorizontal: 15,
@@ -118,13 +169,6 @@ const theme = {
       backgroundColor: 'transparent',
       borderColor: '#ae956b',
       borderWidth: 1,
-      'shoutem.ui.Text': {
-        color: '#ae956b',
-      },
-    },
-    '.clear': {
-      backgroundColor: 'transparent',
-
       'shoutem.ui.Text': {
         color: '#ae956b',
       },

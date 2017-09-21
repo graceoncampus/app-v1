@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {
   Linking,
   ScrollView,
-  TouchableOpacity,
+  TouchableOpacity, StatusBar, Platform,
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import { Icon, Screen, Image, View, Text, Tile, Title, Button, Divider, Heading } from '@shoutem/ui';
+import { Icon, Screen, Image, View, Text, Tile, Title, Button, Divider } from '@shoutem/ui';
 
 class Connect extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -18,7 +18,8 @@ class Connect extends Component {
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    TouchableOpacity,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -29,7 +30,7 @@ class Connect extends Component {
         tabBarTextStyle={{ paddingTop: 10, fontFamily: 'Akkurat-Regular', fontSize: 13, color: '#222222', lineHeight: 15 }}
         tabBarUnderlineStyle={{ height: 2, backgroundColor: '#ae956b' }}
       >
-        <ScrollView tabLabel="Large Groups"
+        <ScrollView tabLabel="Large Group"
           automaticallyAdjustContentInsets={false}
         >
           <Image
@@ -59,14 +60,14 @@ class Connect extends Component {
           </View>
         </ScrollView>
         <ScrollView tabLabel="Small Groups">
-        <Image
-          styleName='large-banner'
-          source={require('../images/smallGroupsPhoto.jpg')}
-        >
-          <Tile>
-            <Title style={{ fontSize: 28 }}>Small Groups</Title>
-          </Tile>
-        </Image>
+          <Image
+            styleName='large-banner'
+            source={require('../images/smallGroupsPhoto.jpg')}
+          >
+            <Tile>
+              <Title style={{ fontSize: 28 }}>Small Groups</Title>
+            </Tile>
+          </Image>
           <Divider />
           <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>
             <Title styleName='textBelow'>What are Small Groups?</Title>

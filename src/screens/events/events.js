@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity,
+  TouchableOpacity, StatusBar, Platform, 
   ScrollView,
 } from 'react-native';
 import { Icon, Screen, Image, Tile, Title, ListView, Divider, Subtitle } from '@shoutem/ui';
@@ -24,7 +24,7 @@ class Events extends Component {
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 

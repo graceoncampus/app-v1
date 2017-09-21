@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
-import { resetUserPassword } from '../../actions';
 import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { resetUserPassword } from '../../actions';
 
 class ForgotPassword extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -13,7 +13,7 @@ class ForgotPassword extends Component {
         <Icon name='back' style={{ paddingLeft: 10 }} />
       </TouchableOpacity>
     ),
-    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
 
   })
@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
       focus: null,
     };
     this.onChangeEmail = this.onChangeEmail.bind(this);
-  };
+  }
 
   onChangeEmail(Email) {
     this.setState({ submitted: false, Email });
@@ -34,7 +34,7 @@ class ForgotPassword extends Component {
 
   reset = () => {
     const { Email } = this.state;
-      this.props.resetUserPassword(Email);
+    this.props.resetUserPassword(Email);
   }
 
   renderButton() {
@@ -51,12 +51,12 @@ class ForgotPassword extends Component {
         <Text>RESET PASSWORD</Text>
       </Button>
     );
-}
+  }
 
 render = () => {
   const {
     Email,
-    focus
+    focus,
   } = this.state;
   return (
     <Screen>
