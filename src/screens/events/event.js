@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform, 
+  TouchableOpacity, StatusBar, Platform,
   ScrollView,
 } from 'react-native';
 import moment from 'moment';
@@ -22,7 +22,7 @@ export default class Event extends React.Component {
   })
 
   render() {
-    const { event: { image, title, startdate, location, summary } } = this.props.navigation.state.params;
+    const { event: { enddate, title, startdate, location, summary } } = this.props.navigation.state.params;
     return (
       <Screen>
         <Divider />
@@ -32,8 +32,10 @@ export default class Event extends React.Component {
           {location &&
               <Caption><Caption styleName="bold">Where: </Caption>{location}</Caption>
           }
-          {startdate &&
-              <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do HH:mm')}</Caption>
+          {moment.unix(startdate).format('MMMM Do') === moment.unix(enddate).format('MMMM Do') ?
+            <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm')}</Caption>
+            :
+            <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do')} - {moment.unix(enddate).format('MMMM Do')}</Caption>
           }
           <Divider />
         </View>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform, 
+  TouchableOpacity, StatusBar, Platform,
   ScrollView,
 } from 'react-native';
 import { Icon, Screen, Image, Tile, Title, ListView, Divider, Subtitle } from '@shoutem/ui';
@@ -36,7 +36,7 @@ class Events extends Component {
   }
 
   renderRow(event) {
-    const { title, startdate, key, bannerURI, location } = event;
+    const { title, startdate, enddate, key, bannerURI, location } = event;
     return (
       <TouchableOpacity key={key} onPress={() => { this.props.navigation.navigate('Event', { event }); }} >
         <Image
@@ -46,7 +46,11 @@ class Events extends Component {
           <Tile>
             <Parallax driver={this.driver} scrollSpeed={1.2}>
               <Title>{title}</Title>
-              <Subtitle>{moment.unix(startdate).format('MMMM Do HH:mm')}  ·  {location}</Subtitle>
+              {moment.unix(startdate).format('MMMM Do') === moment.unix(enddate).format('MMMM Do') ?
+                <Subtitle>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm A')}</Subtitle>
+                :
+                <Subtitle>{moment.unix(startdate).format('MMMM Do')} - {moment.unix(enddate).format('MMMM Do')}</Subtitle>
+              }
             </Parallax>
           </Tile>
         </Image>

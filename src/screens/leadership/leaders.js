@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { TouchableOpacity, Platform } from 'react-native';
 import { Image, Tile, GridRow, Screen, ListView, View, Caption, Icon, Subtitle } from '@shoutem/ui';
 
 const defaultData = [
@@ -84,11 +84,13 @@ export default class Leaders extends Component {
   render = () => {
     const groupedData = GridRow.groupByRows(defaultData, 2, () => (1));
     return (
-      <Screen styleName="paper">
+      <Screen style={{ backgroundColor: '#f9f9f9' }}>
+
         <ListView
           data={groupedData}
           renderRow={this.renderRow}
           style={{
+            backgroundColor: '#f9f9f9',
             listContent: {
               padding: 15,
             },

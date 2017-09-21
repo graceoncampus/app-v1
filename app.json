@@ -17,7 +17,6 @@
       "icon": "./src/images/loading.png",
       "backgroundColor": "#ffffff"
     },
-    "androidStatusBarColor": "#ffffff",
     "ios": {
       "bundleIdentifier": "com.goc.mobile",
       "icon": "./src/images/ios-app-icon.png"
