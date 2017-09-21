@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
-import { Platform, StatusBar } from 'react-native';
 import about from '../screens/about';
 import FirstLoad from '../screens/first.load';
 import Signup from '../screens/auth/signup';
@@ -114,16 +113,6 @@ const DrawerNav = DrawerNavigator({
 }, {
   drawerWidth: 150,
   contentOptions: {
-    style: {
-      ...Platform.select({
-        ios: {
-          marginTop: 20,
-        },
-        android: {
-          marginTop: StatusBar.currentHeight,
-        },
-      }),
-    },
     activeTintColor: '#fff',
     activeBackgroundColor: '#ae956b',
     labelStyle: {

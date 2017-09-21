@@ -11,7 +11,7 @@
       "icon": "./src/images/notification-icon.png",
       "color": "#ffffff",
       "androidMode": "collapse",
-      "androidCollapsedTitle": "{unread_notifications} new notifications"
+      "androidCollapsedTitle": "#{unread_notifications} new notifications"
     },
     "loading": {
       "icon": "./src/images/loading.png",
