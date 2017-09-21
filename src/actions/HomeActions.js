@@ -9,17 +9,39 @@ import {
   GET_USER_PERMISSIONS,
 } from './types';
 
-export const newPost = (Post) => {
+
+export const newPost = (Post, role) => {
   const data = {
     Post,
     Time: moment().unix(),
+    role,
   };
   return (dispatch) => {
     const announcement = firebase.database().ref('posts');
-    announcement.push(data);
-    dispatch({
-      type: NEW_POST,
-      payload: Post,
+    const details = {
+      token: 'GOC2017!',
+      post: Post,
+    };
+    let formBody = [];
+    for (const property in details) {
+      const encodedKey = encodeURIComponent(property);
+      const encodedValue = encodeURIComponent(details[property]);
+      formBody.push(`${encodedKey}=${encodedValue}`);
+    }
+    formBody = formBody.join('&');
+    fetch('https://graceoncampus.org/notifications', {
+      method: 'post',
+      body: formBody,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    announcement.push(data).then(() => {
+      dispatch({
+        type: NEW_POST,
+        payload: Post,
+      });
     });
   };
 };
@@ -55,7 +77,8 @@ export const postFetch = () => (dispatch) => {
       const post = childSnapshot.val().Post;
       const time = moment.unix(childSnapshot.val().Time).fromNow();
       const date = moment.unix(childSnapshot.val().Time).format('MMMM Do YYYY');
-      const toAppend = { post, time, date, key };
+      const role = childSnapshot.val().role || 'A-Team';
+      const toAppend = { post, time, date, key, role };
       data.push(toAppend);
     });
     dispatch({

@@ -1,7 +1,31 @@
 {
   "expo": {
     "name": "GOC",
+    "description": "Mobile application for the UCLA Grace on Campus Christian Fellowship",
+    "slug":"GOC-v1",
+    "version":"1.0.0",
     "sdkVersion": "20.0.0",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "icon": "./src/images/app-icon.png",
+    "notification": {
+      "icon": "./src/images/notification-icon.png",
+      "color": "#ffffff",
+      "androidMode": "collapse",
+      "androidCollapsedTitle": "{unread_notifications} new notifications"
+    },
+    "loading": {
+      "icon": "./src/images/loading.png",
+      "backgroundColor": "#ffffff"
+    },
+    "androidStatusBarColor": "#ffffff",
+    "ios": {
+      "bundleIdentifier": "com.goc.mobile",
+      "icon": "./src/images/ios-app-icon.png"
+    },
+    "scheme": "goc",
+    "android": {
+      "package": "com.goc.mobile"
+    }
+    
   }
 }

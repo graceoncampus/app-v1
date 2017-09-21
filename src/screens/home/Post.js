@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, ScrollView } from 'react-native';
-import { Screen, Caption, Row, Image, View, Subtitle, Icon } from '@shoutem/ui';
+import { TouchableOpacity, StatusBar, Platform, ScrollView } from 'react-native';
+import { Screen, Caption, Image, View, Subtitle, Icon } from '@shoutem/ui';
 
 export default class Post extends Component {
     static navigationOptions = ({ navigation }) => ({
@@ -10,20 +10,23 @@ export default class Post extends Component {
           <Icon name="back" style={{ paddingLeft: 10 }}/>
         </TouchableOpacity>
       ),
-      headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+      headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
       headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
     })
 
     render() {
       const { announcement } = this.props.navigation.state.params;
+      let image;
+      if (announcement.role === 'A-Team') image = require('../../images/jeff.jpg');
+      else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
         <Screen>
           <ScrollView>
             <View style={{ paddingHorizontal: 25 }} styleName="vertical v-start">
               <View style={{ height: 60 }} styleName="horizontal">
-                <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={require('../../images/jeff.jpg')} />
+                <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={image} />
                 <View styleName='vertical'>
-                  <Subtitle style={{ fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>A-Team</Subtitle>
+                  <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
                   <Caption style={{ lineHeight: 12 }} >{announcement.time}</Caption>
                 </View>
               </View>

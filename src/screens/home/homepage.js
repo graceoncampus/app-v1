@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, TouchableOpacity, AsyncStorage } from 'react-native';
+import { ScrollView, TouchableOpacity, StatusBar, Platform, AsyncStorage } from 'react-native';
 import { Screen, Caption, Divider, Spinner, Row, Image, View, Subtitle, Icon, Text, Button } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import { postFetch, getUserPerm, setReadList } from '../../actions';
@@ -15,7 +15,7 @@ class Home extends Component {
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -24,7 +24,7 @@ class Home extends Component {
     this.state = {
       postData: [],
       userInfo: {},
-       readList: null,
+      readList: null,
     };
     this.props.getUserPerm();
     this.props.postFetch();
@@ -69,15 +69,18 @@ class Home extends Component {
       this.state.readList.forEach((item) => {
         if (item === announcement.key) result = true;
       });
+      let image;
+      if (announcement.role === 'A-Team') image = require('../../images/sample.png');
+      else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
         <TouchableOpacity key={announcement.key} onPress={() => this.setRead(announcement)}>
           <Row>
             <View style={{ flex: 1 }} styleName="horizontal v-start">
               <View style={{ flex: 0.9 }} styleName="vertical">
                 <View styleName="horizontal v-center">
-                  <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={require('../../images/jeff.jpg')} />
+                  <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={image} />
                   <View styleName='vertical'>
-                    <Subtitle style={{ fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>A-Team</Subtitle>
+                    <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
                     <Caption style={{ lineHeight: 12 }} >{announcement.time}</Caption>
                   </View>
                 </View>
@@ -113,10 +116,10 @@ class Home extends Component {
           {
             (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
              <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
-              <Button onPress={() => this.props.navigation.navigate('AddPost')}>
-                <Text>ADD POST</Text>
-              </Button>
-            </View>
+               <Button onPress={() => this.props.navigation.navigate('AddPost')}>
+                 <Text>ADD POST</Text>
+               </Button>
+             </View>
           }
 
           <Divider styleName="section-header">

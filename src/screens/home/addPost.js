@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity,
+  TouchableOpacity, StatusBar, Platform, 
   TextInput,
+  Picker,
 } from 'react-native';
 import { Icon, Text, Tile, View, Divider, Title, Screen, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -11,13 +12,13 @@ import { newPost } from '../../actions';
 
 class addPost extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Add Post',
+    title: 'HOME',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon name="back" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerStyle: { backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ecedef', paddingTop: 20 },
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { marginTop: StatusBar.currentHeight, paddingTop: 16, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -29,6 +30,7 @@ class addPost extends Component {
       success: false,
       loading: false,
       height: 60,
+      selected: null,
     };
     this.onChangePost = this.onChangePost.bind(this);
   }
@@ -41,9 +43,10 @@ class addPost extends Component {
   updateInfo = () => {
     const {
       Post,
+      selected,
     } = this.state;
     this.setState({ loading: true });
-    this.props.newPost(Post);
+    this.props.newPost(Post, selected);
     this.setState({ loading: false, success: true });
   }
 
@@ -78,7 +81,7 @@ class addPost extends Component {
     } = this.state;
     return (
       <Screen>
-        <KeyboardAwareScrollView ref={(c) => { this.scroll = c; }}>
+        <KeyboardAwareScrollView>
           <Tile style={{ paddingTop: 20, paddingBottom: 0, flex: 0.8, backgroundColor: 'transparent' }} styleName='text-centric'>
             <Title>Add New Post</Title>
             <Subtitle>Create a new Announcement to be notified to everyone in GOC</Subtitle>
@@ -142,7 +145,14 @@ class addPost extends Component {
                 value={Post}
               />
             }
-
+            <Caption>Post As</Caption>
+            <Picker
+              itemStyle={{ height: 120 }}
+              selectedValue={this.state.selected}
+              onValueChange={selected => this.setState({ selected })}>
+              <Picker.Item label="A-Team" value="A-Team" />
+              <Picker.Item label="Chris Gee" value="Chris Gee" />
+            </Picker>
             <Divider />
             <View style={{ flex: 0.25 }} styleName='vertical h-center v-end'>
               {this.renderButton()}
