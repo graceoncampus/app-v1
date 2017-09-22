@@ -67,7 +67,7 @@ class Signup extends Component {
     } = this.state;
 
     let error = false;
-    if (First_name === '' || Last_name === '' || Email === '' || Password === '' || Confirm_password === '') {
+    if (First_name === '' || Last_name === '' || Email === '' || Password === '' || Confirm_password === '' || Birthday === '' || Phone_number === '' || Graduation_year === '') {
       this.setState({ error: true });
       error = true;
     }
@@ -75,6 +75,15 @@ class Signup extends Component {
       this.setState({ error: 'passwords' });
       error = true;
     }
+    if (Password.length < 6) {
+      this.setState({ error: 'password length' });
+      error = true;
+    }
+    if (Phone_number.length != 10) {
+      this.setState({ error: 'phone' });
+      error = true;
+    }
+
     if (!error) {
       this.props.createAccount(
         Email,
@@ -156,10 +165,16 @@ class Signup extends Component {
   render() {
     let error = ' ';
     if (this.state.error) {
-      error = 'Please fill out all fields.';
+      error = 'Please fill out all fields';
+    }
+    if (this.state.error === 'phone') {
+      error = 'Please enter your 10 digit phone number'
     }
     if (this.state.error === 'passwords') {
-      error = 'Passwords do not match.';
+      error = 'Passwords do not match';
+    }
+    if (this.state.error === 'password length') {
+      error = 'Password must be at least 6 characters'
     }
     if (this.props.error) error = this.props.error;
     const {

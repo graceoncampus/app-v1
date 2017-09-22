@@ -67,6 +67,7 @@ class UserInvite extends Component {
           }
         });
     } else {
+      alert('Please enter a valid email address');
       this.setState({ loading: false });
     }
   }

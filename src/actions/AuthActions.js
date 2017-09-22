@@ -73,6 +73,7 @@ const createUserSuccess = (
           });
         });
     });
+  alert('Account created successfully!');
   dispatch(NavigationActions.navigate({ routeName: 'Main' }));
 };
 export const createAccount = (
@@ -95,6 +96,7 @@ export const createAccount = (
     .once('value', (snapshot) => {
       const existingUser = snapshot.val();
       if (existingUser) {
+        alert('An account with this email has already been created');
         createUserFail(dispatch);
       } else {
         firebase.database()
@@ -127,6 +129,7 @@ export const createAccount = (
                   snapshot3.ref.remove();
                 });
             } else {
+              alert('This email has not been invited to create an account');
               createUserFail(dispatch);
             }
           });
@@ -225,12 +228,15 @@ export const changeUserPassword = (oldPassword, newPassword) => {
     firebase.auth().signInWithEmailAndPassword(email, oldPassword)
       .then(() => {
         firebase.auth().currentUser.updatePassword(newPassword).then(() => {
+          alert('Password change successful')
           dispatch(NavigationActions.navigate({ routeName: 'Settings' }));
           ChangeUserPasswordLoad(dispatch);
         }, () => {
+          alert('Password change failed');
           ChangeUserPasswordLoad(dispatch);
         });
       }).catch(() => {
+        alert('Old password incorrect');
         ChangeUserPasswordLoad(dispatch);
       });
   };
@@ -251,8 +257,10 @@ export const resetUserPassword = Email => (dispatch) => {
   dispatch({ type: RESET_USER_PASSWORD });
   const auth = firebase.auth();
   auth.sendPasswordResetEmail(Email).then(() => {
+    alert("A password reset email has been sent to your email address");
     resetUserPasswordLoad(dispatch);
   }).catch(() => {
+    alert("It looks like an account with this email address has not been created before");
     resetUserPasswordLoad(dispatch);
   });
 };
