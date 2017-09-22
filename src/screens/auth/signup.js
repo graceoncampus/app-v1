@@ -237,7 +237,7 @@ class Signup extends Component {
                 onSubmitEditing={() => this.setState({ focus: '' })}
                 autoCapitalize='none'
                 autoCorrect={false}
-                placeholder="youhavenotbeenbaptized@gmail.com"
+                placeholder="youremail@gmail.com"
                 keyboardType="email-address"
                 value={Email}
                 onChangeText={this.onChangeEmail}
@@ -249,7 +249,7 @@ class Signup extends Component {
                 onSubmitEditing={() => this.setState({ focus: '' })}
                 autoCapitalize='none'
                 autoCorrect={false}
-                placeholder="youhavenotbeenbaptized@gmail.com"
+                placeholder="youremail@gmail.com"
                 keyboardType="email-address"
                 value={Email}
                 onChangeText={this.onChangeEmail}

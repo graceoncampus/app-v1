@@ -40,10 +40,8 @@ const createUserSuccess = (
     admin: 0,
     carousel: 0,
     sermons: 0,
-    discussions: 0,
     events: 0,
-    courses: 0,
-    testperm: 0,
+    classes: 0,
     rides: 0,
   };
 
@@ -258,4 +256,3 @@ export const resetUserPassword = Email => (dispatch) => {
     resetUserPasswordLoad(dispatch);
   });
 };
-

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform, 
+  TouchableOpacity, StatusBar, Platform,
 } from 'react-native';
 import firebase from 'firebase';
 import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
@@ -45,12 +45,14 @@ class UserInvite extends Component {
         .once('value', (snapshot) => {
           const emailCheck = snapshot.val();
           if (emailCheck) {
+            alert('This email has already been invited');
             this.setState({ loading: false });
           } else {
             firebase.database().ref('users').orderByChild('email').equalTo(lowercaseEmail)
               .once('value', (snap) => {
                 const existingUser = snap.val();
                 if (existingUser) {
+                  alert('An account with this email address has already been created');
                   this.setState({ loading: false });
                 } else {
                   const postData = {
@@ -58,6 +60,7 @@ class UserInvite extends Component {
                   };
                   const userInvite = firebase.database().ref('invitedUsers');
                   userInvite.push(postData);
+                  alert('This email has been successfully invited');
                   this.setState({ loading: false });
                 }
               });
