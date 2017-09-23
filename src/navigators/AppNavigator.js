@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { StatusBar, Platform } from 'react-native';
 import { addNavigationHelpers, DrawerNavigator, StackNavigator } from 'react-navigation';
 import about from '../screens/about';
 import FirstLoad from '../screens/first.load';
@@ -117,6 +118,12 @@ const DrawerNav = DrawerNavigator({
     activeBackgroundColor: '#ae956b',
     labelStyle: {
       fontFamily: 'Akkurat-Regular',
+    },
+    style: {
+      height: 'auto',
+      ...Platform.select({
+        android: { paddingTop: StatusBar.currentHeight },
+      }),
     },
   },
 });
