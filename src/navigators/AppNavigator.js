@@ -99,10 +99,10 @@ const DrawerNav = DrawerNavigator({
     navigationOptions: {
       gesturesEnabled: false,
     } },
-  Rides: { screen: ridesStack,
-    navigationOptions: {
-      gesturesEnabled: false,
-    } },
+  // Rides: { screen: ridesStack,
+  //   navigationOptions: {
+  //     gesturesEnabled: false,
+  //   } },
   Roster: { screen: rosterStack,
     navigationOptions: {
       gesturesEnabled: false,
@@ -112,7 +112,7 @@ const DrawerNav = DrawerNavigator({
       gesturesEnabled: false,
     } },
 }, {
-  drawerWidth: 150,
+  drawerWidth: 160,
   contentOptions: {
     activeTintColor: '#fff',
     activeBackgroundColor: '#ae956b',

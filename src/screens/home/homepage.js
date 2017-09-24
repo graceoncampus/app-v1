@@ -7,15 +7,16 @@ import { postFetch, getUserPerm, setReadList } from '../../actions';
 class Home extends Component {
   static navigationOptions = ({ navigation }) => ({
     drawer: () => ({
-      label: 'Home',
+      label: 'Announcements',
     }),
-    title: 'HOME',
+    title: 'ANNOUNCEMENTS',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerRight: <View />,  headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -31,6 +32,7 @@ class Home extends Component {
 
     this.setRead = this.setRead.bind(this);
     this.renderRow = this.renderRow.bind(this);
+    this.renderAnnouncements = this.renderAnnouncements.bind(this);
   }
   componentWillMount() {
     this.props.postFetch();
@@ -63,6 +65,17 @@ class Home extends Component {
     this.props.navigation.navigate('Post', { announcement });
   }
 
+  renderAnnouncements() {
+    if ((this.state.postData && this.state.postData.length && this.state.readList)) {
+      return (
+        <ScrollView>
+          { this.renderRow() }
+        </ScrollView>
+      );
+    }
+
+    return <View />;
+  }
   renderRow() {
     return this.state.postData.map((announcement) => {
       let result = false;
@@ -110,32 +123,21 @@ class Home extends Component {
   }
 
   render() {
-    if ((this.state.postData && this.state.postData.length && this.state.readList)) {
-      return (
-        <Screen>
-          {
-            (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
+    return (
+      <Screen>
+        {
+          (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
              <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
                <Button onPress={() => this.props.navigation.navigate('AddPost')}>
                  <Text>ADD POST</Text>
                </Button>
              </View>
-          }
+        }
 
-          <Divider styleName="section-header">
-            <Caption>Announcements</Caption>
-          </Divider>
-          <ScrollView>
-            { this.renderRow() }
-          </ScrollView>
-        </Screen>
-      );
-    }
-    return (
-      <Screen>
-        <View styleName='vertical fill-parent v-center h-center'>
-          <Spinner size="large" />
-        </View>
+        <Divider styleName="section-header">
+          <Caption>Announcements</Caption>
+        </Divider>
+        { this.renderAnnouncements }
       </Screen>
     );
   }

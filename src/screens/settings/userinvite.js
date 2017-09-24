@@ -14,7 +14,8 @@ class UserInvite extends Component {
         <Icon name="back" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerRight: <View />,  headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -55,13 +56,25 @@ class UserInvite extends Component {
                   alert('An account with this email address has already been created');
                   this.setState({ loading: false });
                 } else {
-                  const postData = {
+                  const details = {
+                    token: 'GOC2017!',
                     email: lowercaseEmail,
                   };
-                  const userInvite = firebase.database().ref('invitedUsers');
-                  userInvite.push(postData);
-                  alert('This email has been successfully invited');
-                  this.setState({ loading: false });
+                  let formBody = [];
+                  for (const property in details) {
+                    const encodedKey = encodeURIComponent(property);
+                    const encodedValue = encodeURIComponent(details[property]);
+                    formBody.push(`${encodedKey}=${encodedValue}`);
+                  }
+                  formBody = formBody.join('&');
+                  fetch('https://graceoncampus.org/invitation', {
+                    method: 'post',
+                    body: formBody,
+                    headers: {
+                      Accept: 'application/json',
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                  }).then(this.setState({ loading: false }));
                 }
               });
           }

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {
   TouchableOpacity, StatusBar, Platform,
 } from 'react-native';
-import { Icon, Screen, Image, View, Caption, Row, ListView, Divider, Title } from '@shoutem/ui';
+import { Icon, Screen, Button, Image, View, Caption, Row, ListView, Divider, Title } from '@shoutem/ui';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import moment from 'moment';
 import { classFetch } from '../../actions';
 import { lookupByUID } from '../../utility';
@@ -19,7 +20,8 @@ class Classes extends Component {
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerRight: <View />,  headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -37,9 +39,18 @@ class Classes extends Component {
   componentWillReceiveProps = async (nextProps) => {
     const data = nextProps.classData;
     const classes = [];
+    const currentUid = firebase.auth().currentUser.uid;
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const instructor = await lookupByUID(data[key].instructorUID);
+        let isEnrolled = false;
+        for (const student in data[key].students) {
+          if (data[key].students.hasOwnProperty(student)) {
+            if (currentUid === data[key].students[student].uid) {
+              isEnrolled = true;
+            }
+          }
+        }
         classes.push({
           title: data[key].title,
           summary: data[key].details,
@@ -48,6 +59,7 @@ class Classes extends Component {
           openSpots: data[key].openSpots,
           totalSpots: data[key].totalSpots,
           deadline: data[key].deadline,
+          isEnrolled,
           instructor,
           key,
         });
@@ -60,7 +72,7 @@ class Classes extends Component {
   }
 
   renderRow(data) {
-    const { title, image, openSpots, startDate, endDate, key, deadline, instructor } = data;
+    const { title, image, openSpots, startDate, endDate, key, deadline, instructor, isEnrolled } = data;
     return (
       <TouchableOpacity onPress={() => { this.props.navigation.navigate('Class', { key, instructor }); }} >
         <Row>
@@ -77,6 +89,9 @@ class Classes extends Component {
             <Caption><Caption styleName="bold">Enroll By: </Caption>{moment.unix(deadline).format('MMMM Do')}</Caption>
             <Caption><Caption styleName="bold">Spots Left: </Caption>{ openSpots }</Caption>
           </View>
+          { isEnrolled &&
+            <Icon style={{ fontSize: 15, color: 'green'}} name="checkbox-on" />
+          }
         </Row>
         <Divider styleName='line' />
       </TouchableOpacity>

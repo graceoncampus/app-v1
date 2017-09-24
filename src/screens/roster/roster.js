@@ -93,7 +93,7 @@ class Roster extends Component {
       <FormGroup styleName='search'>
         <TextInput
           onChangeText={this.onChangeText}
-          placeholder={'Search by First or Last Name'}
+          placeholder={'Search'}
         />
       </FormGroup>
       { this.renderResults() }
