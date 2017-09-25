@@ -129,7 +129,7 @@ export const createAccount = (
                   snapshot3.ref.remove();
                 });
             } else {
-              alert('This email has not been invited to create an account');
+              alert('This email has not been invited to create an account. Contact us at gocwebteam@gmail.com to get an invite.');
               createUserFail(dispatch);
             }
           });
@@ -165,7 +165,7 @@ export const getUserInfo = () => {
   const uid = currentUser.uid;
   return (dispatch) => {
     const userData = firebase.database().ref(`/users/${uid}`);
-    userData.on('value', (snapshot) => {
+    userData.once('value').then((snapshot) => {
       dispatch({
         type: GET_USER_INFO,
         payload: snapshot.val(),

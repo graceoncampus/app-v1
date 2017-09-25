@@ -38,7 +38,7 @@ class Connect extends Component {
             source={require('../images/largeGroupPhoto.jpg')}
           >
             <Tile>
-              <Title style={{ fontSize: 28, lineHeight: 30 }}>Large Group</Title>
+              <Title style={{ fontSize: 28, lineHeight: 36 }}>Large Group</Title>
             </Tile>
           </Image>
           <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>
@@ -65,7 +65,7 @@ class Connect extends Component {
             source={require('../images/smallGroupsPhoto.jpg')}
           >
             <Tile>
-              <Title style={{ fontSize: 28, lineHeight: 30 }}>Small Groups</Title>
+              <Title style={{ fontSize: 28, lineHeight: 32 }}>Small Groups</Title>
             </Tile>
           </Image>
           <Divider />

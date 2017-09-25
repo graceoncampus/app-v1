@@ -35,7 +35,7 @@ export const eventsCreate = ({
 export const eventsFetch = () => {
   const events = firebase.database().ref('events/');
   return (dispatch) => {
-    events.on('value', (snapshot) => {
+    events.once('value').then((snapshot) => {
       dispatch({ type: 'events_fetch', payload: snapshot.val() });
     });
   };

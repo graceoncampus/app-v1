@@ -10,9 +10,10 @@ import {
 } from './types';
 
 
-export const newPost = (Post, role) => {
+export const newPost = (Post, title, role) => {
   const data = {
     Post,
+    title,
     Time: moment().unix(),
     role,
   };
@@ -51,7 +52,7 @@ export const getUserPerm = () => {
   const uid = currentUser.uid;
   return (dispatch) => {
     const userData = firebase.database().ref(`/users/${uid}/permissions`);
-    userData.on('value', (snapshot) => {
+    userData.once('value').then((snapshot) => {
       dispatch({
         type: GET_USER_PERMISSIONS,
         payload: snapshot.val(),
@@ -78,7 +79,8 @@ export const postFetch = () => (dispatch) => {
       const time = moment.unix(childSnapshot.val().Time).fromNow();
       const date = moment.unix(childSnapshot.val().Time).format('MMMM Do YYYY');
       const role = childSnapshot.val().role || 'A-Team';
-      const toAppend = { post, time, date, key, role };
+      const title = childSnapshot.val().title || 'Announcement';
+      const toAppend = { post, time, date, key, role, title };
       data.push(toAppend);
     });
     dispatch({

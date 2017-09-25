@@ -74,7 +74,10 @@ class UserInvite extends Component {
                       Accept: 'application/json',
                       'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                  }).then(this.setState({ loading: false }));
+                  }).then(() => {
+                    alert('User has been invited. They can now download the app and create an account!');
+                    this.setState({ loading: false });
+                  });
                 }
               });
           }

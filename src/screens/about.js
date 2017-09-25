@@ -32,7 +32,7 @@ class About extends Component {
         source={require('../images/about.jpg')}
       >
         <Tile>
-          <Title style={{ fontSize: 28 }}>ABOUT US</Title>
+          <Title style={{ fontSize: 28, lineHeight: 32 }}>ABOUT US</Title>
         </Tile>
       </Image>
         <View style={{ paddingLeft: 35, paddingRight: 35 }} styleName='vertical'>

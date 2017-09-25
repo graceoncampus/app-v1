@@ -9,6 +9,7 @@ import moment from 'moment';
 import { classFetch } from '../../actions';
 import { lookupByUID } from '../../utility';
 
+const isAlphaOrParen = str => /^[a-zA-Z()]+$/.test(str);
 class Classes extends Component {
   static navigationOptions = ({ navigation }) => ({
     drawer: () => ({
@@ -42,7 +43,8 @@ class Classes extends Component {
     const currentUid = firebase.auth().currentUser.uid;
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const instructor = await lookupByUID(data[key].instructorUID);
+        const instructor = data[key].instructorUID;
+        if (!isAlphaOrParen([key].instructorUID)) { instructor = await lookupByUID(data[key].instructorUID); }
         let isEnrolled = false;
         for (const student in data[key].students) {
           if (data[key].students.hasOwnProperty(student)) {
@@ -52,6 +54,7 @@ class Classes extends Component {
           }
         }
         classes.push({
+          day: data[key].day,
           title: data[key].title,
           summary: data[key].details,
           startDate: data[key].startDate,
@@ -90,7 +93,7 @@ class Classes extends Component {
             <Caption><Caption styleName="bold">Spots Left: </Caption>{ openSpots }</Caption>
           </View>
           { isEnrolled &&
-            <Icon style={{ fontSize: 15, color: 'green'}} name="checkbox-on" />
+            <Icon style={{ fontSize: 15, color: 'green' }} name="checkbox-on" />
           }
         </Row>
         <Divider styleName='line' />

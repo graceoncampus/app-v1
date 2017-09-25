@@ -80,7 +80,7 @@ class classDetails extends Component {
   render = () => {
     const { classData } = this.props;
     const { key, instructor } = this.props.navigation.state.params;
-    const { title, location, startDate, endDate, deadline, totalSpots, openSpots, details } = classData[key];
+    const { title, location, startDate, endDate, deadline, totalSpots, openSpots, details, day, classTime } = classData[key];
     return (
       <Screen>
         <Divider />
@@ -94,6 +94,8 @@ class classDetails extends Component {
               <Caption><Caption styleName="bold">Location: </Caption>{location}</Caption>
           }
           <Caption><Caption styleName="bold">Dates: </Caption>{moment.unix(startDate).format('MMMM Do')} - {moment.unix(endDate).format('MMMM Do')}</Caption>
+          <Caption><Caption styleName="bold">Time: </Caption><Caption >{classTime}</Caption></Caption>
+          <Caption><Caption styleName="bold">Day of the Week: </Caption><Caption >{day}</Caption></Caption>
           {deadline &&
               <Caption><Caption styleName="bold">Enroll By: </Caption>
                 {moment.unix(deadline).format('MMMM Do')}</Caption>

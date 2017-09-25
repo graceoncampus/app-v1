@@ -4,7 +4,7 @@ import {
   TextInput,
   Picker,
 } from 'react-native';
-import { Icon, Text, Tile, View, Divider, Title, Screen, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
+import { Icon, Text, Tile, View, Divider, Title, TextInput as TInput, Screen, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 
@@ -31,23 +31,28 @@ class addPost extends Component {
       success: false,
       loading: false,
       height: 60,
+      title: '',
       selected: null,
     };
     this.onChangePost = this.onChangePost.bind(this);
+    this.onChangeTitle = this.onChangeTitle.bind(this);
   }
 
   onChangePost(Post) {
     this.setState({ submitted: false, Post });
   }
 
-
+  onChangeTitle(title) {
+    this.setState({ submitted: false, title });
+  }
   updateInfo = () => {
     const {
       Post,
       selected,
+      title,
     } = this.state;
     this.setState({ loading: true });
-    this.props.newPost(Post, selected);
+    this.props.newPost(Post, title, selected);
     this.setState({ loading: false, success: true });
   }
 
@@ -79,6 +84,7 @@ class addPost extends Component {
     const {
       Post,
       focus,
+      title,
     } = this.state;
     return (
       <Screen>
@@ -99,6 +105,7 @@ class addPost extends Component {
                 style={{
                   borderWidth: 1,
                   borderColor: '#ae956b',
+                  backgroundColor: '#fff',
                   marginTop: 3,
                   fontFamily: 'Akkurat-Regular',
                   paddingVertical: 9,
@@ -144,6 +151,27 @@ class addPost extends Component {
                   });
                 }}
                 value={Post}
+              />
+            }
+            <Caption>Title</Caption>
+            { focus === 'two' ?
+              <TInput
+                styleName='focused'
+                onFocus={() => this.setState({ focus: 'two' })}
+                onSubmitEditing={() => this.setState({ focus: '' })}
+                placeholder="Title"
+                value={title}
+                onChangeText={this.onChangeTitle}
+                returnKeyType='next'
+              />
+              :
+              <TInput
+                onFocus={() => this.setState({ focus: 'two' })}
+                onSubmitEditing={() => this.setState({ focus: '' })}
+                placeholder="Title"
+                value={title}
+                onChangeText={this.onChangeTitle}
+                returnKeyType='next'
               />
             }
             <Caption>Post As</Caption>

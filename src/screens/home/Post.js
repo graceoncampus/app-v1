@@ -18,7 +18,7 @@ export default class Post extends Component {
     render() {
       const { announcement } = this.props.navigation.state.params;
       let image;
-      if (announcement.role === 'A-Team') image = require('../../images/jeff.jpg');
+      if (announcement.role === 'A-Team') image = require('../../images/notification-icon.png');
       else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
         <Screen>
@@ -27,11 +27,12 @@ export default class Post extends Component {
               <View style={{ height: 60 }} styleName="horizontal">
                 <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={image} />
                 <View styleName='vertical'>
-                  <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
-                  <Caption style={{ lineHeight: 12 }} >{announcement.time}</Caption>
+                  <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 18, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
+                  <Caption style={{ lineHeight: 15 }} >{announcement.time}</Caption>
                 </View>
               </View>
-              <Subtitle style={{ marginTop: 15 }}>{announcement.post}</Subtitle>
+              <Subtitle style={{ fontFamily: 'Akkurat-Bold', marginTop: 15, marginBottom: 5 }} styleName="bold">{announcement.title}</Subtitle>
+              <Subtitle>{announcement.post}</Subtitle>
             </View>
           </ScrollView>
         </Screen>

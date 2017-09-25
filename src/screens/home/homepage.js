@@ -32,7 +32,6 @@ class Home extends Component {
 
     this.setRead = this.setRead.bind(this);
     this.renderRow = this.renderRow.bind(this);
-    this.renderAnnouncements = this.renderAnnouncements.bind(this);
   }
   componentWillMount() {
     this.props.postFetch();
@@ -65,17 +64,6 @@ class Home extends Component {
     this.props.navigation.navigate('Post', { announcement });
   }
 
-  renderAnnouncements() {
-    if ((this.state.postData && this.state.postData.length && this.state.readList)) {
-      return (
-        <ScrollView>
-          { this.renderRow() }
-        </ScrollView>
-      );
-    }
-
-    return <View />;
-  }
   renderRow() {
     return this.state.postData.map((announcement) => {
       let result = false;
@@ -83,7 +71,7 @@ class Home extends Component {
         if (item === announcement.key) result = true;
       });
       let image;
-      if (announcement.role === 'A-Team') image = require('../../images/sample.png');
+      if (announcement.role === 'A-Team') image = require('../../images/notification-icon.png');
       else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
         <TouchableOpacity key={announcement.key} onPress={() => this.setRead(announcement)}>
@@ -93,11 +81,12 @@ class Home extends Component {
                 <View styleName="horizontal v-center">
                   <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={image} />
                   <View styleName='vertical'>
-                    <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 14, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
-                    <Caption style={{ lineHeight: 12 }} >{announcement.time}</Caption>
+                    <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 18, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
+                    <Caption style={{ lineHeight: 15 }} >{announcement.time}</Caption>
                   </View>
                 </View>
                 <View style={{ marginTop: 15 }} styleName="vertical">
+                  <Subtitle style={{ fontFamily: 'Akkurat-Bold', marginBottom: 5 }} styleName="bold">{announcement.title}</Subtitle>
                   <Subtitle numberOfLines={3} ellipsizeMode='tail'>{announcement.post}</Subtitle>
                 </View>
               </View>
@@ -123,21 +112,32 @@ class Home extends Component {
   }
 
   render() {
-    return (
-      <Screen>
-        {
-          (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
+    if ((this.state.postData && this.state.postData.length && this.state.readList)) {
+      return (
+        <Screen>
+          {
+            (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
              <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
                <Button onPress={() => this.props.navigation.navigate('AddPost')}>
                  <Text>ADD POST</Text>
                </Button>
              </View>
-        }
+          }
 
-        <Divider styleName="section-header">
-          <Caption>Announcements</Caption>
-        </Divider>
-        { this.renderAnnouncements }
+          <Divider styleName="section-header">
+            <Caption>Announcements</Caption>
+          </Divider>
+          <ScrollView>
+            { this.renderRow() }
+          </ScrollView>
+        </Screen>
+      );
+    }
+    return (
+      <Screen>
+        <View styleName='vertical fill-parent v-center h-center'>
+          <Spinner size="large" />
+        </View>
       </Screen>
     );
   }
