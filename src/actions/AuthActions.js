@@ -47,6 +47,9 @@ const createUserSuccess = (
 
   const image = 'image URL';
 
+  firstName = firstName.replace(/^\s+|\s+$/g,'');
+  lastName = lastName.replace(/^\s+|\s+$/g,'');
+
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((User) => {
       const users = {};

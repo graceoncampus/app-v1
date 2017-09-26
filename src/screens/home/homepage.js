@@ -87,7 +87,7 @@ class Home extends Component {
                 </View>
                 <View style={{ marginTop: 15 }} styleName="vertical">
                   <Subtitle style={{ fontFamily: 'Akkurat-Bold', marginBottom: 5 }} styleName="bold">{announcement.title}</Subtitle>
-                  <Subtitle numberOfLines={3} ellipsizeMode='tail'>{announcement.post}</Subtitle>
+                  <Subtitle numberOfLines={2} ellipsizeMode='tail'>{announcement.post}</Subtitle>
                 </View>
               </View>
               { !result ?

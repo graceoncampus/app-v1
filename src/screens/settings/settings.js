@@ -415,7 +415,7 @@ class Settings extends Component {
                 styleName='focused'
                 onFocus={() => this.setState({ focus: 'nine' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Grace Community Church"
+                placeholder="Church"
                 value={Home_church}
                 onChangeText={this.onChangeHomeChurch}
                 returnKeyType='next'
@@ -424,7 +424,7 @@ class Settings extends Component {
               <TextInput
                 onFocus={() => this.setState({ focus: 'nine' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Grace Community Church"
+                placeholder="Church"
                 value={Home_church}
                 onChangeText={this.onChangeHomeChurch}
                 returnKeyType='next'

@@ -33,7 +33,7 @@ export default class Event extends React.Component {
               <Caption><Caption styleName="bold">Where: </Caption>{location}</Caption>
           }
           {moment.unix(startdate).format('MMMM Do') === moment.unix(enddate).format('MMMM Do') ?
-            <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm')}</Caption>
+            <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm A')}</Caption>
             :
             <Caption><Caption styleName="bold">When: </Caption>{moment.unix(startdate).format('MMMM Do')} - {moment.unix(enddate).format('MMMM Do')}</Caption>
           }

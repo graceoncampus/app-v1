@@ -3,6 +3,7 @@ import {
   TouchableOpacity, StatusBar, Platform,
   TextInput,
   Picker,
+  Alert
 } from 'react-native';
 import { Icon, Text, Tile, View, Divider, Title, TextInput as TInput, Screen, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -45,6 +46,18 @@ class addPost extends Component {
   onChangeTitle(title) {
     this.setState({ submitted: false, title });
   }
+
+  confirmPost = () => {
+    Alert.alert(
+      'Confirm Post',
+      'Are you sure you want to post?',
+      [
+        {text: 'Confirm', onPress: this.updateInfo },
+        {text: 'Cancel', onPress: () => console.log('OK Pressed!')},
+      ]
+    )
+  }
+
   updateInfo = () => {
     const {
       Post,
@@ -74,7 +87,7 @@ class addPost extends Component {
     }
 
     return (
-      <Button style={{ marginBottom: 15 }} onPress={this.updateInfo}>
+      <Button style={{ marginBottom: 15 }} onPress={this.confirmPost}>
         <Text>ADD POST</Text>
       </Button>
     );
@@ -95,6 +108,27 @@ class addPost extends Component {
             <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{this.props.error}</Subtitle>
           </Tile>
           <FormGroup>
+          <Caption>Title</Caption>
+            { focus === 'two' ?
+              <TInput
+                styleName='focused'
+                onFocus={() => this.setState({ focus: 'two' })}
+                onSubmitEditing={() => this.setState({ focus: '' })}
+                placeholder="Title"
+                value={title}
+                onChangeText={this.onChangeTitle}
+                returnKeyType='next'
+              />
+              :
+              <TInput
+                onFocus={() => this.setState({ focus: 'two' })}
+                onSubmitEditing={() => this.setState({ focus: '' })}
+                placeholder="Title"
+                value={title}
+                onChangeText={this.onChangeTitle}
+                returnKeyType='next'
+              />
+            }
             <Caption>Post</Caption>
             { focus === 'one' ?
               <TextInput
@@ -151,27 +185,6 @@ class addPost extends Component {
                   });
                 }}
                 value={Post}
-              />
-            }
-            <Caption>Title</Caption>
-            { focus === 'two' ?
-              <TInput
-                styleName='focused'
-                onFocus={() => this.setState({ focus: 'two' })}
-                onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Title"
-                value={title}
-                onChangeText={this.onChangeTitle}
-                returnKeyType='next'
-              />
-              :
-              <TInput
-                onFocus={() => this.setState({ focus: 'two' })}
-                onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Title"
-                value={title}
-                onChangeText={this.onChangeTitle}
-                returnKeyType='next'
               />
             }
             <Caption>Post As</Caption>

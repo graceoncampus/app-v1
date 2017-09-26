@@ -199,10 +199,17 @@ class Signup extends Component {
             <Subtitle>
               Creating an account and providing us with some basic info allows you to sign up for rides, classes, and events. Please note that you must create an account with the email address you were invited with.
             </Subtitle>
+            <Subtitle style={{ paddingVertical: 10 }}>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+                <Subtitle> is required</Subtitle>
+              </Subtitle>
             <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{error}</Subtitle>
           </Tile>
           <FormGroup>
-            <Caption>First Name</Caption>
+            <Caption>
+              <Caption>First Name</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'one' ?
               <TextInput
                 styleName='focused'
@@ -223,7 +230,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Last Name</Caption>
+            <Caption>
+              <Caption>Last Name</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'two' ?
               <TextInput
                 styleName='focused'
@@ -244,7 +254,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Email</Caption>
+            <Caption>
+              <Caption>Email</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'three' ?
               <TextInput
                 styleName='focused'
@@ -271,7 +284,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Password</Caption>
+            <Caption>
+              <Caption>Password</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'four' ?
               <TextInput
                 styleName='focused'
@@ -294,7 +310,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Confirm Password</Caption>
+            <Caption>
+              <Caption>Confirm Password</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'five' ?
               <TextInput
                 styleName='focused'
@@ -317,7 +336,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Birthday</Caption>
+            <Caption>
+              <Caption>Birthday</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'eight' ?
               <DatePicker
                 date={Birthday}
@@ -445,7 +467,10 @@ class Signup extends Component {
                 onDateChange={(bday) => { this.setState({ Birthday: bday }); }}
               />
             }
-            <Caption>Phone Number</Caption>
+            <Caption>
+              <Caption>Phone Number</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'six' ?
               <TextInput
                 styleName='focused'
@@ -468,7 +493,10 @@ class Signup extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Graduation Year</Caption>
+            <Caption>
+              <Caption>Graduation Year</Caption>
+              <Caption style={{ color: '#b40a34' }}> *</Caption>
+            </Caption>
             { focus === 'seven' ?
               <TextInput
                 styleName='focused'
@@ -518,7 +546,7 @@ class Signup extends Component {
                 styleName='focused'
                 onFocus={() => this.setState({ focus: 'nine' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Grace Community Church"
+                placeholder="Church"
                 value={Home_church}
                 onChangeText={this.onChangeHomeChurch}
                 returnKeyType='next'
@@ -527,7 +555,7 @@ class Signup extends Component {
               <TextInput
                 onFocus={() => this.setState({ focus: 'nine' })}
                 onSubmitEditing={() => this.setState({ focus: '' })}
-                placeholder="Grace Community Church"
+                placeholder="Church"
                 value={Home_church}
                 onChangeText={this.onChangeHomeChurch}
                 returnKeyType='next'
