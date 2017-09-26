@@ -19,7 +19,8 @@ class Settings extends Component {
         <Icon name="sidebar" style={{ paddingLeft: 10 }}/>
       </TouchableOpacity>
     ),
-    headerRight: <View />, headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
@@ -78,21 +79,28 @@ class Settings extends Component {
       Major,
       Address,
     } = this.state;
-    this.setState({ loading: true });
-    this.props.updateUserInfo(
-      this.state.userInfo.email,
-      First_name,
-      Last_name,
-      Phone_number,
-      Birthday,
-      Home_church,
-      Graduation_year,
-      Major,
-      Address,
-      this.state.userInfo.permissions,
-      this.state.userInfo.image,
-    );
-    this.setState({ loading: false, success: true });
+    let error = false;
+    if (First_name === '' || Last_name === '' || Phone_number === '' || Graduation_year === '') {
+      this.setState({ error: true });
+      error = true;
+    }
+    if (!error) {
+      this.setState({ loading: true });
+      this.props.updateUserInfo(
+        this.state.userInfo.email,
+        First_name,
+        Last_name,
+        Phone_number,
+        Birthday,
+        Home_church,
+        Graduation_year,
+        Major,
+        Address,
+        this.state.userInfo.permissions,
+        this.state.userInfo.image,
+      );
+      this.setState({ loading: false, success: true });
+    }
   }
 
   onChangeFirstName(First_name) {
@@ -163,16 +171,30 @@ class Settings extends Component {
       Address,
       focus,
     } = this.state;
+    let error = ' ';
+    if (this.state.error) {
+      error = 'Please fill out all fields';
+    }
+    if (this.props.error) {
+      error = this.props.error;
+    }
     return (
       <Screen>
         <KeyboardAwareScrollView ref={(c) => { this.scroll = c; }}>
           <Tile style={{ paddingTop: 20, paddingBottom: 0, flex: 0.8, backgroundColor: 'transparent' }} styleName='text-centric'>
             <Title>Account Info!</Title>
             <Subtitle>Feel free to edit any of your account information below.</Subtitle>
-            <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{this.props.error}</Subtitle>
+            <Subtitle style={{ paddingVertical: 10 }}>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+              <Subtitle> is required</Subtitle>
+            </Subtitle>
+            <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{error}</Subtitle>
           </Tile>
           <FormGroup>
-            <Caption>First Name</Caption>
+            <Caption>
+              <Caption>First Name </Caption>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+            </Caption>
             { focus === 'one' ?
               <TextInput
                 styleName='focused'
@@ -193,7 +215,10 @@ class Settings extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Last Name</Caption>
+            <Caption>
+              <Caption>Last Name </Caption>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+            </Caption>
             { focus === 'two' ?
               <TextInput
                 styleName='focused'
@@ -342,7 +367,10 @@ class Settings extends Component {
                 onDateChange={bday => (this.setState({ Birthday: bday }))}
               />
             }
-            <Caption>Phone Number</Caption>
+            <Caption>
+              <Caption>Phone Number </Caption>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+            </Caption>
             { focus === 'six' ?
               <TextInput
                 styleName='focused'
@@ -365,7 +393,10 @@ class Settings extends Component {
                 returnKeyType='next'
               />
             }
-            <Caption>Graduation Year</Caption>
+            <Caption>
+              <Caption>Graduation Year </Caption>
+              <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
+            </Caption>
             { focus === 'seven' ?
               <TextInput
                 styleName='focused'

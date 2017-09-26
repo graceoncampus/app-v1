@@ -48,6 +48,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
     case CHANGE_USER_PASSWORD_LOAD:
       return { ...state, loading: false };
+    case 'resetError':
+      return { ...state, error: action.error };
     case RESET_USER_PASSWORD:
       return { ...state, loading: true };
     case RESET_USER_PASSWORD_LOAD:

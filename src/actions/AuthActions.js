@@ -47,13 +47,14 @@ const createUserSuccess = (
 
   const image = 'image URL';
 
-  firstName = firstName.replace(/^\s+|\s+$/g,'');
-  lastName = lastName.replace(/^\s+|\s+$/g,'');
+  firstName = firstName.replace(/^\s+|\s+$/g, '');
+  lastName = lastName.replace(/^\s+|\s+$/g, '');
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then((User) => {
       const users = {};
-      const bday = moment(birthday, 'MM/DD/YYYY').unix();
+      let bday = '';
+      if (birthday !== '') bday = moment(birthday, 'MM/DD/YYYY').unix();
       users[`/users/${User.uid}`] = {
         email,
         firstName,
@@ -155,6 +156,12 @@ const loginUserFail = (dispatch, error) => {
     error,
   });
 };
+export const resetError = () => (dispatch) => {
+  dispatch({
+    type: 'resetError',
+    error: null,
+  });
+};
 
 export const userLogin = ({ Email, Password }) => (dispatch) => {
   dispatch({ type: USER_LOGIN });
@@ -231,7 +238,7 @@ export const changeUserPassword = (oldPassword, newPassword) => {
     firebase.auth().signInWithEmailAndPassword(email, oldPassword)
       .then(() => {
         firebase.auth().currentUser.updatePassword(newPassword).then(() => {
-          alert('Password change successful')
+          alert('Password change successful');
           dispatch(NavigationActions.navigate({ routeName: 'Settings' }));
           ChangeUserPasswordLoad(dispatch);
         }, () => {
@@ -260,10 +267,10 @@ export const resetUserPassword = Email => (dispatch) => {
   dispatch({ type: RESET_USER_PASSWORD });
   const auth = firebase.auth();
   auth.sendPasswordResetEmail(Email).then(() => {
-    alert("A password reset email has been sent to your email address");
+    alert('A password reset email has been sent to your email address');
     resetUserPasswordLoad(dispatch);
   }).catch(() => {
-    alert("It looks like an account with this email address has not been created before");
+    alert('It looks like an account with this email address has not been created before');
     resetUserPasswordLoad(dispatch);
   });
 };

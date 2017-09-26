@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import DatePicker from 'react-native-datepicker';
 
-import { createAccount } from '../../actions';
+import { createAccount, resetError } from '../../actions';
 
 class Signup extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -15,7 +15,8 @@ class Signup extends Component {
         <Icon name='back' style={{ paddingLeft: 10 }} />
       </TouchableOpacity>
     ),
-    headerRight: <View />,  headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
 
   })
@@ -35,6 +36,7 @@ class Signup extends Component {
       Home_church: '',
       Address: '',
     };
+    props.resetError();
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this);
@@ -67,7 +69,7 @@ class Signup extends Component {
     } = this.state;
 
     let error = false;
-    if (First_name === '' || Last_name === '' || Email === '' || Password === '' || Confirm_password === '' || Birthday === '' || Phone_number === '' || Graduation_year === '') {
+    if (First_name === '' || Last_name === '' || Email === '' || Password === '' || Confirm_password === '' || Phone_number === '' || Graduation_year === '') {
       this.setState({ error: true });
       error = true;
     }
@@ -79,7 +81,7 @@ class Signup extends Component {
       this.setState({ error: 'password length' });
       error = true;
     }
-    if (Phone_number.length != 10) {
+    if (Phone_number.length !== 10) {
       this.setState({ error: 'phone' });
       error = true;
     }
@@ -168,13 +170,13 @@ class Signup extends Component {
       error = 'Please fill out all fields';
     }
     if (this.state.error === 'phone') {
-      error = 'Please enter your 10 digit phone number'
+      error = 'Please enter your 10 digit phone number';
     }
     if (this.state.error === 'passwords') {
       error = 'Passwords do not match';
     }
     if (this.state.error === 'password length') {
-      error = 'Password must be at least 6 characters'
+      error = 'Password must be at least 6 characters';
     }
     if (this.props.error) error = this.props.error;
     const {
@@ -201,8 +203,8 @@ class Signup extends Component {
             </Subtitle>
             <Subtitle style={{ paddingVertical: 10 }}>
               <Subtitle style={{ color: '#b40a34' }}>* </Subtitle>
-                <Subtitle> is required</Subtitle>
-              </Subtitle>
+              <Subtitle> is required</Subtitle>
+            </Subtitle>
             <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{error}</Subtitle>
           </Tile>
           <FormGroup>
@@ -338,7 +340,6 @@ class Signup extends Component {
             }
             <Caption>
               <Caption>Birthday</Caption>
-              <Caption style={{ color: '#b40a34' }}> *</Caption>
             </Caption>
             { focus === 'eight' ?
               <DatePicker
@@ -600,4 +601,4 @@ const mapStateToProps = ({ AuthReducer }) => {
   return { user, error, loading, userInfo };
 };
 
-export default connect(mapStateToProps, { createAccount })(Signup);
+export default connect(mapStateToProps, { createAccount, resetError })(Signup);
