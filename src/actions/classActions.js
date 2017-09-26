@@ -9,7 +9,7 @@ import {
 
 export const classFetch = () => (dispatch) => {
   const classesData = firebase.database().ref('/classes');
-  classesData.once('value').then((snapshot) => {
+  classesData.on('value', (snapshot) => {
     dispatch({
       type: CLASS_FETCH,
       payload: snapshot.val(),
