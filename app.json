@@ -4,7 +4,7 @@
     "description": "Mobile application for the UCLA Grace on Campus Christian Fellowship",
     "slug":"GOC-v1",
     "version":"1.0.0",
-    "sdkVersion": "20.0.0",
+    "sdkVersion": "21.0.0",
     "orientation": "portrait",
     "icon": "./src/images/app-icon.png",
     "notification": {
@@ -25,6 +25,6 @@
     "android": {
       "package": "com.goc.mobile"
     }
-    
+
   }
 }
