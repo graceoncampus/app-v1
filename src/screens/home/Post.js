@@ -42,7 +42,7 @@ class Post extends Component {
         {
             (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
              <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
-               <Button onPress={() => console.log("HELLO")}>
+               <Button onPress={() => this.props.navigation.navigate('editPost', { announcement })}>
                  <Text>EDIT POST</Text>
                </Button>
              </View>

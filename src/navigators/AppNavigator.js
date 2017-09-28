@@ -23,11 +23,13 @@ import ChangePassword from '../screens/settings/changePassword';
 import Home from '../screens/home/homepage';
 import addPost from '../screens/home/addPost';
 import Post from '../screens/home/Post';
+import editPost from '../screens/home/editPost'
 
 const homeStack = StackNavigator({
   Home: { screen: Home },
   AddPost: { screen: addPost },
   Post: { screen: Post },
+  editPost: { screen: editPost },
 });
 
 const aboutStack = StackNavigator({
