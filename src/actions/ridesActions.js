@@ -6,16 +6,18 @@ import {
 
 export const ridesFetch = () => (dispatch) => {
   const data = [];
-  firebase.database().ref('rides/cars').once('value').then((snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      const driver = childSnapshot.key;
-      let riders = [];
-      if (typeof childSnapshot.val().riders !== 'undefined') {
-        riders = childSnapshot.val().riders;
-      }
-      const toAppend = { driver, riders };
-      data.push(toAppend);
-    });
+  firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
+    const allCars = snapshot.val();
+     allCars.forEach((car) => {
+       console.log(car);
+      // const driverName = car.driver.name;
+      // let riderNames = [];
+      //   car.val().riders().forEach((rider) => {
+      //   riderNames.push(rider.name)
+      //   const toAppend = { driverName, riderNames };
+      // });
+      // data.push(toAppend);
+     });
     dispatch({
       type: RIDES_FETCH,
       payload: data,
@@ -27,9 +29,9 @@ export const singleRideFetch = () => (dispatch) => {
   const data = [];
   const user = firebase.auth().currentUser;
   const myUid = user.uid;
-  firebase.database().ref('rides/cars').once('value').then((snapshot) => {
+  firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      const driver = childSnapshot.key;
+      //const driver = childSnapshot.val().driver.name;
       if (typeof childSnapshot.val().riders !== 'undefined') {
         const riders = childSnapshot.val().riders;
         const uids = childSnapshot.val().uids;
