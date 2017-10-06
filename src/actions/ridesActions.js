@@ -7,17 +7,20 @@ import {
 export const ridesFetch = () => (dispatch) => {
   const data = [];
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
-    const allCars = snapshot.val();
-     allCars.forEach((car) => {
-       console.log(car);
-      // const driverName = car.driver.name;
-      // let riderNames = [];
-      //   car.val().riders().forEach((rider) => {
-      //   riderNames.push(rider.name)
-      //   const toAppend = { driverName, riderNames };
-      // });
-      // data.push(toAppend);
-     });
+    const thisKey = Object.keys(snapshot.val())[0];
+    const allCars = snapshot.val()[thisKey].cars;
+    for (var key in allCars) {
+      if(allCars.hasOwnProperty(key)) {
+        var driver = allCars[key].driver.name;
+        const ridersObj = allCars[key].riders
+        let riders = [];
+        for (var riderKey in ridersObj) {
+          riders.push(ridersObj[riderKey].name);
+        }
+        const toAppend = { driver, riders };
+        data.push(toAppend);
+      }
+    }
     dispatch({
       type: RIDES_FETCH,
       payload: data,
@@ -30,12 +33,20 @@ export const singleRideFetch = () => (dispatch) => {
   const user = firebase.auth().currentUser;
   const myUid = user.uid;
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
-    snapshot.forEach((childSnapshot) => {
-      //const driver = childSnapshot.val().driver.name;
-      if (typeof childSnapshot.val().riders !== 'undefined') {
-        const riders = childSnapshot.val().riders;
-        const uids = childSnapshot.val().uids;
-        if (uids.includes(myUid)) {
+    const thisKey = Object.keys(snapshot.val())[0];
+    const allCars = snapshot.val()[thisKey].cars;
+    for (var key in allCars) {
+      let carUIDs = [];
+      if(allCars.hasOwnProperty(key)) {
+        const driver = allCars[key].driver.name;
+        carUIDs.push(allCars[key].driver.uid);
+        const ridersObj = allCars[key].riders
+        let riders = [];
+        for (var riderKey in ridersObj) {
+          riders.push(ridersObj[riderKey].name);
+          carUIDs.push(ridersObj[riderKey].uid);
+        }
+        if(carUIDs.includes(myUid)) {
           const toAppend = { driver, riders };
           data.push(toAppend);
           dispatch({
@@ -44,7 +55,7 @@ export const singleRideFetch = () => (dispatch) => {
           });
         }
       }
-    });
+    }
     const driver = 'Driver unavailable';
     const riders = [];
     const toAppend = { driver, riders };
