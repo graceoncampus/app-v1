@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
-import { Divider, Screen, Caption, View, Subtitle } from '@shoutem/ui';
+import { ScrollView, Linking } from 'react-native';
+import { Divider, Screen, Caption, View, Subtitle, Button, Text } from '@shoutem/ui';
 import { connect } from 'react-redux';
 
 import { singleRideFetch } from '../../actions';
@@ -20,6 +20,22 @@ class MyRide extends Component {
       ridesData: rides,
       isRefreshing: false,
     });
+  }
+
+  textRiders() {
+    var numbersArray = this.state.ridesData[0].riderNumbers;
+    var numberString = '';
+      for(var i = 0; i < numbersArray.length; i++) {
+        numbersArray[i] = numbersArray[i].replace(/\D/g,'');
+        if (i == 0) {
+          numberString = numbersArray[0];
+        }
+        else {
+          numberString = numberString + ',' + numbersArray[i];
+        }
+      }
+      console.log(numberString);
+      Linking.openURL(`sms:${numberString}`);
   }
 
   renderRides() {
@@ -44,6 +60,12 @@ class MyRide extends Component {
   render() {
     return (
       <Screen>
+      <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
+        <Button onPress={() => this.textRiders()}>
+          <Text>TEXT RIDERS</Text>
+        </Button>
+      </View>
+
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
           <Caption>Riders</Caption>

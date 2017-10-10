@@ -37,6 +37,7 @@ export const singleRideFetch = () => (dispatch) => {
     const allCars = snapshot.val()[thisKey].cars;
     for (var key in allCars) {
       let carUIDs = [];
+      let riderNumbers = [];
       if(allCars.hasOwnProperty(key)) {
         const driver = allCars[key].driver.name;
         carUIDs.push(allCars[key].driver.uid);
@@ -45,9 +46,10 @@ export const singleRideFetch = () => (dispatch) => {
         for (var riderKey in ridersObj) {
           riders.push(ridersObj[riderKey].name);
           carUIDs.push(ridersObj[riderKey].uid);
+          riderNumbers.push(ridersObj[riderKey].phoneNumber);
         }
         if(carUIDs.includes(myUid)) {
-          const toAppend = { driver, riders };
+          const toAppend = { driver, riders, riderNumbers };
           data.push(toAppend);
           dispatch({
             type: SINGLE_RIDE_FETCH,
