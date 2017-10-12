@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform,
-  ScrollView,
+  TouchableOpacity, StatusBar, Platform, ScrollView, Alert
 } from 'react-native';
 import moment from 'moment';
 import { Icon, Divider, Button, Title, View, Screen, Text, Caption } from '@shoutem/ui';
@@ -68,7 +67,7 @@ class classDetails extends Component {
     const { key, instructor } = this.props.navigation.state.params;
     if(classData[key].openSpots == 0) {
       return (
-        <Button styleName="red" >
+        <Button styleName="red" onPress={() => Alert.alert('','Class is still full')}>
           <Text>Class Full</Text>
         </Button>
       )
