@@ -33,7 +33,7 @@ class addPost extends Component {
       loading: false,
       height: 60,
       title: '',
-      selected: null,
+      selected: 'Grace on Campus',
     };
     this.onChangePost = this.onChangePost.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -64,6 +64,8 @@ class addPost extends Component {
       selected,
       title,
     } = this.state;
+    console.log("HELLO");
+    console.log(selected);
     this.setState({ loading: true });
     this.props.newPost(Post, title, selected);
     this.setState({ loading: false, success: true });

@@ -35,7 +35,7 @@ class editPost extends Component {
       title: '',
       Time: '',
       key: '',
-      selected: null,
+      selected: 'Grace on Campus',
     };
     this.onChangePost = this.onChangePost.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
