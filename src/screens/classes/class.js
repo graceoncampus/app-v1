@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform,
-  ScrollView,
+  TouchableOpacity, StatusBar, Platform, ScrollView, Alert
 } from 'react-native';
 import moment from 'moment';
 import { Icon, Divider, Button, Title, View, Screen, Text, Caption } from '@shoutem/ui';
@@ -64,6 +63,15 @@ class classDetails extends Component {
   }
 
   renderButton() {
+    const { classData } = this.props;
+    const { key, instructor } = this.props.navigation.state.params;
+    if(classData[key].openSpots == 0) {
+      return (
+        <Button styleName="red" onPress={() => Alert.alert('','Class is still full')}>
+          <Text>Class Full</Text>
+        </Button>
+      )
+    }
     if (this.isEnrolled()) {
       return (
         <Button styleName="red" onPress={() => this.unenroll()}>
@@ -101,7 +109,7 @@ class classDetails extends Component {
               <Caption><Caption styleName="bold">Enroll By: </Caption>
                 {moment.unix(deadline).format('MMMM Do')}</Caption>
           }
-          {openSpots && totalSpots &&
+          {totalSpots &&
               <Caption><Caption styleName="bold">Spots Left: </Caption>
                 {openSpots}/{totalSpots}</Caption>
           }

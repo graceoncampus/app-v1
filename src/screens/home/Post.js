@@ -35,13 +35,14 @@ class Post extends Component {
     render() {
       const { announcement } = this.props.navigation.state.params;
       let image;
-      if (announcement.role === 'A-Team') image = require('../../images/notification-icon.png');
+      if (announcement.role === 'Grace on Campus') image = require('../../images/notification-icon.png');
       else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
+
         <Screen>
         {
             (this.state.userInfo != null && this.state.userInfo.admin === 1) &&
-             <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
+            <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
                <Button onPress={() => this.props.navigation.navigate('editPost', { announcement })}>
                  <Text>EDIT POST</Text>
                </Button>

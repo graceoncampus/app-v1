@@ -9,7 +9,7 @@ import { Icon, Text, Tile, View, Divider, Title, TextInput as TInput, Screen, Fo
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 
-import { editCurrentPost } from '../../actions';
+import { editCurrentPost, deleteCurrentPost } from '../../actions';
 
 class editPost extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -35,7 +35,7 @@ class editPost extends Component {
       title: '',
       Time: '',
       key: '',
-      selected: null,
+      selected: 'Grace on Campus',
     };
     this.onChangePost = this.onChangePost.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -60,18 +60,29 @@ class editPost extends Component {
     this.setState({ submitted: false, title });
   }
 
-  confirmPost = () => {
+  confirmEdit = () => {
     Alert.alert(
       'Edit Post',
       'Are you sure you want to edit this post?',
       [
-        {text: 'Confirm', onPress: this.updateInfo },
+        {text: 'Confirm', onPress: this.editPost },
         {text: 'Cancel', onPress: () => console.log('OK Pressed!')},
       ]
     )
   }
 
-  updateInfo = () => {
+  confirmDelete = () => {
+    Alert.alert(
+      'Delete Post',
+      'Are you sure you want to delete this post?',
+      [
+        {text: 'Confirm', onPress: this.deletePost },
+        {text: 'Cancel', onPress: () => console.log('OK Pressed!')},
+      ]
+    )
+  }
+
+  editPost = () => {
     const {
       Post,
       selected,
@@ -84,7 +95,16 @@ class editPost extends Component {
     this.setState({ loading: false, success: true });
   }
 
-  renderButton = () => {
+  deletePost = () => {
+    const { key } = this.state;
+    this.setState({ loading: true });
+    this.props.deleteCurrentPost(key);
+    this.setState({ loading: false });
+  }
+
+
+
+  renderEditButton = () => {
     if (this.state.loading) {
       return (
         <Button style={{ marginBottom: 15, paddingVertical: 15 }}>
@@ -102,8 +122,24 @@ class editPost extends Component {
     }
 
     return (
-      <Button style={{ marginBottom: 15 }} onPress={this.confirmPost}>
+      <Button style={{ marginBottom: 15 }} onPress={this.confirmEdit}>
         <Text>EDIT POST</Text>
+      </Button>
+    );
+  }
+
+  renderDeleteButton =() => {
+    if (this.state.loading) {
+      return (
+        <Button style={{ marginBottom: 15, paddingVertical: 15 }}>
+          <Spinner style={{ color: '#fff' }}/>
+        </Button>
+      );
+    }
+
+    return (
+      <Button style={{ marginBottom: 15 }} styleName="red" onPress={this.confirmDelete}>
+        <Text>DELETE POST</Text>
       </Button>
     );
   }
@@ -207,12 +243,13 @@ class editPost extends Component {
               itemStyle={{ height: 120 }}
               selectedValue={this.state.selected}
               onValueChange={selected => this.setState({ selected })}>
-              <Picker.Item label="A-Team" value="A-Team" />
+              <Picker.Item label="Grace on Campus" value="Grace on Campus" />
               <Picker.Item label="Chris Gee" value="Chris Gee" />
             </Picker>
             <Divider />
             <View style={{ flex: 0.25 }} styleName='vertical h-center v-end'>
-              {this.renderButton()}
+              {this.renderEditButton()}
+              {this.renderDeleteButton()}
             </View>
           </FormGroup>
           <Divider />
@@ -229,4 +266,4 @@ const mapStateToProps = ({ HomeReducer }) => {
   return { postData };
 };
 
-export default connect(mapStateToProps, { editCurrentPost })(editPost);
+export default connect(mapStateToProps, { editCurrentPost, deleteCurrentPost })(editPost);

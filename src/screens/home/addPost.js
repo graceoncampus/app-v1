@@ -33,7 +33,7 @@ class addPost extends Component {
       loading: false,
       height: 60,
       title: '',
-      selected: null,
+      selected: 'Grace on Campus',
     };
     this.onChangePost = this.onChangePost.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -64,6 +64,8 @@ class addPost extends Component {
       selected,
       title,
     } = this.state;
+    console.log("HELLO");
+    console.log(selected);
     this.setState({ loading: true });
     this.props.newPost(Post, title, selected);
     this.setState({ loading: false, success: true });
@@ -192,7 +194,7 @@ class addPost extends Component {
               itemStyle={{ height: 120 }}
               selectedValue={this.state.selected}
               onValueChange={selected => this.setState({ selected })}>
-              <Picker.Item label="A-Team" value="A-Team" />
+              <Picker.Item label="Grace on Campus" value="Grace on Campus" />
               <Picker.Item label="Chris Gee" value="Chris Gee" />
             </Picker>
             <Divider />
