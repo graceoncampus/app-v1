@@ -71,7 +71,7 @@ class Home extends Component {
         if (item === announcement.key) result = true;
       });
       let image;
-      if (announcement.role === 'A-Team') image = require('../../images/notification-icon.png');
+      if (announcement.role === 'Grace on Campus') image = require('../../images/notification-icon.png');
       else if (announcement.role === 'Chris Gee') image = require('../../images/chrisgee.jpg');
       return (
         <TouchableOpacity key={announcement.key} onPress={() => this.setRead(announcement)}>

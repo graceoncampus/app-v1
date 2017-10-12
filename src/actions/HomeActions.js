@@ -9,6 +9,7 @@ import {
   POST_FETCH,
   GET_USER_PERMISSIONS,
   EDIT_CURRENT_POST,
+  DELETE_CURRENT_POST
 } from './types';
 
 
@@ -66,6 +67,22 @@ export const editCurrentPost = (Post, title, Time, role, key) => {
         payload: {},
       });
     });
+  }
+}
+
+export const deleteCurrentPost = (key) => {
+  return (dispatch) => {
+    const post = firebase.database().ref(`/posts/${key}`);
+    post.once('value').then(snapshot => {
+      snapshot.ref.remove()
+      .then(() => {
+        dispatch(NavigationActions.navigate({ routeName: 'Home' }));
+        dispatch({
+          type: DELETE_CURRENT_POST,
+          payload: {},
+        });
+      });
+    })
   }
 }
 

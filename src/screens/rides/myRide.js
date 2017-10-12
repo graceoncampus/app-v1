@@ -60,12 +60,6 @@ class MyRide extends Component {
   render() {
     return (
       <Screen>
-      <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
-        <Button onPress={() => this.textRiders()}>
-          <Text>TEXT RIDERS</Text>
-        </Button>
-      </View>
-
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
           <Caption>Riders</Caption>

@@ -192,7 +192,7 @@ class addPost extends Component {
               itemStyle={{ height: 120 }}
               selectedValue={this.state.selected}
               onValueChange={selected => this.setState({ selected })}>
-              <Picker.Item label="A-Team" value="A-Team" />
+              <Picker.Item label="Grace on Campus" value="Grace on Campus" />
               <Picker.Item label="Chris Gee" value="Chris Gee" />
             </Picker>
             <Divider />

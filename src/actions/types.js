@@ -26,4 +26,5 @@ export const SINGLE_RIDE_FETCH = 'singleRideFetch';
 export const NEW_POST = 'newPost';
 export const POST_FETCH = 'postFetch';
 export const EDIT_CURRENT_POST = 'editCurrentPost';
+export const DELETE_CURRENT_POST = 'deleteCurrentPost';
 export const GET_USER_PERMISSIONS = 'getUserPerm';

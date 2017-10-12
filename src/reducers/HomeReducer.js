@@ -3,6 +3,7 @@ import {
   POST_FETCH,
   GET_USER_PERMISSIONS,
   EDIT_CURRENT_POST,
+  DELETE_CURRENT_POST,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -19,6 +20,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, userInfo: action.payload };
     case EDIT_CURRENT_POST:
       return { ...state };
+      case DELETE_CURRENT_POST:
+        return { ...state };
     default:
       return state;
   }

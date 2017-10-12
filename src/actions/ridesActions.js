@@ -46,10 +46,9 @@ export const singleRideFetch = () => (dispatch) => {
         for (var riderKey in ridersObj) {
           riders.push(ridersObj[riderKey].name);
           carUIDs.push(ridersObj[riderKey].uid);
-          riderNumbers.push(ridersObj[riderKey].phoneNumber);
         }
         if(carUIDs.includes(myUid)) {
-          const toAppend = { driver, riders, riderNumbers };
+          const toAppend = { driver, riders };
           data.push(toAppend);
           dispatch({
             type: SINGLE_RIDE_FETCH,
