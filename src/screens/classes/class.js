@@ -67,7 +67,7 @@ class classDetails extends Component {
     const { key, instructor } = this.props.navigation.state.params;
     if(classData[key].openSpots == 0) {
       return (
-        <Button styleName="red" onPress={() => Alert.alert('','Class is still full')}>
+        <Button styleName="red" onPress={() => Alert.alert('','Sorry, class is still full')}>
           <Text>Class Full</Text>
         </Button>
       )

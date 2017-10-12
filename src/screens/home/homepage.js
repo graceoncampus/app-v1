@@ -81,11 +81,11 @@ class Home extends Component {
                 <View styleName="horizontal v-center">
                   <Image style={{ width: 25, height: 25, marginRight: 8 }} styleName="small-avatar" source={image} />
                   <View styleName='vertical'>
-                    <Subtitle style={{ marginBottom: 4, fontSize: 14, lineHeight: 18, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
+                    <Subtitle style={{ marginBottom: 2, fontSize: 14, lineHeight: 18, fontFamily: 'Akkurat-Bold' }}>{announcement.role}</Subtitle>
                     <Caption style={{ lineHeight: 15 }} >{announcement.time}</Caption>
                   </View>
                 </View>
-                <View style={{ marginTop: 15 }} styleName="vertical">
+                <View style={{ marginTop: 12 }} styleName="vertical">
                   <Subtitle style={{ fontFamily: 'Akkurat-Bold', marginBottom: 5 }} styleName="bold">{announcement.title}</Subtitle>
                   <Subtitle numberOfLines={2} ellipsizeMode='tail'>{announcement.post}</Subtitle>
                 </View>

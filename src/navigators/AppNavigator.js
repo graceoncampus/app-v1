@@ -101,10 +101,10 @@ const DrawerNav = DrawerNavigator({
     navigationOptions: {
       gesturesEnabled: false,
     } },
-  Rides: { screen: ridesStack,
-    navigationOptions: {
-      gesturesEnabled: false,
-    } },
+  // Rides: { screen: ridesStack,
+  //   navigationOptions: {
+  //     gesturesEnabled: false,
+  //   } },
   Roster: { screen: rosterStack,
     navigationOptions: {
       gesturesEnabled: false,

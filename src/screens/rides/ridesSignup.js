@@ -43,7 +43,10 @@ class RidesSignup extends Component {
     time += morning ? 'Morning, ' : '';
     time += evening ? 'Evening, ' : '';
     time += staying ? 'Staying' : '';
-    if (name === '' || address === '' || number === '' || number === '' || email === '' || time === '') { return this.setState({ error: 'Please fill out all fields' }); }
+    if (name === '' || address === '' || number === '' || number === '' || email === '' || time === '') {
+      this.scroll.scrollToPosition(0, 0, true);
+      return this.setState({ error: 'Please fill out all fields' });
+    }
     const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
     const postData = { name, address, number, comments, email, time, timestamp };
     const signup = firebase.database().ref('ridesSignup');
@@ -257,7 +260,7 @@ class RidesSignup extends Component {
     );
   }
   renderButton = () => {
-    if (this.state.loading) {
+    if (this.state.loading && this.state.error != 'Please fill out all fields') {
       return (
         <Button style={{ paddingVertical: 15 }}>
           <Spinner style={{ color: '#fff' }}/>
@@ -284,7 +287,7 @@ class RidesSignup extends Component {
     const { error } = this.state;
     return (
       <Screen>
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView ref={(c) => { this.scroll = c; }}>
           <Tile
             style={{
               paddingTop: 20,
