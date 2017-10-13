@@ -14,6 +14,7 @@ import gocConnect from '../screens/connect';
 import events from '../screens/events/events';
 import event from '../screens/events/event';
 import rides from '../screens/rides/ridesTab';
+import myRide from '../screens/rides/myRide';
 import classes from '../screens/classes/classes';
 import Class from '../screens/classes/class';
 import leader from '../screens/leadership/leader';
@@ -48,6 +49,8 @@ const classesStack = StackNavigator({
 
 const ridesStack = StackNavigator({
   Rides: { screen: rides },
+  MyRide: { screen: myRide },
+  User: { screen: IndividualUser }
 });
 
 const leadershipStack = StackNavigator({

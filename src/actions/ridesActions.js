@@ -29,7 +29,6 @@ export const ridesFetch = () => (dispatch) => {
 };
 
 export const singleRideFetch = () => (dispatch) => {
-  const data = [];
   const user = firebase.auth().currentUser;
   const myUid = user.uid;
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
@@ -37,7 +36,6 @@ export const singleRideFetch = () => (dispatch) => {
     const allCars = snapshot.val()[thisKey].cars;
     for (var key in allCars) {
       let carUIDs = [];
-      let riderNumbers = [];
       if(allCars.hasOwnProperty(key)) {
         const driver = allCars[key].driver.name;
         carUIDs.push(allCars[key].driver.uid);
@@ -48,22 +46,29 @@ export const singleRideFetch = () => (dispatch) => {
           carUIDs.push(ridersObj[riderKey].uid);
         }
         if(carUIDs.includes(myUid)) {
-          const toAppend = { driver, riders };
-          data.push(toAppend);
-          dispatch({
-            type: SINGLE_RIDE_FETCH,
-            payload: data,
-          });
+          const users = firebase.database().ref('users');
+          let userList = [];
+          users.once('value').then((snapshot) => {
+            for (var i = 0; i < carUIDs.length; i++) {
+              for (var key in snapshot.val()) {
+                if(carUIDs[i] == '') {
+                  userList.push('');
+                  break;
+                }
+                if(key === carUIDs[i]) {
+                  userList.push(snapshot.val()[key]);
+                  break;
+                }
+              }
+            }
+            const toAppend = { driver, riders, userList };
+            dispatch({
+              type: SINGLE_RIDE_FETCH,
+              payload: toAppend,
+            });
+          })
         }
       }
     }
-    const driver = 'Driver unavailable';
-    const riders = [];
-    const toAppend = { driver, riders };
-    data.push(toAppend);
-    dispatch({
-      type: SINGLE_RIDE_FETCH,
-      payload: data,
-    });
   });
 };

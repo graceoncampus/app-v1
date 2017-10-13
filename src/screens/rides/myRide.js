@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
 import { ScrollView, Linking } from 'react-native';
-import { Divider, Screen, Caption, View, Subtitle, Button, Text } from '@shoutem/ui';
+import { Divider, Screen, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity } from '@shoutem/ui';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { singleRideFetch } from '../../actions';
 
 class MyRide extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    drawer: () => ({
+      label: 'MyRide',
+    }),
+    title: 'MY RIDE',
+    headerLeft: (
+      <TouchableOpacity onPress={() => navigation.goBack(null)}>
+        <Icon name='back' style={{ paddingLeft: 10 }} />
+      </TouchableOpacity>
+    ),
+    headerRight: <View />,
+    headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0, height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
+    headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
+  })
+
   constructor(props) {
     super(props);
     this.state = {
       ridesData: [],
+      isRefreshing: true,
     };
     this.props.singleRideFetch();
   }
@@ -22,50 +39,79 @@ class MyRide extends Component {
     });
   }
 
-  textRiders() {
-    var numbersArray = this.state.ridesData[0].riderNumbers;
-    var numberString = '';
-      for(var i = 0; i < numbersArray.length; i++) {
-        numbersArray[i] = numbersArray[i].replace(/\D/g,'');
-        if (i == 0) {
-          numberString = numbersArray[0];
-        }
-        else {
-          numberString = numberString + ',' + numbersArray[i];
-        }
+  renderDriver() {
+    if(this.state.isRefreshing == false) {
+      const { driver, userList } = this.state.ridesData;
+      const user = userList[0];
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'User',
+        params: { user },
+      });
+      if(user !== '') {
+        return (
+        <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
+        <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
+        <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{driver}</Subtitle>
+        </View>
+        </TouchableOpacity>
+      )
+    }
+    else {
+      return (
+        <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
+        <Subtitle style={{ textAlign: 'center' }}>{driver}</Subtitle>
+        </View>
+      )
       }
-      console.log(numberString);
-      Linking.openURL(`sms:${numberString}`);
+    }
   }
 
-  renderRides() {
-    return this.state.ridesData.map((car, i) => {
-      if (i % 2 === 0) {
-        return (
-          <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }} styleName='horizontal space-between v-start' key={i}>
-            <Subtitle style={{ textAlign: 'right' }}>{car.driver}</Subtitle>
-            <Subtitle style={{ textAlign: 'right' }}>{car.riders.join('\n')}</Subtitle>
-          </View>
-        );
-      }
-      return (
-        <View style={{ paddingVertical: 10, paddingHorizontal: 15 }} styleName='horizontal space-between v-start' key={i}>
-          <Subtitle style={{ textAlign: 'right' }}>{car.driver}</Subtitle>
-          <Subtitle style={{ textAlign: 'right' }}>{car.riders.join('\n')}</Subtitle>
-        </View>
-      );
-    });
+  renderRiders() {
+    if(this.state.isRefreshing == false) {
+      const {riders, userList } = this.state.ridesData;
+      console.log("RIDER DATA");
+      console.log(riders);
+      console.log(userList);
+      let i = 1;
+      return riders.map((rider) => {
+        const user = userList[i]
+        i++;
+        const navigateAction = NavigationActions.navigate({
+          routeName: 'User',
+          params: { user },
+        });
+        if(user !== '') {
+          return (
+            <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+            <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{rider}</Subtitle>
+            </View>
+            </TouchableOpacity>
+          )
+        }
+        else {
+          return (
+            <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
+            <Subtitle style={{ textAlign: 'center' }}>{rider}</Subtitle>
+            </View>
+          )
+        }
+      });
+    }
   }
 
   render() {
     return (
       <Screen>
+        <ScrollView>
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
+        </Divider>
+        {this.renderDriver()}
+        <Divider styleName="section-header">
           <Caption>Riders</Caption>
         </Divider>
-        <ScrollView>
-          {this.renderRides()}
+        {this.renderRiders()}
         </ScrollView>
       </Screen>
     );

@@ -3,6 +3,7 @@ import { ScrollView, TouchableOpacity, StatusBar, Platform, AsyncStorage } from 
 import { Screen, Caption, Divider, Spinner, Row, Image, View, Subtitle, Icon, Text, Button } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import { postFetch, getUserPerm, setReadList } from '../../actions';
+import { getToken } from '../../utility';
 
 class Home extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -35,6 +36,7 @@ class Home extends Component {
   }
   componentWillMount() {
     this.props.postFetch();
+    getToken();
     AsyncStorage.getItem('read').then((readList) => {
       if (readList) this.setState({ readList: JSON.parse(readList) });
       else this.setState({ readList: [] });

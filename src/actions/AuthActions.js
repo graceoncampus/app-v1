@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import { NavigationActions } from 'react-navigation';
+import { AsyncStorage } from 'react-native';
 import moment from 'moment';
 import {
   CREATE_ACCOUNT,

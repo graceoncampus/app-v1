@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
-
+import { removeToken } from '../../utility';
 import { getUserInfo, updateUserInfo, userLogout } from '../../actions';
 
 class Settings extends Component {
@@ -157,6 +157,11 @@ class Settings extends Component {
         <Text>UPDATE ACCOUNT</Text>
       </Button>
     );
+  }
+
+  userLogout = async() => {
+    await removeToken();
+    this.props.userLogout();
   }
 
   render = () => {
@@ -491,7 +496,7 @@ class Settings extends Component {
               <Button style={{ marginBottom: 15 }} styleName='outline' onPress={() => this.props.navigation.navigate('inviteUser')}>
                 <Text>INVITE NEW USER</Text>
               </Button>
-              <Button styleName='outline' onPress={() => this.props.userLogout()}>
+              <Button styleName='outline' onPress={() => { this.userLogout() }} >
                 <Text>LOG OUT</Text>
               </Button>
             </View>
