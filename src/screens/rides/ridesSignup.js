@@ -39,6 +39,8 @@ class RidesSignup extends Component {
   signUp = () => {
     this.setState({ error: null, loading: true });
     const { name, address, number, comments, email, morning, evening, staying } = this.state;
+    const { currentUser } = firebase.auth();
+    const uid = currentUser.uid;
     let time = '';
     time += morning ? 'Morning, ' : '';
     time += evening ? 'Evening, ' : '';
@@ -48,7 +50,7 @@ class RidesSignup extends Component {
       return this.setState({ error: 'Please fill out all fields' });
     }
     const timestamp = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
-    const postData = { name, address, number, comments, email, time, timestamp };
+    const postData = { name, address, number, comments, email, morning, evening, staying, uid, timestamp };
     const signup = firebase.database().ref('ridesSignup');
     return signup.push(postData).then((this.setState({
       success: true,
