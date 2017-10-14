@@ -123,7 +123,7 @@ class MyRide extends Component {
     return (
       <Screen>
       <View styleName='vertical fill-parent v-center h-center'>
-        <Subtitle>Rides for church this Sunday have not been posted yet</Subtitle>
+        <Subtitle>Your car is not available at this time</Subtitle>
       </View>
       </Screen>
     );
