@@ -104,7 +104,7 @@ class MyRide extends Component {
   }
 
   render() {
-    if(this.state.ridesData && this.state.ridesData == {} )
+    if(this.state.ridesData)
     return (
       <Screen>
         <ScrollView>
