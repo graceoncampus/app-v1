@@ -7,6 +7,7 @@ import {
 export const ridesFetch = () => (dispatch) => {
   const data = [];
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
+    if(snapshot.val() !== null) {
     const thisKey = Object.keys(snapshot.val())[0];
     const allCars = snapshot.val()[thisKey].cars;
     for (var key in allCars) {
@@ -25,13 +26,21 @@ export const ridesFetch = () => (dispatch) => {
       type: RIDES_FETCH,
       payload: data,
     });
+  }
+  else {
+    dispatch({
+      type: RIDES_FETCH,
+      payload: null,
   });
-};
+}
+});
+}
 
 export const singleRideFetch = () => (dispatch) => {
   const user = firebase.auth().currentUser;
   const myUid = user.uid;
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
+    if(snapshot.val()) {
     const thisKey = Object.keys(snapshot.val())[0];
     const allCars = snapshot.val()[thisKey].cars;
     for (var key in allCars) {
@@ -70,5 +79,12 @@ export const singleRideFetch = () => (dispatch) => {
         }
       }
     }
+  }
+  else {
+    dispatch({
+      type: SINGLE_RIDE_FETCH,
+      payload: null,
+  });
+}
   });
 };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, Linking } from 'react-native';
-import { Divider, Screen, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity } from '@shoutem/ui';
+import { Divider, Screen, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity, Spinner } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -25,7 +25,7 @@ class MyRide extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ridesData: [],
+      ridesData: {},
       isRefreshing: true,
     };
     this.props.singleRideFetch();
@@ -33,6 +33,12 @@ class MyRide extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const rides = nextProps.myRideData;
+    if(rides == null) {
+      this.setState({
+        ridesData: null,
+        isRefreshing: false,
+      });
+    }
     this.setState({
       ridesData: rides,
       isRefreshing: false,
@@ -69,9 +75,6 @@ class MyRide extends Component {
   renderRiders() {
     if(this.state.isRefreshing == false) {
       const {riders, userList } = this.state.ridesData;
-      console.log("RIDER DATA");
-      console.log(riders);
-      console.log(userList);
       let i = 1;
       return riders.map((rider) => {
         const user = userList[i]
@@ -103,6 +106,8 @@ class MyRide extends Component {
   render() {
     return (
       <Screen>
+      {
+        this.state.ridesData != null ?
         <ScrollView>
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
@@ -113,6 +118,11 @@ class MyRide extends Component {
         </Divider>
         {this.renderRiders()}
         </ScrollView>
+        :
+        <View styleName='vertical fill-parent v-center h-center'>
+          <Subtitle>Rides for church this Sunday have not been posted yet</Subtitle>
+        </View>
+      }
       </Screen>
     );
   }

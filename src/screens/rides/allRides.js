@@ -16,10 +16,18 @@ class AllRides extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const rides = nextProps.ridesData;
+    if(rides == null) {
+        this.setState({
+        ridesData: null,
+        isRefreshing: false,
+      });
+    }
+    else {
     this.setState({
       ridesData: rides,
       isRefreshing: false,
     });
+  }
   }
 
   renderRides() {
@@ -42,22 +50,24 @@ class AllRides extends Component {
   }
 
   render() {
+    if (this.state.ridesData && this.state.ridesData.length)
     return (
       <Screen>
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
           <Caption>Riders</Caption>
         </Divider>
-        {
-          this.state.ridesData.length ?
             <ScrollView>
               {this.renderRides()}
             </ScrollView>
-            :
-            <View styleName='vertical fill-parent v-center h-center'>
-              <Spinner size='large'/>
-            </View>
-        }
+      </Screen>
+    )
+    else
+    return (
+      <Screen>
+      <View styleName='vertical fill-parent v-center h-center'>
+        <Subtitle>Rides for church this Sunday have not been posted yet</Subtitle>
+      </View>
       </Screen>
     );
   }
