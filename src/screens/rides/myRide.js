@@ -104,10 +104,9 @@ class MyRide extends Component {
   }
 
   render() {
+    if(this.state.ridesData && this.state.ridesData == {} )
     return (
       <Screen>
-      {
-        this.state.ridesData != null ?
         <ScrollView>
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
@@ -118,11 +117,14 @@ class MyRide extends Component {
         </Divider>
         {this.renderRiders()}
         </ScrollView>
-        :
-        <View styleName='vertical fill-parent v-center h-center'>
-          <Subtitle>Rides for church this Sunday have not been posted yet</Subtitle>
-        </View>
-      }
+      </Screen>
+    );
+    else
+    return (
+      <Screen>
+      <View styleName='vertical fill-parent v-center h-center'>
+        <Subtitle>Rides for church this Sunday have not been posted yet</Subtitle>
+      </View>
       </Screen>
     );
   }
