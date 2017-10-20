@@ -25,13 +25,5 @@ const getToken = async() => {
   });
 }
 
-const removeToken = async() => {
-  const token = await AsyncStorage.getItem('token');
-  const { currentUser } = firebase.auth();
-  const uid = currentUser.uid;
-  firebase.database().ref(`/users/${uid}/token`).orderByValue().equalTo(token).once('child_added', (snapshot) => {
-    snapshot.ref.remove();
-  })
-}
 
-export { lookupByUID, getToken, removeToken };
+export { lookupByUID, getToken };

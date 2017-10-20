@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { AsyncStorage, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import { Icon, Text, Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Caption, Button, Spinner } from '@shoutem/ui';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import DatePicker from 'react-native-datepicker';
-import { removeToken } from '../../utility';
+// import { removeToken } from '../../utility';
 import { getUserInfo, updateUserInfo, userLogout } from '../../actions';
+import * as firebase from 'firebase';
 
 class Settings extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -159,9 +160,17 @@ class Settings extends Component {
     );
   }
 
-  userLogout = async() => {
-    await removeToken();
-    this.props.userLogout();
+  Logout = async() => {
+    const token = await AsyncStorage.getItem('token');
+    const { currentUser: { uid } } = firebase.auth();
+    const tokenRef =  await firebase.database().ref(`/users/${uid}/token`);
+    console.log('about to look')
+    tokenRef.orderByValue().equalTo(token).once('child_added', snapshot => {
+      console.log(snapshot.ref)
+      snapshot.ref.remove().then(() => {
+          this.props.userLogout();
+      })
+    });
   }
 
   render = () => {
@@ -496,7 +505,7 @@ class Settings extends Component {
               <Button style={{ marginBottom: 15 }} styleName='outline' onPress={() => this.props.navigation.navigate('inviteUser')}>
                 <Text>INVITE NEW USER</Text>
               </Button>
-              <Button styleName='outline' onPress={() => { this.userLogout() }} >
+              <Button styleName='outline' onPress={() => { this.Logout(); }} >
                 <Text>LOG OUT</Text>
               </Button>
             </View>

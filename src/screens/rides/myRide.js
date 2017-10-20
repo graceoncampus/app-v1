@@ -49,13 +49,13 @@ class MyRide extends Component {
     if(this.state.isRefreshing == false) {
       const { driver, userList } = this.state.ridesData;
       const user = userList[0];
-      const navigateAction = NavigationActions.navigate({
-        routeName: 'User',
-        params: { user },
-      });
+      // const navigateAction = NavigationActions.navigate({
+      //   routeName: 'User',
+      //   params: { user },
+      // });
       if(user !== '') {
         return (
-        <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
+        <TouchableOpacity onPress={() => {  this.props.navigation.navigate('User', { user }); }}>
         <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
         <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{driver}</Subtitle>
         </View>
@@ -79,13 +79,13 @@ class MyRide extends Component {
       return riders.map((rider) => {
         const user = userList[i]
         i++;
-        const navigateAction = NavigationActions.navigate({
-          routeName: 'User',
-          params: { user },
-        });
+        // const navigateAction = NavigationActions.navigate({
+        //   routeName: 'User',
+        //   params: { user },
+        // });
         if(user !== '') {
           return (
-            <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('User', { user }); }}>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
             <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{rider}</Subtitle>
             </View>
