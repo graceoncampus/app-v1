@@ -36,12 +36,12 @@ class Events extends Component {
   }
 
   renderRow(event) {
-    const { title, startdate, enddate, key, bannerURI, location } = event;
+    const { title, startdate, enddate, key, mobileImage, location } = event;
     return (
       <TouchableOpacity key={key} onPress={() => { this.props.navigation.navigate('Event', { event }); }} >
         <Image
           styleName="large-banner"
-          source={{ uri: bannerURI === '' ? 'https://placeimg.com/640/480/nature' : bannerURI }}
+          source={{ uri: mobileImage === '' ? 'https://placeimg.com/640/480/nature' : mobileImage }}
         >
           <Tile>
             <Parallax driver={this.driver} scrollSpeed={1.2}>

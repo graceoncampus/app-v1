@@ -2,9 +2,12 @@ import firebase from 'firebase';
 import {
   RIDES_FETCH,
   SINGLE_RIDE_FETCH,
+  RIDES_FETCH_SUCCESS,
+  SINGLE_RIDE_FETCH_SUCCESS,
 } from './types';
 
 export const ridesFetch = () => (dispatch) => {
+  dispatch({ type: RIDES_FETCH });
   const data = [];
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
     if(snapshot.val() !== null) {
@@ -22,21 +25,33 @@ export const ridesFetch = () => (dispatch) => {
         data.push(toAppend);
       }
     }
-    dispatch({
-      type: RIDES_FETCH,
-      payload: data,
-    });
+    ridesFetchSuccess(dispatch, data);
+    // dispatch({
+    //   type: RIDES_FETCH,
+    //   payload: data,
+    // });
   }
   else {
-    dispatch({
-      type: RIDES_FETCH,
-      payload: null,
-  });
+    const data = null;
+    ridesFetchSuccess(dispatch, data);
+  //   dispatch({
+  //     type: RIDES_FETCH,
+  //     payload: null,
+  // });
 }
 });
 }
 
+const ridesFetchSuccess = (dispatch, data) => {
+  dispatch({
+    type: RIDES_FETCH_SUCCESS,
+    payload: data,
+  });
+};
+
+
 export const singleRideFetch = () => (dispatch) => {
+  dispatch({ type: SINGLE_RIDE_FETCH });
   const user = firebase.auth().currentUser;
   const myUid = user.uid;
   firebase.database().ref('rides').orderByKey().limitToFirst(1).once('value').then((snapshot) => {
@@ -71,20 +86,30 @@ export const singleRideFetch = () => (dispatch) => {
               }
             }
             const toAppend = { driver, riders, userList };
-            dispatch({
-              type: SINGLE_RIDE_FETCH,
-              payload: toAppend,
-            });
+            // dispatch({
+            //   type: SINGLE_RIDE_FETCH,
+            //   payload: toAppend,
+            // });
+            singleRideFetchSuccess(dispatch, toAppend);
           })
         }
       }
     }
   }
   else {
-    dispatch({
-      type: SINGLE_RIDE_FETCH,
-      payload: null,
-  });
+    const data = null;
+  //   dispatch({
+  //     type: SINGLE_RIDE_FETCH,
+  //     payload: null,
+  // });
+  singleRideFetchSuccess(dispatch, data);
 }
+  });
+};
+
+const singleRideFetchSuccess = (dispatch, data) => {
+  dispatch({
+    type: SINGLE_RIDE_FETCH_SUCCESS,
+    payload: data,
   });
 };

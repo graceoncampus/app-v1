@@ -32,9 +32,6 @@ class FadeInView extends React.Component {
             this.props.navigation.navigate('Main');
           } else { this.props.navigation.navigate('Auth'); }
         });
-        // if (firebase.auth().currentUser) {
-        //   this.props.navigation.navigate('Main');
-        // } else { this.props.navigation.navigate('Auth'); }
       }, 1200);
     }
   }

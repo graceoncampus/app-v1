@@ -65,7 +65,7 @@ class classDetails extends Component {
   renderButton() {
     const { classData } = this.props;
     const { key, instructor } = this.props.navigation.state.params;
-    if(classData[key].openSpots == 0) {
+    if(classData[key].openSpots == 0 && !this.isEnrolled()) {
       return (
         <Button styleName="red" onPress={() => Alert.alert('','Sorry, class is still full')}>
           <Text>Class Full</Text>

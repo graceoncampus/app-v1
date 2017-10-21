@@ -164,9 +164,7 @@ class Settings extends Component {
     const token = await AsyncStorage.getItem('token');
     const { currentUser: { uid } } = firebase.auth();
     const tokenRef =  await firebase.database().ref(`/users/${uid}/token`);
-    console.log('about to look')
     tokenRef.orderByValue().equalTo(token).once('child_added', snapshot => {
-      console.log(snapshot.ref)
       snapshot.ref.remove().then(() => {
           this.props.userLogout();
       })

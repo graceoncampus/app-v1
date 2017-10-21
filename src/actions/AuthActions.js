@@ -79,7 +79,6 @@ const createUserSuccess = (
         });
     });
   alert('Account created successfully!');
-  // dispatch(NavigationActions.navigate({ routeName: 'Main' }));
 };
 export const createAccount = (
   email,
@@ -148,7 +147,6 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_USER_SUCCESS,
     payload: user,
   });
-  // dispatch(NavigationActions.navigate({ routeName: 'Main' }));
 };
 
 const loginUserFail = (dispatch, error) => {
@@ -256,9 +254,6 @@ export const changeUserPassword = (oldPassword, newPassword) => {
 export const userLogout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   firebase.auth().signOut();
-  //.then(() => {
-    // dispatch(NavigationActions.navigate({ routeName: 'Auth' }));
-  //});
 };
 
 const resetUserPasswordLoad = (dispatch) => {

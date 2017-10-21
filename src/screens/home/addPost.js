@@ -64,8 +64,6 @@ class addPost extends Component {
       selected,
       title,
     } = this.state;
-    console.log("HELLO");
-    console.log(selected);
     this.setState({ loading: true });
     this.props.newPost(Post, title, selected);
     this.setState({ loading: false, success: true });
