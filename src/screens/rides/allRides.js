@@ -9,18 +9,25 @@ class AllRides extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ridesData: null,
+      ridesData: [],
     };
     this.props.ridesFetch();
   }
 
   componentWillReceiveProps = (nextProps) => {
     const rides = nextProps.ridesData;
-    if(rides != null) {
+    if(rides == null) {
         this.setState({
-        ridesData: rides,
+        ridesData: null,
+        isRefreshing: false,
       });
     }
+    else {
+    this.setState({
+      ridesData: rides,
+      isRefreshing: false,
+    });
+  }
   }
 
   renderRides() {
@@ -43,24 +50,18 @@ class AllRides extends Component {
   }
 
   render() {
-    if (this.props.isLoading == true)
-    return (
-      <View styleName='vertical fill-parent v-center h-center'>
-      <Spinner size='large'/>
-      </View>
-    );
-    else if (this.state.ridesData)
+    if (this.state.ridesData && this.state.ridesData.length)
     return (
       <Screen>
         <Divider styleName="section-header">
           <Caption>Driver</Caption>
           <Caption>Riders</Caption>
         </Divider>
-        <ScrollView>
-          {this.renderRides()}
-        </ScrollView>
+            <ScrollView>
+              {this.renderRides()}
+            </ScrollView>
       </Screen>
-    );
+    )
     else
     return (
       <Screen>
@@ -73,8 +74,8 @@ class AllRides extends Component {
 }
 
 const mapStateToProps = ({ RidesReducer }) => {
-  const { ridesData, isLoading } = RidesReducer;
-  return { ridesData, isLoading };
+  const { ridesData } = RidesReducer;
+  return { ridesData };
 };
 
 export default connect(mapStateToProps, { ridesFetch })(AllRides);

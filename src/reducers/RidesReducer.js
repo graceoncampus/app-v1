@@ -8,7 +8,7 @@ import {
 const INITIAL_STATE = {
   ridesData: [],
   myRideData: [],
-  isLoading: false,
+  isLoading: true,
 };
 
 export default (state = INITIAL_STATE, action) => {

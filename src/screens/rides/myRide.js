@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Linking } from 'react-native';
 import { Divider, Screen, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity, Spinner } from '@shoutem/ui';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { singleRideFetch } from '../../actions';
 
@@ -32,21 +33,29 @@ class MyRide extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const rides = nextProps.myRideData;
-    if(rides != null) {
+    if(rides == null) {
       this.setState({
-        ridesData: rides,
+        ridesData: null,
         isRefreshing: false,
       });
     }
+    this.setState({
+      ridesData: rides,
+      isRefreshing: false,
+    });
   }
 
   renderDriver() {
     if(this.state.isRefreshing == false) {
       const { driver, userList } = this.state.ridesData;
       const user = userList[0];
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'User',
+        params: { user },
+      });
       if(user !== '') {
         return (
-        <TouchableOpacity onPress={() => {  this.props.navigation.navigate('User', { user }); }}>
+        <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
         <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
         <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{driver}</Subtitle>
         </View>
@@ -70,9 +79,13 @@ class MyRide extends Component {
       return riders.map((rider) => {
         const user = userList[i]
         i++;
+        const navigateAction = NavigationActions.navigate({
+          routeName: 'User',
+          params: { user },
+        });
         if(user !== '') {
           return (
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('User', { user }); }}>
+            <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
             <View style={{ paddingVertical: 10, paddingHorizontal: 15 }}>
             <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{rider}</Subtitle>
             </View>
@@ -91,54 +104,48 @@ class MyRide extends Component {
   }
 
   render() {
-    if (this.props.isLoading == true)
-    return (
-      <View styleName='vertical fill-parent v-center h-center'>
-      <Spinner size='large'/>
-      </View>
-    );
-    else if(this.state.ridesData) {
-      if(this.state.ridesData.driver.toLowerCase() == "in progress") {
-        return (
-          <Screen>
-          <View styleName='vertical fill-parent v-center h-center'>
-          <Subtitle>It looks like your car is still in progress!</Subtitle>
-          </View>
-          </Screen>
-        );
-      }
-      else {
-        return (
-          <Screen>
-          <ScrollView>
-          <Divider styleName="section-header">
-          <Caption>Driver</Caption>
-          </Divider>
-          {this.renderDriver()}
-          <Divider styleName="section-header">
-          <Caption>Riders</Caption>
-          </Divider>
-          {this.renderRiders()}
-          </ScrollView>
-          </Screen>
-        );
-      }
-    }
-    else
-    return (
-      <Screen>
-      <View styleName='vertical fill-parent v-center h-center'>
-      <Subtitle>Your car is not available at this time</Subtitle>
-      </View>
-      </Screen>
-    );
-  }
+    if(this.state.ridesData) {
+     if(this.state.ridesData.driver.toLowerCase() == "in progress") {
+       return (
+         <Screen>
+         <View styleName='vertical fill-parent v-center h-center'>
+         <Subtitle>It looks like your car is still in progress!</Subtitle>
+         </View>
+         </Screen>
+       );
+     }
+     else {
+       return (
+         <Screen>
+         <ScrollView>
+         <Divider styleName="section-header">
+         <Caption>Driver</Caption>
+         </Divider>
+         {this.renderDriver()}
+         <Divider styleName="section-header">
+         <Caption>Riders</Caption>
+         </Divider>
+         {this.renderRiders()}
+         </ScrollView>
+         </Screen>
+       );
+     }
+   }
+   else
+   return (
+     <Screen>
+     <View styleName='vertical fill-parent v-center h-center'>
+     <Subtitle>Your car is not available at this time</Subtitle>
+     </View>
+     </Screen>
+   );
+ }
 }
 
 const mapStateToProps = ({ RidesReducer }) => {
-  const { myRideData, isLoading } = RidesReducer;
+  const { myRideData } = RidesReducer;
 
-  return { myRideData, isLoading };
+  return { myRideData };
 };
 
 export default connect(mapStateToProps, { singleRideFetch })(MyRide);
