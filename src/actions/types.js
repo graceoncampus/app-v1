@@ -21,6 +21,7 @@ export const CLASS_ENROLL_FAIL = 'classEnrollFail';
 export const CLASS_UNENROLL = 'classUnenroll';
 export const CLASS_ADD = 'classAdd';
 export const GET_ALL_USERS = 'get_all_users';
+export const GET_ALL_USERS_SUCCESS = 'getAllUsersSuccess';
 export const RIDES_FETCH = 'ridesFetch';
 export const RIDES_FETCH_SUCCESS = 'ridesFetchSuccess';
 export const SINGLE_RIDE_FETCH = 'singleRideFetch';

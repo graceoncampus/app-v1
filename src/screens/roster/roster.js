@@ -3,13 +3,14 @@ import {
   TouchableOpacity, StatusBar, Platform,
   ScrollView,
 } from 'react-native';
-import { Icon, Screen, Row, ListView, FormGroup, View, TextInput, Divider, Subtitle } from '@shoutem/ui';
+import { Icon, Screen, Row, ListView, FormGroup, View, TextInput, Divider, Subtitle, Spinner } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { filter, some, includes } from 'lodash/collection';
 import { debounce } from 'lodash/function';
 
-import * as actions from '../../actions/';
+import { getAllUsers } from '../../actions/rosterActions';
+// import * as actions from '../../actions/';
 
 class Roster extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -90,21 +91,32 @@ headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0
     );
   }
 
-  render = () => (
-    <Screen>
-      <FormGroup styleName='search'>
-        <TextInput
-          onChangeText={this.onChangeText}
-          placeholder={'Search'}
-        />
-      </FormGroup>
-      { this.renderResults() }
-    </Screen>
-  )
+  render() {
+    if (this.props.isLoading===true)
+      return (
+        <View styleName='vertical fill-parent v-center h-center'>
+        <Spinner style={{ size: 'large' }}/>
+        </View>
+      );
+    else
+      return (
+      <Screen>
+        <FormGroup styleName='search'>
+          <TextInput
+            onChangeText={this.onChangeText}
+            placeholder={'Search'}
+          />
+        </FormGroup>
+        { this.renderResults() }
+      </Screen>
+      );
+  }
 }
 
-function mapStateToProps(state) {
-  return { roster: _.toArray(state.roster) };
-}
+const mapStateToProps = ({ rosterReducer }) => {
+  const { userList, isLoading } = rosterReducer;
+  const roster = _.toArray(userList);
+  return { roster, isLoading };
+};
 
-export default connect(mapStateToProps, actions)(Roster);
+export default connect(mapStateToProps, { getAllUsers })(Roster);

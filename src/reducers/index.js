@@ -3,7 +3,7 @@ import { AppNavigator } from '../navigators/AppNavigator';
 import AuthReducer from './AuthReducer';
 import EventsReducer from './EventsReducer';
 import EventsFormReducer from './EventsFormReducer';
-import roster from './roster';
+import rosterReducer from './rosterReducer';
 import ClassReducer from './ClassReducer';
 import RidesReducer from './RidesReducer';
 import HomeReducer from './HomeReducer';
@@ -20,7 +20,7 @@ const appReducer = combineReducers({
   AuthReducer,
   ClassReducer,
   RidesReducer,
-  roster,
+  rosterReducer,
   events: EventsReducer,
   EventsFormReducer,
   HomeReducer,
