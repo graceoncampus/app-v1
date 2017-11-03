@@ -25,6 +25,7 @@ export const RIDES_FETCH = 'ridesFetch';
 export const RIDES_FETCH_SUCCESS = 'ridesFetchSuccess';
 export const SINGLE_RIDE_FETCH = 'singleRideFetch';
 export const SINGLE_RIDE_FETCH_SUCCESS = 'singleRideFetchSuccess';
+export const RIDE_SIGNUP_CHECK = 'rideSignupCheck';
 export const NEW_POST = 'newPost';
 export const POST_FETCH = 'postFetch';
 export const EDIT_CURRENT_POST = 'editCurrentPost';

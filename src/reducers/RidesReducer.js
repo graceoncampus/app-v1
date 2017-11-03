@@ -3,11 +3,13 @@ import {
   SINGLE_RIDE_FETCH,
   RIDES_FETCH_SUCCESS,
   SINGLE_RIDE_FETCH_SUCCESS,
+  RIDE_SIGNUP_CHECK,
 } from '../actions/types';
 
 const INITIAL_STATE = {
   ridesData: [],
   myRideData: [],
+  alreadySignedUp: false,
   isLoading: true,
 };
 
@@ -21,6 +23,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isLoading: true };
     case SINGLE_RIDE_FETCH_SUCCESS:
       return { ...state, myRideData: action.payload, isLoading: false };
+    case RIDE_SIGNUP_CHECK:
+      return { ...state, alreadySignedUp: true };
     default:
       return state;
   }

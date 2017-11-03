@@ -1,9 +1,11 @@
 import firebase from 'firebase';
+import _ from 'lodash';
 import {
   RIDES_FETCH,
   SINGLE_RIDE_FETCH,
   RIDES_FETCH_SUCCESS,
   SINGLE_RIDE_FETCH_SUCCESS,
+  RIDE_SIGNUP_CHECK,
 } from './types';
 
 export const ridesFetch = () => (dispatch) => {
@@ -26,18 +28,10 @@ export const ridesFetch = () => (dispatch) => {
       }
     }
     ridesFetchSuccess(dispatch, data);
-    // dispatch({
-    //   type: RIDES_FETCH,
-    //   payload: data,
-    // });
   }
   else {
     const data = null;
     ridesFetchSuccess(dispatch, data);
-  //   dispatch({
-  //     type: RIDES_FETCH,
-  //     payload: null,
-  // });
 }
 });
 }
@@ -58,50 +52,36 @@ export const singleRideFetch = () => (dispatch) => {
     if(snapshot.val()) {
     const thisKey = Object.keys(snapshot.val())[0];
     const allCars = snapshot.val()[thisKey].cars;
-    for (var key in allCars) {
+    const data = _.filter(allCars, car => (car.driver.uid===myUid || _.filter(car.riders, rider => (rider.uid===myUid)).length > 0));
       let carUIDs = [];
-      if(allCars.hasOwnProperty(key)) {
-        const driver = allCars[key].driver.name;
-        carUIDs.push(allCars[key].driver.uid);
-        const ridersObj = allCars[key].riders
-        let riders = [];
-        for (var riderKey in ridersObj) {
-          riders.push(ridersObj[riderKey].name);
-          carUIDs.push(ridersObj[riderKey].uid);
-        }
-        if(carUIDs.includes(myUid)) {
-          const users = firebase.database().ref('users');
-          let userList = [];
-          users.once('value').then((snapshot) => {
-            for (var i = 0; i < carUIDs.length; i++) {
-              for (var key in snapshot.val()) {
-                if(carUIDs[i] == '') {
-                  userList.push('');
-                  break;
-                }
-                if(key === carUIDs[i]) {
-                  userList.push(snapshot.val()[key]);
-                  break;
-                }
-              }
-            }
-            const toAppend = { driver, riders, userList };
-            // dispatch({
-            //   type: SINGLE_RIDE_FETCH,
-            //   payload: toAppend,
-            // });
-            singleRideFetchSuccess(dispatch, toAppend);
-          })
-        }
+      let userList = [];
+      let riders = [];
+      const driver = data[0].driver.name;
+      carUIDs.push(data[0].driver.uid);
+      for (var riderKey in data[0].riders) {
+        riders.push(data[0].riders[riderKey].name);
+        carUIDs.push(data[0].riders[riderKey].uid);
       }
-    }
+      const users = firebase.database().ref('users');
+      users.once('value').then((snapshot) => {
+        for (var j = 0; j < carUIDs.length; j++) {
+          for (var key in snapshot.val()) {
+            if(carUIDs[j] == '') {
+              userList.push('');
+              break;
+            }
+            if(key === carUIDs[j]) {
+              userList.push(snapshot.val()[key]);
+              break;
+            }
+          }
+        }
+        const toAppend = { driver, riders, userList };
+        singleRideFetchSuccess(dispatch, toAppend);
+      });
   }
   else {
     const data = null;
-  //   dispatch({
-  //     type: SINGLE_RIDE_FETCH,
-  //     payload: null,
-  // });
   singleRideFetchSuccess(dispatch, data);
 }
   });
@@ -113,3 +93,18 @@ const singleRideFetchSuccess = (dispatch, data) => {
     payload: data,
   });
 };
+
+export const rideSignupCheck = () => {
+  return (dispatch) => {
+    const user = firebase.auth().currentUser;
+    const myEmail = user.email;
+    firebase.database().ref('ridesSignup').once('value').then((snapshot) => {
+      if(snapshot.val()) {
+        const isSignedUp = _.filter(snapshot.val(), check => (check.email===myEmail ));
+        dispatch({
+          type: RIDE_SIGNUP_CHECK,
+        });
+      }
+    });
+  };
+}

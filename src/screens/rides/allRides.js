@@ -15,23 +15,13 @@ class AllRides extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const rides = nextProps.ridesData;
-    if(rides == null) {
-        this.setState({
-        ridesData: null,
-        isRefreshing: false,
-      });
-    }
-    else {
-    this.setState({
-      ridesData: rides,
-      isRefreshing: false,
-    });
-  }
+    const { ridesData } = nextProps;
+    if (ridesData) this.setState({ ridesData });
   }
 
   renderRides() {
-    return this.state.ridesData.map((car, i) => {
+    const { ridesData } = this.state;
+    return ridesData.map((car, i) => {
       if (i % 2 === 0) {
         return (
           <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }} styleName='horizontal space-between v-start' key={i}>
@@ -50,7 +40,15 @@ class AllRides extends Component {
   }
 
   render() {
-    if (this.state.ridesData && this.state.ridesData.length)
+    const { ridesData } = this.state;
+    if(this.props.isLoading == true) {
+      return (
+        <View styleName='vertical fill-parent v-center h-center'>
+        <Spinner style={{ size: 'large' }}/>
+        </View>
+      );
+    }
+    if (ridesData && ridesData.length)
     return (
       <Screen>
         <Divider styleName="section-header">
@@ -74,8 +72,8 @@ class AllRides extends Component {
 }
 
 const mapStateToProps = ({ RidesReducer }) => {
-  const { ridesData } = RidesReducer;
-  return { ridesData };
+  const { ridesData, isLoading } = RidesReducer;
+  return { ridesData, isLoading };
 };
 
 export default connect(mapStateToProps, { ridesFetch })(AllRides);

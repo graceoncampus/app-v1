@@ -5,6 +5,7 @@ import { Tile, View, Divider, Title, Screen, TextInput, FormGroup, Subtitle, Cap
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as firebase from 'firebase';
 import { getUserInfo } from '../../actions/AuthActions';
+import { rideSignupCheck } from '../../actions/ridesActions';
 
 class RidesSignup extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class RidesSignup extends Component {
       success: false,
     };
     this.props.getUserInfo();
+    this.props.rideSignupCheck();
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeAddress = this.onChangeAddress.bind(this);
     this.onChangeNumber = this.onChangeNumber.bind(this);
@@ -270,7 +272,7 @@ class RidesSignup extends Component {
       );
     }
 
-    if (this.state.success) {
+    if (this.state.success || this.props.alreadySignedUp) {
       return (
         <Button styleName='success'>
           <View styleName='horizontal h-center v-center fill-parent'><Text styleName="buttonText" style={{ paddingLeft: 15 }} >SIGNED UP</Text><Icon style={{ color: '#fff', paddingLeft: 10, paddingVertical: 10, fontSize: 16, lineHeight: 13 }} name="checkbox-on" /></View>
@@ -300,7 +302,7 @@ class RidesSignup extends Component {
             styleName='text-centric'
           >
             <Title>Do It!</Title>
-            <Subtitle>Sign up for a ride to church</Subtitle>
+            <Subtitle>Sign up for a ride to church for this coming Sunday</Subtitle>
             <Subtitle style={{ color: '#b40a34', paddingVertical: 10 }} >{error}</Subtitle>
           </Tile>
           { this.renderForm() }
@@ -311,9 +313,10 @@ class RidesSignup extends Component {
 }
 
 
-const mapStateToProps = ({ AuthReducer }) => {
+const mapStateToProps = ({ AuthReducer, RidesReducer }) => {
   const { userInfo } = AuthReducer;
-  return { userInfo };
+  const { alreadySignedUp } = RidesReducer;
+  return { userInfo, alreadySignedUp };
 };
 
-export default connect(mapStateToProps, { getUserInfo })(RidesSignup);
+export default connect(mapStateToProps, { getUserInfo, rideSignupCheck })(RidesSignup);

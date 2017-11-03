@@ -26,27 +26,16 @@ class MyRide extends Component {
     super(props);
     this.state = {
       ridesData: null,
-      isRefreshing: true,
     };
     this.props.singleRideFetch();
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const rides = nextProps.myRideData;
-    if(rides == null) {
-      this.setState({
-        ridesData: null,
-        isRefreshing: false,
-      });
-    }
-    this.setState({
-      ridesData: rides,
-      isRefreshing: false,
-    });
+    const { myRideData } = nextProps;
+    if (myRideData) this.setState({ ridesData: myRideData });
   }
 
   renderDriver() {
-    if(this.state.isRefreshing == false) {
       const { driver, userList } = this.state.ridesData;
       const user = userList[0];
       const navigateAction = NavigationActions.navigate({
@@ -68,12 +57,10 @@ class MyRide extends Component {
         <Subtitle style={{ textAlign: 'center' }}>{driver}</Subtitle>
         </View>
       )
-      }
     }
   }
 
   renderRiders() {
-    if(this.state.isRefreshing == false) {
       const {riders, userList } = this.state.ridesData;
       let i = 1;
       return riders.map((rider) => {
@@ -100,10 +87,16 @@ class MyRide extends Component {
           )
         }
       });
-    }
   }
 
   render() {
+    if(this.props.isLoading == true) {
+      return (
+        <View styleName='vertical fill-parent v-center h-center'>
+        <Spinner style={{ size: 'large' }}/>
+        </View>
+      );
+    }
     if(this.state.ridesData) {
      if(this.state.ridesData.driver.toLowerCase() == "in progress") {
        return (
@@ -143,9 +136,9 @@ class MyRide extends Component {
 }
 
 const mapStateToProps = ({ RidesReducer }) => {
-  const { myRideData } = RidesReducer;
+  const { myRideData, isLoading } = RidesReducer;
 
-  return { myRideData };
+  return { myRideData, isLoading };
 };
 
 export default connect(mapStateToProps, { singleRideFetch })(MyRide);
