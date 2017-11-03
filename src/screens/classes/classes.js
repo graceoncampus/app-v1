@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   TouchableOpacity, StatusBar, Platform,
 } from 'react-native';
-import { Icon, Screen, Button, Image, View, Caption, Row, ListView, Divider, Title } from '@shoutem/ui';
+import { Icon, Screen, Button, Image, View, Caption, Row, ListView, Divider, Title, Text } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import moment from 'moment';

@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import {
   TouchableOpacity, StatusBar, Platform,
   ScrollView,
+  Linking,
 } from 'react-native';
 import moment from 'moment';
-import { Icon, Divider, Button, Title, View, Screen, Text, Caption } from '@shoutem/ui';
+import { Icon, Divider, Button, Title, View, Screen, Text, Caption, Spinner } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
-import { classEnroll, classUnenroll, getClassPerm } from '../../actions';
+import { classUsersFetch, studentsInfoFetch } from '../../actions';
+import { lookupByUID } from '../../utility'
 
-class classDetails extends Component {
+class classInfo extends Component {
   static navigationOptions = ({ navigation }) => ({
     drawer: () => ({
       label: 'Classes',
@@ -29,71 +31,68 @@ class classDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userInfo: {},
+      allUsers: {},
+      enrolledStudents: [],
+      allEmails: [],
     };
-    this.unenroll = this.unenroll.bind(this);
-    this.isEnrolled = this.isEnrolled.bind(this);
-    this.enroll = this.enroll.bind(this);
-    this.props.getClassPerm();
+    this.props.classUsersFetch();
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    const data = nextProps.userInfo;
+ componentWillReceiveProps = async(nextProps) => {
+    const data = nextProps.allUsers;
     this.setState({
-      userInfo: data,
+      allUsers: data,
+      enrolledStudents: [],
+      allEmails: [],
     });
-  }
-
-  unenroll() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
-    const numSpots = classData[key].openSpots;
-    this.props.classUnenroll(key, numSpots);
-  }
-
-  enroll() {
-    const { classData } = this.props;
-    const { key } = this.props.navigation.state.params;
-    const numSpots = classData[key].openSpots;
-    if (!this.isEnrolled()) {
-      this.props.classEnroll(key, numSpots);
-    }
-  }
-
-  isEnrolled() {
-    const { classData } = this.props;
-    const { key } = this.props.navigation.state.params;
-    const currentUid = firebase.auth().currentUser.uid;
-    const allStudents = classData[key].students;
-    for (const student in allStudents) {
-      if (allStudents.hasOwnProperty(student)) {
-        if (currentUid === allStudents[student].uid) {
-          return true;
-        }
+    const { students } = classData[key];
+    let useruid = '';
+    let name = '';
+    let enrolled = [];
+    let emails = [];
+    let email = '';
+    console.log(students);
+    for (const student in students) {
+          useruid = (students[student].uid);
+          name = await studentsInfoFetch(useruid);
+          email = name.split(":")[1];
+          email = email.slice(4);
+          email.trim();
+          emails.push(email);
+          this.appendName(name,enrolled);
       }
-    }
-    return false;
+      console.log(emails[0]);
+      this.setState({
+        enrolledStudents: enrolled,
+        allEmails: emails,
+      })
   }
 
-  renderButton() {
-    if (this.isEnrolled()) {
-      return (
-        <Button styleName="red" onPress={() => this.unenroll()}>
-          <Text>Unenroll</Text>
-        </Button>
-      );
-    }
-    return (
-      <Button onPress={() => this.enroll()}>
-        <Text>Enroll</Text>
-      </Button>
-    );
+  appendName(name, enrolled) {
+    enrolled.push(name + '\n');
+    return (enrolled);
   }
+  showStudents() {
+    return this.state.enrolledStudents.map((student) => {return (<Text>{student}</Text>)});
+
+  }
+
+  emailString(){
+    let str = 'mailto:?';
+    for (const i in this.state.allEmails){
+      str += '&cc=' + this.state.allEmails[i];
+    }
+    return str;
+  }
+
 
   render = () => {
     const { classData } = this.props;
     const { key, instructor } = this.props.navigation.state.params;
-    const { title, location, startDate, endDate, deadline, totalSpots, openSpots, details, day, classTime } = classData[key];
+    const { title, location, startDate, endDate, deadline, totalSpots, openSpots, day, classTime, students } = classData[key];
+    if (this.state.enrolledStudents.length > 0)
     return (
       <Screen>
         <Divider />
@@ -120,35 +119,32 @@ class classDetails extends Component {
           <Divider />
         </View>
         <ScrollView>
-          { details &&
+          { students &&
             <View style={{ backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
               <Text>
-                { details }
+                {this.showStudents()}
               </Text>
+              <Button styleName='stacked clear' onPress={() => Linking.openURL(this.emailString())} >
+                <Icon name="email" />
+                <Text>EMAIL</Text>
+              </Button>
             </View>
           }
         </ScrollView>
-        {
-          (this.state.userInfo != null && this.state.userInfo.classes === 1) &&
-           <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
-             <Button onPress={() => { this.props.navigation.navigate('ClassInfo', { key, instructor }); }}>
-               <Text>VIEW CLASS INFORMATION</Text>
-             </Button>
-           </View>
-        }
-        {
-          (this.state.userInfo != null && this.state.userInfo.classes !== 1) &&
-          <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
-            {this.renderButton()}
-          </View>
-        }
+      </Screen>
+    );
+    return (
+      <Screen>
+        <View styleName='vertical fill-parent v-center h-center'>
+          <Spinner size="large" />
+        </View>
       </Screen>
     );
   }
 }
 const mapStateToProps = ({ ClassReducer }) => {
-  const { classData, loading, error, userInfo } = ClassReducer;
-  return { classData, loading, error, userInfo };
+  const { classData, loading, error, allUsers, enrolledStudents } = ClassReducer;
+  return { classData, loading, error, allUsers, enrolledStudents };
 };
 
-export default connect(mapStateToProps, { classEnroll, classUnenroll, getClassPerm })(classDetails);
+export default connect(mapStateToProps, { classUsersFetch, studentsInfoFetch })(classInfo);
