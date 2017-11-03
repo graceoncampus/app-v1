@@ -22,6 +22,7 @@ class RidesSignup extends Component {
       error: null,
       loading: false,
       success: false,
+      alreadySignedUp: false,
     };
     this.props.getUserInfo();
     this.props.rideSignupCheck();
@@ -70,11 +71,13 @@ class RidesSignup extends Component {
   }
   componentWillReceiveProps = (nextProps) => {
     const data = nextProps.userInfo;
+    const isSignedUp = nextProps.alreadySignedUp;
     const initValues = {
       name: `${data.firstName} ${data.lastName}`,
       email: data.email,
       address: data.address,
       number: data.phoneNumber,
+      alreadySignedUp: isSignedUp,
     };
     this.setState({
       ...initValues,
@@ -272,14 +275,13 @@ class RidesSignup extends Component {
       );
     }
 
-    if (this.state.success || this.props.alreadySignedUp) {
+    if (this.state.alreadySignedUp || this.state.success ) {
       return (
         <Button styleName='success'>
           <View styleName='horizontal h-center v-center fill-parent'><Text styleName="buttonText" style={{ paddingLeft: 15 }} >SIGNED UP</Text><Icon style={{ color: '#fff', paddingLeft: 10, paddingVertical: 10, fontSize: 16, lineHeight: 13 }} name="checkbox-on" /></View>
         </Button>
       );
     }
-
     return (
       <Button onPress={() => this.signUp()}>
         <Text>SIGN UP</Text>

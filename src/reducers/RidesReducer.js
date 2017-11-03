@@ -24,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
     case SINGLE_RIDE_FETCH_SUCCESS:
       return { ...state, myRideData: action.payload, isLoading: false };
     case RIDE_SIGNUP_CHECK:
-      return { ...state, alreadySignedUp: true };
+      return { ...state, alreadySignedUp: action.payload };
     default:
       return state;
   }

@@ -98,11 +98,16 @@ export const rideSignupCheck = () => {
   return (dispatch) => {
     const user = firebase.auth().currentUser;
     const myEmail = user.email;
+    var check = false;
     firebase.database().ref('ridesSignup').once('value').then((snapshot) => {
       if(snapshot.val()) {
-        const isSignedUp = _.filter(snapshot.val(), check => (check.email===myEmail ));
+        const isSignedUp = _.filter(snapshot.val(), ['email', myEmail]);
+        if (isSignedUp.length != 0) {
+          check = true
+        }
         dispatch({
           type: RIDE_SIGNUP_CHECK,
+          payload: check,
         });
       }
     });
