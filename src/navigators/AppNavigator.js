@@ -25,6 +25,11 @@ import Home from '../screens/home/homepage';
 import addPost from '../screens/home/addPost';
 import Post from '../screens/home/Post';
 import editPost from '../screens/home/editPost'
+import CalendarScreen from '../screens/calendar';
+
+const calendarStack = StackNavigator({
+  GOCCalendar: { screen: CalendarScreen },
+});
 
 const homeStack = StackNavigator({
   Home: { screen: Home },
@@ -93,6 +98,10 @@ const DrawerNav = DrawerNavigator({
       gesturesEnabled: false,
     } },
   Connect: { screen: connectStack,
+    navigationOptions: {
+      gesturesEnabled: false,
+    } },
+  Calendar: { screen: calendarStack,
     navigationOptions: {
       gesturesEnabled: false,
     } },
