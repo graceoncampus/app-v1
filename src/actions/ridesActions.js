@@ -32,8 +32,8 @@ export const ridesFetch = () => (dispatch) => {
   else {
     const data = null;
     ridesFetchSuccess(dispatch, data);
-}
-});
+    }
+  });
 }
 
 const ridesFetchSuccess = (dispatch, data) => {
