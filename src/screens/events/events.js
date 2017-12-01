@@ -35,6 +35,30 @@ class Events extends Component {
     this.driver = new ScrollDriver();
   }
 
+  // renderRow(event) {
+  //   const { title, startdate, enddate, key, mobileImage, location } = event;
+  //   return (
+  //     <TouchableOpacity key={key} onPress={() => { this.props.navigation.navigate('Event', { event }); }} >
+  //       <Image
+  //         styleName="large-banner"
+  //         source={{ uri: mobileImage === '' ? 'https://placeimg.com/640/480/nature' : mobileImage }}
+  //       >
+  //         <Tile>
+  //           <Parallax driver={this.driver} scrollSpeed={1.2}>
+  //             <Title>{title}</Title>
+  //             {moment.unix(startdate).format('MMMM Do') === moment.unix(enddate).format('MMMM Do') ?
+  //               <Subtitle>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm A')}</Subtitle>
+  //               :
+  //               <Subtitle>{moment.unix(startdate).format('MMMM Do')} - {moment.unix(enddate).format('MMMM Do')}</Subtitle>
+  //             }
+  //           </Parallax>
+  //         </Tile>
+  //       </Image>
+  //       <Divider styleName='line' />
+  //     </TouchableOpacity>
+  //   );
+  // }
+
   renderRow(event) {
     const { title, startdate, enddate, key, mobileImage, location } = event;
     return (
@@ -43,21 +67,12 @@ class Events extends Component {
           styleName="large-banner"
           source={{ uri: mobileImage === '' ? 'https://placeimg.com/640/480/nature' : mobileImage }}
         >
-          <Tile>
-            <Parallax driver={this.driver} scrollSpeed={1.2}>
-              <Title>{title}</Title>
-              {moment.unix(startdate).format('MMMM Do') === moment.unix(enddate).format('MMMM Do') ?
-                <Subtitle>{moment.unix(startdate).format('MMMM Do, h:mm A')} - {moment.unix(enddate).format('h:mm A')}</Subtitle>
-                :
-                <Subtitle>{moment.unix(startdate).format('MMMM Do')} - {moment.unix(enddate).format('MMMM Do')}</Subtitle>
-              }
-            </Parallax>
-          </Tile>
         </Image>
         <Divider styleName='line' />
       </TouchableOpacity>
     );
   }
+
 
   render() {
     const { events } = this.props;

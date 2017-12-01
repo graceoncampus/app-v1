@@ -145,7 +145,7 @@ class classDetails extends Component {
            </View>
         }
         {
-          (this.state.userInfo != null && this.state.userInfo.classes !== 1) &&
+          (firebase.auth().currentUser && this.state.userInfo.classes !== 1) &&
           <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
             {this.renderButton()}
           </View>

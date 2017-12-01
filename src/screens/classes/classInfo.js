@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform,
-  ScrollView,
-  Linking,
+  TouchableOpacity, StatusBar, Platform, ScrollView, Linking,
 } from 'react-native';
 import moment from 'moment';
 import { Icon, Divider, Button, Title, View, Screen, Text, Caption, Spinner } from '@shoutem/ui';
@@ -67,7 +65,9 @@ class classInfo extends Component {
       this.setState({
         enrolledStudents: enrolled,
         allEmails: emails,
-      })
+      });
+      console.log(enrolled);
+      console.log(emails);
   }
 
   appendName(name, enrolled) {
@@ -112,7 +112,7 @@ class classInfo extends Component {
               <Caption><Caption styleName="bold">Enroll By: </Caption>
                 {moment.unix(deadline).format('MMMM Do')}</Caption>
           }
-          {openSpots && totalSpots &&
+          {totalSpots &&
               <Caption><Caption styleName="bold">Spots Left: </Caption>
                 {openSpots}/{totalSpots}</Caption>
           }
