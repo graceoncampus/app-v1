@@ -17,6 +17,7 @@ import rides from '../screens/rides/ridesTab';
 import myRide from '../screens/rides/myRide';
 import classes from '../screens/classes/classes';
 import Class from '../screens/classes/class';
+import ClassInfo from '../screens/classes/classInfo';
 import leader from '../screens/leadership/leader';
 import UserInvite from '../screens/settings/userinvite';
 import Settings from '../screens/settings/settings';
@@ -24,7 +25,7 @@ import ChangePassword from '../screens/settings/changePassword';
 import Home from '../screens/home/homepage';
 import addPost from '../screens/home/addPost';
 import Post from '../screens/home/Post';
-import editPost from '../screens/home/editPost'
+import editPost from '../screens/home/editPost';
 
 const homeStack = StackNavigator({
   Home: { screen: Home },
@@ -45,6 +46,7 @@ const eventsStack = StackNavigator({
 const classesStack = StackNavigator({
   Classes: { screen: classes },
   Class: { screen: Class },
+  ClassInfo: { screen: ClassInfo },
 });
 
 const ridesStack = StackNavigator({

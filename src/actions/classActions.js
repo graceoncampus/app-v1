@@ -5,6 +5,9 @@ import {
   CLASS_ENROLL_FAIL,
   CLASS_UNENROLL,
   CLASS_ADD,
+  GET_CLASS_PERMISSIONS,
+  CLASS_USERS_FETCH,
+  GET_STUDENTS_INFO,
 } from './types';
 
 export const classFetch = () => (dispatch) => {
@@ -81,3 +84,32 @@ export const classUnenroll = (classKey, numSpots) => {
       });
   };
 };
+
+export const getClassPerm = () => {
+  const { currentUser } = firebase.auth();
+  const uid = currentUser.uid;
+  return (dispatch) => {
+    const userData = firebase.database().ref(`/users/${uid}/permissions`);
+    userData.once('value').then((snapshot) => {
+      dispatch({
+        type: GET_CLASS_PERMISSIONS,
+        payload: snapshot.val(),
+      });
+    });
+  };
+};
+
+export const classUsersFetch = () => (dispatch) => {
+  const classesData = firebase.database().ref('/users/');
+  classesData.on('value', (snapshot) => {
+    dispatch({
+      type: CLASS_USERS_FETCH,
+      payload: snapshot.val(),
+    });
+  });
+};
+
+export const studentsInfoFetch = async (uid) => {
+    const user = await firebase.database().ref(`users/${uid}`).once('value');
+    return `${user.val().firstName} ${user.val().lastName}:    ${user.val().email}`;
+  };

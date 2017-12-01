@@ -7,7 +7,7 @@ import { Icon, Divider, Button, Title, View, Screen, Text, Caption } from '@shou
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 
-import { classEnroll, classUnenroll } from '../../actions';
+import { classEnroll, classUnenroll, getClassPerm } from '../../actions';
 
 class classDetails extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -27,10 +27,22 @@ class classDetails extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      userInfo: {},
+    };
     this.unenroll = this.unenroll.bind(this);
     this.isEnrolled = this.isEnrolled.bind(this);
     this.enroll = this.enroll.bind(this);
+    this.props.getClassPerm();
   }
+
+  componentWillReceiveProps = (nextProps) => {
+    const data = nextProps.userInfo;
+    this.setState({
+      userInfo: data,
+    });
+  }
+
   unenroll() {
     const { classData } = this.props;
     const { key } = this.props.navigation.state.params;
@@ -124,7 +136,16 @@ class classDetails extends Component {
             </View>
           }
         </ScrollView>
-        { firebase.auth().currentUser &&
+        {
+          (this.state.userInfo != null && this.state.userInfo.classes === 1) &&
+           <View style={{ padding: 25 }} styleName='vertical h-center v-end'>
+             <Button onPress={() => { this.props.navigation.navigate('ClassInfo', { key, instructor }); }}>
+               <Text>VIEW CLASS INFORMATION</Text>
+             </Button>
+           </View>
+        }
+        {
+          (this.state.userInfo != null && this.state.userInfo.classes !== 1) &&
           <View style={{ paddingHorizontal: 25, paddingVertical: 15 }}>
             {this.renderButton()}
           </View>
@@ -134,8 +155,8 @@ class classDetails extends Component {
   }
 }
 const mapStateToProps = ({ ClassReducer }) => {
-  const { classData, loading, error } = ClassReducer;
-  return { classData, loading, error };
+  const { classData, loading, error, userInfo } = ClassReducer;
+  return { classData, loading, error, userInfo };
 };
 
-export default connect(mapStateToProps, { classEnroll, classUnenroll })(classDetails);
+export default connect(mapStateToProps, { classEnroll, classUnenroll, getClassPerm })(classDetails);
