@@ -86,15 +86,11 @@ const DrawerNav = DrawerNavigator({
     navigationOptions: {
       gesturesEnabled: false,
     } },
-  'About Us': { screen: aboutStack,
+  Connect: { screen: connectStack,
     navigationOptions: {
       gesturesEnabled: false,
     } },
   Leadership: { screen: leadershipStack,
-    navigationOptions: {
-      gesturesEnabled: false,
-    } },
-  Connect: { screen: connectStack,
     navigationOptions: {
       gesturesEnabled: false,
     } },
