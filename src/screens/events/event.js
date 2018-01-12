@@ -22,21 +22,36 @@ export default class Event extends React.Component {
   })
 
 parseAndfindURLs(summary) {
-  let url_display = summary.slice(summary.search("{") + 1, summary.search("}"));
-  let begin = summary.search("<");
-  let end = summary.search(">") + 1;
-  let url = '';
-  if (begin != -1){
-    let url = summary.slice(begin + 1, end - 1);
-    summary = summary.slice(0, begin - url_display.length - 2) + summary.slice(end);
-    console.log(url);
-    console.log(url_display);
-    return [url_display,url, summary];
-  }
-else{
-    console.log('not found');
+// Can only add one link per event description using this method
+const re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
+let url = '';
+url = summary.match(re);
+if (url)
+  url = url[0].trim();
+if (url != '') {
+  var text = summary.split(url);
+  return ([text[0], url, text[1]]);
 }
- return (['','', summary]);
+return ([summary, '', '']);
+//   let url_display = summary.slice(summary.search("{") + 1, summary.search("}"));
+//   let begin = summary.search("<");
+//   let end = summary.search(">") + 1;
+//   let url = '';
+//   if (begin != -1){
+//     let url = summary.slice(begin + 1, end - 1);
+//     summary = summary.slice(0, begin - url_display.length - 2) + summary.slice(end);
+//     console.log(url);
+//     console.log(url_display);
+//     return [url_display,url, summary];
+//   }
+// else{
+//     console.log('not found');
+// }
+//  return (['','', summary]);
+// const re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
+// console.log("HELLLLLLO");
+// console.log(summary.match(re));
+// console.log(summary.split(summary.match(re)));
 }
   render() {
     const { event: { enddate, title, startdate, location, summary } } = this.props.navigation.state.params;
@@ -61,13 +76,14 @@ else{
           { summary &&
             <View style={{ backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
               <Text>
-                {description[2]}
+                {description[0]}
               </Text>
               { (description[1] != null) &&
-                <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(description[1])} >
-                  {description[0]}
+                <Text style={{ color: '#ae956b' }} onPress={() => Linking.openURL(description[1])} >
+                  {description[1]}
                 </Text>
               }
+              <Text>{description[2]}</Text>
             </View>
           }
         </ScrollView>

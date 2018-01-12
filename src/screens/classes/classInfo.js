@@ -76,7 +76,6 @@ class classInfo extends Component {
   }
   showStudents() {
     return this.state.enrolledStudents.map((student) => {return (<Text>{student}</Text>)});
-
   }
 
   emailString(){
@@ -92,7 +91,7 @@ class classInfo extends Component {
     const { classData } = this.props;
     const { key, instructor } = this.props.navigation.state.params;
     const { title, location, startDate, endDate, deadline, totalSpots, openSpots, day, classTime, students } = classData[key];
-    if (this.state.enrolledStudents.length > 0)
+    if (this.state.enrolledStudents.length >= 0)
     return (
       <Screen>
         <Divider />
