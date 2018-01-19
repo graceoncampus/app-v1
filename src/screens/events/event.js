@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  TouchableOpacity, StatusBar, Platform,
-  ScrollView, Linking,
+  TouchableOpacity, StatusBar, Platform, ScrollView, Linking,
 } from 'react-native';
 import moment from 'moment';
 import { Icon, Divider, Title, View, Screen, Text, Caption, Button } from '@shoutem/ui';
@@ -21,41 +20,28 @@ export default class Event extends React.Component {
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
 
-parseAndfindURLs(summary) {
-// Can only add one link per event description using this method
-const re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
-let url = '';
-url = summary.match(re);
-if (url)
-  url = url[0].trim();
-if (url != '') {
-  var text = summary.split(url);
-  return ([text[0], url, text[1]]);
-}
-return ([summary, '', '']);
-//   let url_display = summary.slice(summary.search("{") + 1, summary.search("}"));
-//   let begin = summary.search("<");
-//   let end = summary.search(">") + 1;
-//   let url = '';
-//   if (begin != -1){
-//     let url = summary.slice(begin + 1, end - 1);
-//     summary = summary.slice(0, begin - url_display.length - 2) + summary.slice(end);
-//     console.log(url);
-//     console.log(url_display);
-//     return [url_display,url, summary];
-//   }
-// else{
-//     console.log('not found');
-// }
-//  return (['','', summary]);
-// const re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
-// console.log("HELLLLLLO");
-// console.log(summary.match(re));
-// console.log(summary.split(summary.match(re)));
+parseAndFindURLs(summary) {
+  // Can only add one link per event description using this method
+  const re = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
+  let url = '';
+  let link = ''; // in event url does not start with https://
+  url = summary.match(re);
+  if (url) {
+    url = url[0].trim();
+    link = url;
+    var prefix = 'https://';
+    if (url.substr(0, prefix.length) !== prefix)
+      link = prefix + link;
+  }
+  if (url != '') {
+    var text = summary.split(url);
+    return ([text[0], link, text[1]]);
+  }
+  return ([summary, '', '']);
 }
   render() {
     const { event: { enddate, title, startdate, location, summary } } = this.props.navigation.state.params;
-    const description = this.parseAndfindURLs(summary);
+    const description = this.parseAndFindURLs(summary);
     return (
       <Screen>
         <Divider />
@@ -75,9 +61,7 @@ return ([summary, '', '']);
         <ScrollView>
           { summary &&
             <View style={{ backgroundColor: 'white', paddingTop: 35, paddingHorizontal: 35, paddingBottom: 50 }}>
-              <Text>
-                {description[0]}
-              </Text>
+              <Text> {description[0]}</Text>
               { (description[1] != null) &&
                 <Text style={{ color: '#ae956b' }} onPress={() => Linking.openURL(description[1])} >
                   {description[1]}
