@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, Linking } from 'react-native';
-import { Divider, Screen, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity, Spinner } from '@shoutem/ui';
+import { Divider, Screen, Row, Caption, View, Subtitle, Button, Text, Title, TouchableOpacity, Spinner } from '@shoutem/ui';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -35,9 +35,8 @@ class MyRide extends Component {
     if (myRideData) this.setState({ ridesData: myRideData });
   }
 
-  renderDriver() {
-      const { driver, userList } = this.state.ridesData;
-      const user = userList[0];
+  renderDriver(driverName, userArr) {
+      const user = userArr[0];
       const navigateAction = NavigationActions.navigate({
         routeName: 'User',
         params: { user },
@@ -46,7 +45,7 @@ class MyRide extends Component {
         return (
         <TouchableOpacity onPress={() => { this.props.navigation.dispatch(navigateAction); }}>
         <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
-        <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{driver}</Subtitle>
+        <Subtitle style={{ textAlign: 'center', color: '#ae956b' }}>{driverName}</Subtitle>
         </View>
         </TouchableOpacity>
       )
@@ -54,17 +53,16 @@ class MyRide extends Component {
     else {
       return (
         <View style={{ paddingVertical: 10, paddingHorizontal: 15, backgroundColor: '#fff' }}>
-        <Subtitle style={{ textAlign: 'center' }}>{driver}</Subtitle>
+        <Subtitle style={{ textAlign: 'center' }}>{driverName}</Subtitle>
         </View>
       )
     }
   }
 
-  renderRiders() {
-      const {riders, userList } = this.state.ridesData;
+  renderRiders(riderList, userArr) {
       let i = 1;
-      return riders.map((rider) => {
-        const user = userList[i]
+      return riderList.map((rider) => {
+        const user = userArr[i]
         i++;
         const navigateAction = NavigationActions.navigate({
           routeName: 'User',
@@ -114,11 +112,25 @@ class MyRide extends Component {
          <Divider styleName="section-header">
          <Caption>Driver</Caption>
          </Divider>
-         {this.renderDriver()}
+         {this.renderDriver(this.state.ridesData.driver, this.state.ridesData.userList)}
          <Divider styleName="section-header">
          <Caption>Riders</Caption>
          </Divider>
-         {this.renderRiders()}
+         {this.renderRiders(this.state.ridesData.riders, this.state.ridesData.userList)}
+         {
+           (this.state.ridesData.driver2 !== "") &&
+           <View>
+             <Divider styleName="line" />
+             <Divider styleName="section-header">
+             <Caption>Driver</Caption>
+             </Divider>
+             {this.renderDriver(this.state.ridesData.driver2, this.state.ridesData.userList2)}
+             <Divider styleName="section-header">
+             <Caption>Riders</Caption>
+             </Divider>
+             {this.renderRiders(this.state.ridesData.riders2, this.state.ridesData.userList2)}
+             </View>
+         }
          </ScrollView>
          </Screen>
        );

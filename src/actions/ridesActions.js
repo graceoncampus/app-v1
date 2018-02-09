@@ -43,7 +43,6 @@ const ridesFetchSuccess = (dispatch, data) => {
   });
 };
 
-
 export const singleRideFetch = () => (dispatch) => {
   dispatch({ type: SINGLE_RIDE_FETCH });
   const user = firebase.auth().currentUser;
@@ -56,12 +55,28 @@ export const singleRideFetch = () => (dispatch) => {
       let carUIDs = [];
       let userList = [];
       let riders = [];
+
+      let carUIDs2 = []; // if rider in another car as well
+      let userList2 = [];
+      let riders2 = [];
+      let driver2 = '';
+
       const driver = data[0].driver.name;
       carUIDs.push(data[0].driver.uid);
       for (var riderKey in data[0].riders) {
         riders.push(data[0].riders[riderKey].name);
         carUIDs.push(data[0].riders[riderKey].uid);
       }
+
+      if(data[1]) { // if rider in another car as well
+        driver2 = data[1].driver.name;
+        carUIDs2.push(data[1].driver.uid);
+        for (var riderKey in data[1].riders) {
+          riders2.push(data[1].riders[riderKey].name);
+          carUIDs2.push(data[1].riders[riderKey].uid);
+        }
+      }
+
       const users = firebase.database().ref('users');
       users.once('value').then((snapshot) => {
         for (var j = 0; j < carUIDs.length; j++) {
@@ -76,8 +91,22 @@ export const singleRideFetch = () => (dispatch) => {
             }
           }
         }
-        const toAppend = { driver, riders, userList };
-        singleRideFetchSuccess(dispatch, toAppend);
+        if(data[1]) {
+          for (var k = 0; k < carUIDs2.length; k++) {
+            for (var key in snapshot.val()) {
+              if(carUIDs2[k] == '') {
+                userList2.push('');
+                break;
+              }
+              if(key === carUIDs2[k]) {
+                userList2.push(snapshot.val()[key]);
+                break;
+              }
+            }
+          }
+        }
+          const toAppend = { driver, riders, userList, driver2, riders2, userList2 };
+          singleRideFetchSuccess(dispatch, toAppend);
       });
   }
   else {
