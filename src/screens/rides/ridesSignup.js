@@ -233,21 +233,6 @@ class RidesSignup extends Component {
         />
         <CheckBox
           style={{ flex: 1, paddingHorizontal: 15, paddingVertical: 10 }}
-          onClick={() => (this.setState({ focus: '', evening: !evening }))}
-          isChecked={evening}
-          checkBoxColor={'#ae956b'}
-          leftText={'Evening (6:00 PM - 7:30 PM)'}
-          leftTextStyle={{
-            fontFamily: 'Akkurat-Regular',
-            fontStyle: 'normal',
-            fontWeight: 'normal',
-            color: '#3a3f4b',
-            fontSize: 15,
-            lineHeight: 18,
-          }}
-        />
-        <CheckBox
-          style={{ flex: 1, paddingHorizontal: 15, paddingVertical: 10 }}
           onClick={() => (this.setState({ focus: '', staying: !staying }))}
           isChecked={staying}
           checkBoxColor={'#ae956b'}
@@ -261,6 +246,22 @@ class RidesSignup extends Component {
             lineHeight: 18,
           }}
         />
+        <CheckBox
+          style={{ flex: 1, paddingHorizontal: 15, paddingVertical: 10 }}
+          onClick={() => (this.setState({ focus: '', evening: !evening }))}
+          isChecked={evening}
+          checkBoxColor={'#ae956b'}
+          leftText={'Evening (6:00 PM - 7:30 PM)'}
+          leftTextStyle={{
+            fontFamily: 'Akkurat-Regular',
+            fontStyle: 'normal',
+            fontWeight: 'normal',
+            color: '#3a3f4b',
+            fontSize: 15,
+            lineHeight: 18,
+          }}
+        />
+
         <Divider />
         {this.renderButton()}
         <Divider />
