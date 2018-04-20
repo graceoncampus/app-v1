@@ -7,6 +7,7 @@ import rosterReducer from './rosterReducer';
 import ClassReducer from './ClassReducer';
 import RidesReducer from './RidesReducer';
 import HomeReducer from './HomeReducer';
+import CalendarReducer from './CalendarReducer';
 
 const initialNavState = AppNavigator.router.getStateForAction({});
 
@@ -24,6 +25,7 @@ const appReducer = combineReducers({
   events: EventsReducer,
   EventsFormReducer,
   HomeReducer,
+  CalendarReducer,
 });
 
 // Setup root reducer

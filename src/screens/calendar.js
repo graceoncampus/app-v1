@@ -3,8 +3,10 @@ import {
   TouchableOpacity, StatusBar, Platform, StyleSheet
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
+import { connect } from 'react-redux';
 import { Icon, View, Text } from '@shoutem/ui';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { calendarFetch } from '../actions';
 
 class CalendarScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -20,35 +22,63 @@ class CalendarScreen extends Component {
     headerRight: <View />,  headerStyle: { backgroundColor: '#fff', ...Platform.select({ ios: { marginTop: 0, paddingTop: 20 }, android: { elevation: 0,  height: 70, paddingTop: 16 + StatusBar.currentHeight, paddingBottom: 12 } }), borderBottomWidth: 1, borderBottomColor: '#ecedef' },
     headerTitleStyle: { alignSelf: 'center', fontFamily: 'Akkurat-Regular', fontSize: 15, color: '#222222', lineHeight: 18 },
   })
+
   constructor(props) {
     super(props);
     this.state = {
-      items: {}
+      items: {},
     };
+    this.props.calendarFetch();
   }
+
+  // componentWillUpdate(nextProps, nextState) {
+  //   const data = nextProps.calendarData;
+  //   this.setState({
+  //     items: data,
+  //   })
+  //   console.log(nextState);
+  // }
+
+  componentWillReceiveProps = (nextProps) => {
+    const data = nextProps.calendarData;
+    let events = JSON.stringify(data.events);
+    events = JSON.parse(events)
+    console.log(events)
+    // console.log(events)
+    this.setState({
+      items: events,
+    });
+  }
+
+  // {"2017-01-22": [{text: "item 1 "}],
+  //     "2017-01-23": [{text: "item 2 "}],
+  //     "2017-01-24": [],
+  //     "2017-01-25": [{text: "item 3 "},{text: "item3"}],
+  //    }
   loadItems(day) {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              name: 'Item for ' + strTime,
-              height: Math.max(50, Math.floor(Math.random() * 150))
-            });
-          }
-        }
-      }
-      //console.log(this.state.items);
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      this.setState({
-        items: newItems
-      });
-    }, 1000);
+    // console.log(this.state.items);
+    // setTimeout(() => { //format this.state.items[date] = [{name, height}]
+    //   for (let i = -15; i < 85; i++) {
+    //     const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+    //     const strTime = this.timeToString(time);
+    //     if (!this.state.items[strTime]) { //if the time does not have any events, then set the
+    //       this.state.items[strTime] = [];
+    //       const numItems = Math.floor(Math.random() * 5);
+    //       for (let j = 0; j < numItems; j++) {
+    //         this.state.items[strTime].push({
+    //           name: 'Item for ' + strTime,
+    //           height: Math.max(50, Math.floor(Math.random() * 150))
+    //         });
+    //       }
+    //     }
+    //   }
+    //   //console.log(this.state.items);
+    //   const newItems = {};
+    //   Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
+      // this.setState({
+      //   items: newItems
+      // });
+    // }, 1000);
     // console.log(`Load Items for ${day.year}-${day.month}`);
   }
 
@@ -73,12 +103,15 @@ class CalendarScreen extends Component {
     return date.toISOString().split('T')[0];
   }
 
+// this.loadItems.bind(this)
   render () {
+    // console.log(this.state.items)
+    // const events = JSON.parse(this.state.items);
     return (
       <Agenda
          items={this.state.items}
          loadItemsForMonth={this.loadItems.bind(this)}
-         selected={'2017-05-16'}
+         selected={'2017-01-22'}
          renderItem={this.renderItem.bind(this)}
          renderEmptyDate={this.renderEmptyDate.bind(this)}
          rowHasChanged={this.rowHasChanged.bind(this)}
@@ -116,4 +149,11 @@ const styles = StyleSheet.create({
     paddingTop: 30
   }
 });
-export default CalendarScreen;
+
+const mapStateToProps = ({ CalendarReducer }) => {
+  const { calendarData } = CalendarReducer;
+  return { calendarData };
+};
+
+
+export default connect(mapStateToProps, { calendarFetch })(CalendarScreen);

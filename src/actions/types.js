@@ -32,3 +32,4 @@ export const POST_FETCH = 'postFetch';
 export const EDIT_CURRENT_POST = 'editCurrentPost';
 export const DELETE_CURRENT_POST = 'deleteCurrentPost';
 export const GET_USER_PERMISSIONS = 'getUserPerm';
+export const CALENDAR_FETCH = 'calendarFetch';
