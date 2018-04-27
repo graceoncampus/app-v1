@@ -31,60 +31,27 @@ class CalendarScreen extends Component {
     this.props.calendarFetch();
   }
 
-  // componentWillUpdate(nextProps, nextState) {
-  //   const data = nextProps.calendarData;
-  //   this.setState({
-  //     items: data,
-  //   })
-  //   console.log(nextState);
-  // }
-
   componentWillReceiveProps = (nextProps) => {
     const data = nextProps.calendarData;
-    let events = JSON.stringify(data.events);
-    events = JSON.parse(events)
-    console.log(events)
-    // console.log(events)
     this.setState({
-      items: events,
+      items: data.events,
     });
   }
-
-  // {"2017-01-22": [{text: "item 1 "}],
-  //     "2017-01-23": [{text: "item 2 "}],
-  //     "2017-01-24": [],
-  //     "2017-01-25": [{text: "item 3 "},{text: "item3"}],
-  //    }
-  loadItems(day) {
-    // console.log(this.state.items);
-    // setTimeout(() => { //format this.state.items[date] = [{name, height}]
-    //   for (let i = -15; i < 85; i++) {
-    //     const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-    //     const strTime = this.timeToString(time);
-    //     if (!this.state.items[strTime]) { //if the time does not have any events, then set the
-    //       this.state.items[strTime] = [];
-    //       const numItems = Math.floor(Math.random() * 5);
-    //       for (let j = 0; j < numItems; j++) {
-    //         this.state.items[strTime].push({
-    //           name: 'Item for ' + strTime,
-    //           height: Math.max(50, Math.floor(Math.random() * 150))
-    //         });
-    //       }
-    //     }
-    //   }
-    //   //console.log(this.state.items);
-    //   const newItems = {};
-    //   Object.keys(this.state.items).forEach(key => {newItems[key] = this.state.items[key];});
-      // this.setState({
-      //   items: newItems
-      // });
-    // }, 1000);
-    // console.log(`Load Items for ${day.year}-${day.month}`);
-  }
+  
+  loadItems(day) {}
 
   renderItem(item) {
     return (
-      <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+      <View style={{
+        backgroundColor: 'white',
+        flex: 1,
+        borderRadius: 5,
+        padding: 10,
+        marginRight: 10,
+        marginTop: 17,
+        height: item.height,
+
+      }}><Text>{item.text}</Text></View>
     );
   }
 
@@ -105,8 +72,6 @@ class CalendarScreen extends Component {
 
 // this.loadItems.bind(this)
   render () {
-    // console.log(this.state.items)
-    // const events = JSON.parse(this.state.items);
     return (
       <Agenda
          items={this.state.items}
@@ -115,19 +80,7 @@ class CalendarScreen extends Component {
          renderItem={this.renderItem.bind(this)}
          renderEmptyDate={this.renderEmptyDate.bind(this)}
          rowHasChanged={this.rowHasChanged.bind(this)}
-         // markingType={'period'}
-         // markedDates={{
-         //   '2017-05-08': {periods: [{textColor: '#666'}]},
-         //   '2017-05-09': {periods: [{textColor: '#666'}]},
-         //   '2017-05-14': {periods: [{startingDay: true, color: 'blue'}, {endingDay: true, color: 'blue'}]},
-         //   '2017-05-21': {periods: [{startingDay: true, color: 'blue'}]},
-         //   '2017-05-22': {periods: [{endingDay: true, color: 'gray'}]},
-         //   '2017-05-24': {periods: [{startingDay: true, color: 'gray'}]},
-         //   '2017-05-25': {periods: [{color: 'gray'}]},
-         //   '2017-05-26': {periods: [{endingDay: true, color: 'gray'}]}}}
-          // monthFormat={'yyyy'}
-          // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-         //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+         // renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
        />
     )
   }
@@ -135,19 +88,11 @@ class CalendarScreen extends Component {
 
 
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
-  },
   emptyDate: {
     height: 15,
-    flex:1,
-    paddingTop: 30
-  }
+    flex: 1,
+    paddingTop: 30,
+  },
 });
 
 const mapStateToProps = ({ CalendarReducer }) => {
